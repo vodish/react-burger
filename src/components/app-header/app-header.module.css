@@ -1,0 +1,10 @@
+
+.content    { width: 1240px; margin: 16px auto; display: flex; justify-content: space-between; align-items: center; }
+
+.content .nav    { flex-basis: 33%; display: flex; gap: 16px; }
+.content .logo   { flex-basis: 33%; text-align: center; margin-bottom: -7px; }
+.content .user   { flex-basis: 33%; display: flex; justify-content: flex-end;  }
+
+.btn    { font-size: 16px; padding: 8px; display: flex; gap: 8px; align-items: center; white-space: nowrap; }
+.btn:hover    { background-color: #131316; cursor: pointer; border-radius: .5em; transition: all .3s ease-in; }
+
