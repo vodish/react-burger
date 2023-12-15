@@ -14,7 +14,7 @@ class BurgerConstructor extends React.Component
     const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...this.props.topList[0], name: `${this.props.topList[0].name} (верх)`}
     const { name: botName,  price: botPrice, image_mobile: botImageMobile } =   {...this.props.topList[1], name: `${this.props.topList[1].name} (низ)`}
 
-    
+
 
     return(
       <>
@@ -31,8 +31,8 @@ class BurgerConstructor extends React.Component
               <div className={cm.drag}><DragIcon type="primary"/></div>
               <ConstructorElement extraClass={cm.elem}   text={item.name} price={item.price} thumbnail={item.image_mobile} />
             </div>
+            
           ))}
-
         </div>
         
         {/* нижняя булка */}
