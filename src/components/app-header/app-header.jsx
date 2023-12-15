@@ -5,21 +5,24 @@ import cm from './app-header.module.css'
 
 class AppHeader extends React.Component
 {
+
+  onClick = (e) => e.preventDefault();
+
   render() {
     return(
       <div className={cm.content}>
 
         <div className={cm.nav}>
           
-          <div className={cm.btn}>
+          <a href="" onClick={this.onClick} className={cm.btn}>
             <BurgerIcon type="primary" />
             <span>Конструктор</span>
-          </div>
+          </a>
 
-          <div className={cm.btn}>
+          <a href="" onClick={this.onClick} className={cm.btn}>
             <ListIcon type="secondary" />
             <span>Лента заказов</span>
-          </div>
+          </a>
 
         </div>
         
@@ -28,10 +31,10 @@ class AppHeader extends React.Component
         </div>
         
         <div className={cm.user}>
-          <div className={cm.btn}>
+          <a href="" onClick={this.onClick} className={cm.btn}>
             <ProfileIcon type="secondary" />
             <span>Личный кабинет</span>
-          </div>
+          </a>
         </div>
       </div>
     );
