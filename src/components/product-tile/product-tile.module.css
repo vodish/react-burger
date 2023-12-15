@@ -1,0 +1,11 @@
+
+.tile   { flex-basis: 260px; margin: 16px; text-align: center; position: relative; }
+/* .tile   { border: solid 1px #333; } */
+
+.tile .count    { font-family: 'Iceland'; font-size: 28px; position: absolute; top: 0; right: 0; line-height: 0; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: white; background-color: #4C4CFF; }
+.tile .count:empty    { display: none; }
+.tile .img    { display: block; margin: 0 auto; }
+.tile .cost   { display: flex; justify-content: center; align-items: center; gap: 4px; margin: 4px; }
+.tile .cost .price  { font-family: 'Iceland'; font-size: 28px; }
+.tile .name   { height: 3em; }
+

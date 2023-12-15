@@ -1,0 +1,19 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Iceland&family=JetBrains+Mono:wght@400;700&display=swap');
+
+
+* { padding: 0; margin: 0; box-sizing: border-box; }
+html,body { -webkit-font-smoothing: antialiased; }
+
+*::-webkit-scrollbar        { width: 8px; height: 8px; background-color: #2F2F37; }
+*::-webkit-scrollbar-thumb  { border-radius: 1px; background: #8585AD; }
+
+body {
+  font-family: 'JetBrains Mono', monospace;
+  /* font-family: 'Iceland', cursive; */
+  font-size: 400;
+
+  background-color: #131316;
+  color: #F2F2F3;
+}
+
