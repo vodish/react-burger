@@ -11,14 +11,16 @@ class BurgerConstructor extends React.Component
 {
   render(){
 
-    const top = {...this.props.topList[0], name: `${this.props.topList[0].name} (верх)`}
-    const bot = {...this.props.topList[1], name: `${this.props.topList[1].name} (низ)`}
+    const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...this.props.topList[0], name: `${this.props.topList[0].name} (верх)`}
+    const { name: botName,  price: botPrice, image_mobile: botImageMobile } =   {...this.props.topList[1], name: `${this.props.topList[1].name} (низ)`}
+
+    
 
     return(
       <>
         {/* верхняя булка */}
         <div className={cm.item}>
-          <ConstructorElement type="top" extraClass={cm.elem} text={top.name} price={top.price} thumbnail={top.image_mobile} isLocked={true} />
+          <ConstructorElement type="top" extraClass={cm.elem} isLocked={true}   text={topName} price={topPrice} thumbnail={topImageMobile} />
         </div>
 
         {/* начинка */}
@@ -27,7 +29,7 @@ class BurgerConstructor extends React.Component
 
             <div className={cm.item} key={item._id}>
               <div className={cm.drag}><DragIcon type="primary"/></div>
-              <ConstructorElement extraClass={cm.elem} text={item.name} price={item.price} thumbnail={item.image_mobile} />
+              <ConstructorElement extraClass={cm.elem}   text={item.name} price={item.price} thumbnail={item.image_mobile} />
             </div>
           ))}
 
@@ -35,7 +37,7 @@ class BurgerConstructor extends React.Component
         
         {/* нижняя булка */}
         <div className={cm.item}>
-          <ConstructorElement type="bottom" extraClass={cm.elem} text={bot.name} price={bot.price} thumbnail={bot.image_mobile} isLocked={true} />
+          <ConstructorElement type="bottom" extraClass={cm.elem} isLocked={true}   text={botName} price={botPrice} thumbnail={botImageMobile} />
         </div>
         
 
