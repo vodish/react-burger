@@ -44,7 +44,7 @@ class BurgerConstructor extends React.Component
         {/* итого отправить */}
         <div className={cm.summary}>
           <div className={cm.cost}>
-            <div className={cm.sum}>{this.props.total}</div>
+            <div className={cm.total}>{this.props.total}</div>
             <CurrencyIcon type="primary" />
           </div>
 
