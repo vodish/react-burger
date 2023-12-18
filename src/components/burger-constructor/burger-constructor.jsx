@@ -9,6 +9,7 @@ import { ingredientListObject } from "../../utils/data";
 
 class BurgerConstructor extends React.Component
 {
+  
   render(){
 
     const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...this.props.topList[0], name: `${this.props.topList[0].name} (верх)`}
