@@ -4,23 +4,22 @@ import cm from './app-header.module.css'
 
 
 
-export default function AppHeader() {
+export default function AppHeader()
+{
 
-  function onClick(e) {
-    e.preventDefault();
-  }
+  const handleClick = e => e.preventDefault();
 
   return(
     <div className={cm.content}>
 
       <div className={cm.nav}>
         
-        <a href="" onClick={onClick} className={cm.btn}>
+        <a href="" onClick={handleClick} className={cm.btn}>
           <BurgerIcon type="primary" />
           <span>Конструктор</span>
         </a>
 
-        <a href="" onClick={onClick} className={cm.btn}>
+        <a href="" onClick={handleClick} className={cm.btn}>
           <ListIcon type="secondary" />
           <span>Лента заказов</span>
         </a>
@@ -32,7 +31,7 @@ export default function AppHeader() {
       </div>
       
       <div className={cm.user}>
-        <a href="" onClick={onClick} className={cm.btn}>
+        <a href="" onClick={handleClick} className={cm.btn}>
           <ProfileIcon type="secondary" />
           <span>Личный кабинет</span>
         </a>

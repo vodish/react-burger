@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 
 
-function ProductTile(props) {
-
+function ProductTile(props)
+{
   const item = props.item;
 
   return(
