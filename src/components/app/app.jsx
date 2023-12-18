@@ -3,9 +3,9 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
+import { INGRIDIENT_DATA_URL } from "../../utils/data";
 
 
-const INGRIDIENT_DATA_URL = "https://norma.nomoreparties.space/api/ingredients"
 
 
 function App()
@@ -28,7 +28,7 @@ function App()
         setIsLoading(false)
 
         setTopList([data[0], data[0]])
-        setAddList([data[4], data[2], data[7], data[5]])
+        setAddList([data[4], data[2], data[7], data[5], data[5]])
 
       })
       .catch(e => setIsError(true))

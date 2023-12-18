@@ -15,6 +15,8 @@ export const ingredientListObject = PropTypes.shape({
    __v:           PropTypes.number
 }); 
 
+export const INGRIDIENT_DATA_URL = "https://norma.nomoreparties.space/api/ingredients";
+
 
 export const ingredientListData = [
     {
