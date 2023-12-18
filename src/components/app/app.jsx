@@ -56,15 +56,7 @@ function App()
       ,{}
     )
   }
-
-  function _print(arr)
-  {
-    return (
-      <div style={{backgroundColor: "#ccc"}}>
-        {arr.map(item => <div>{item.name}</div>)}
-      </div>
-    )
-  }
+  
 
 
   return(
@@ -76,13 +68,15 @@ function App()
 
       <main className={cm.main}>
         <div className={cm.ingredients}>
-          
+
           { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
-          
+
         </div>
         
         <div className={cm.constructor}>
+
           { topList.length &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  /> }
+
         </div> 
         
       </main>
