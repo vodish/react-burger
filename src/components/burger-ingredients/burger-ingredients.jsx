@@ -28,7 +28,8 @@ function BurgerIngredients(props)
   useEffect(()=> {
     initType()
   }, [])
-
+  
+  
   async function initType()
   {
     let exists  = []
