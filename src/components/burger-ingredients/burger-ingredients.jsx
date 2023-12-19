@@ -79,7 +79,7 @@ function BurgerIngredients(props)
 
   function productClick(e)
   {
-    // console.log(e.currentTarget)
+    console.dir(e)
     setShowModal(true)
   }
 
@@ -87,50 +87,59 @@ function BurgerIngredients(props)
   
   return(
     <>
-      {/* {createPortal(<div style={{width: '100%', height: '100%', backgroundColor: 'red', opacity: 0.6, position: 'fixed', top: 0}}>sdvsdv</div>,  document.getElementById("modal") )} */}
-      {showModal && createPortal(
-        <Modal>sdvbsdfv</Modal>,
-        document.getElementById("modal")
-      )}
-      {/* {createPortal(<Modal>sdvbsdfv</Modal>,  document.getElementById("modal") )} */}
+      
+      
+      
 
       <h1>Соберите бургер</h1>
       
       <div className={cm.tabs}>
 
-        {exists.map( type => (
-          <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
-            {getTypeName(type)}
-          </Tab>
-        ))}
+        {
+          exists.map( type => (
+              <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
+                {getTypeName(type)}
+              </Tab>
+            )
+          )
+        }
 
       </div>
 
       <div className={cm.list}>
 
-        {exists.map( type => (
-          <div  className={cm.type}  key={type}>
+        {
+          exists.map( type => (
+            <div  className={cm.type}  key={type}>
 
-            <h2 id={type}>{getTypeName(type)}</h2>
+              <h2 id={type}>{getTypeName(type)}</h2>
 
-            {
-              indexes[type].map( index => {
-                const product = props.ingredientList[index]
-                return (
-                  <ProductTile
-                    item={product}
-                    key={product._id}
-                    count={props.selectedList[product._id] || 0}
-                    productClick={productClick}
-                  />
+              {
+                indexes[type].map( index => {
+                    const product = props.ingredientList[index]
+                    return (
+                      <ProductTile
+                        item={product}
+                        key={product._id}
+                        count={props.selectedList[product._id] || 0}
+                        productClick={productClick}
+                      />
+                    )
+                  }
                 )
-              } )
-            }
+              }
 
-          </div>
-        ) )}
+            </div>
+            )
+          )
+        }
 
       </div>
+
+
+      {
+        showModal  &&  createPortal(<Modal>sdvbsdfv</Modal>,  document.getElementById("modal"))
+      }
     </>
   );
 

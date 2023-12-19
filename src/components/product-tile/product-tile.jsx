@@ -24,7 +24,7 @@ function ProductTile(props)
 
 
   return(
-    <div className={cm.tile} onClick={props.productClick}>
+    <div className={cm.tile} onClick={ e => props.productClick(props)}>
       <div className={cm.count}>{props.count || ''}</div>
       <img className={cm.img} src={item.image} alt={item.name} />
       <div className={cm.cost}>
