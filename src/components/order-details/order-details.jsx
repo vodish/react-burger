@@ -1,6 +1,5 @@
 import Modal from "../modal/modal";
 import MyImageSvg  from "../../utils/status1.svg"
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from "./order-details.module.css"
 
 
