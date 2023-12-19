@@ -28,7 +28,7 @@ function BurgerConstructor(props)
   function orderModalOpen(e)
   {
     // console.log(e)
-    setOrder({number: "034536"})
+    setOrder({number: `0345${10 + new Date().getSeconds()}`})
   }
 
   function orderModalClose()
@@ -41,7 +41,7 @@ function BurgerConstructor(props)
   return(
     <>
       {
-        order  &&  createPortal(<OrderDetails  data={order}  handleClose={orderModalClose} /> ,  document.getElementById("modal")) 
+        order  &&  createPortal(<OrderDetails  order={order}  handleClose={orderModalClose} /> ,  document.getElementById("modal")) 
       }
 
 

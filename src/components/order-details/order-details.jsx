@@ -10,10 +10,13 @@ import cm from "./order-details.module.css"
 
 function OrderDetails(props)
 {
+  const { number } = props.order;
+  
+
   return(
     <Modal handleClose={props.handleClose}>
       <div className={cm.center}>
-        <div className={cm.number}>034536</div>
+        <div className={cm.number}>{number}</div>
         <div className={cm.descr}>идентификатор заказа</div>
 
         <img className={cm.status} src={MyImageSvg} />
