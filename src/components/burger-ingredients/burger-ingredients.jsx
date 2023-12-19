@@ -79,7 +79,7 @@ function BurgerIngredients(props)
 
   function productModalOpen(e)
   {
-    console.log(e)
+    // console.log(e)
     setShowProduct(e.item)
   }
 

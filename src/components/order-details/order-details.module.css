@@ -1,0 +1,10 @@
+
+.center     { text-align: center; }
+.number     { color: var(--color1); text-shadow: #4C4CFF 0 0 20px; font-family: var(--fontNumber); font-size: 144px; margin-top: 60px; }
+.descr      { color: var(--color2); font-size: 24px; }
+
+.status     { display: block; margin: 60px auto; height: 102px; }
+
+.info       { color: var(--color2); margin-bottom: 60px; }
+.info > div     { margin-bottom: 5px; }
+.info .bold     { color: var(--color1); font-size: 1.4em; }

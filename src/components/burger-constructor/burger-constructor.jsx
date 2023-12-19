@@ -1,9 +1,11 @@
-import React from "react";
+import { useState } from "react"
+import { createPortal } from "react-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
+import OrderDetails from "../order-details/order-details";
 
 
 BurgerConstructor.propTypes = {
@@ -15,14 +17,34 @@ BurgerConstructor.propTypes = {
 
 function BurgerConstructor(props)
 {
+  const [ order, setOrder ] = useState(null)
+
   // console.log(props);
 
   const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...props.topList[0], name: `${props.topList[0].name} (верх)`}
   const { name: botName,  price: botPrice, image_mobile: botImageMobile } =   {...props.topList[1], name: `${props.topList[1].name} (низ)`}
 
 
+  function orderModalOpen(e)
+  {
+    // console.log(e)
+    setOrder({number: "034536"})
+  }
+
+  function orderModalClose()
+  {
+    setOrder(null)
+  }
+
+
+
   return(
     <>
+      {
+        order  &&  createPortal(<OrderDetails  data={order}  handleClose={orderModalClose} /> ,  document.getElementById("modal")) 
+      }
+
+
       {/* верхняя булка */}
       <div className={cm.item}>
         <ConstructorElement type="top" extraClass={cm.elem} isLocked={true}   text={topName} price={topPrice} thumbnail={topImageMobile} />
@@ -53,8 +75,9 @@ function BurgerConstructor(props)
           <CurrencyIcon type="primary" />
         </div>
 
-        <Button htmlType="button" type="primary" size="medium">Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="medium" onClick={orderModalOpen}>Оформить заказ</Button>
       </div>
+
     </>
   )
 }
