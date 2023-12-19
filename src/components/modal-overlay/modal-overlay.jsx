@@ -2,6 +2,13 @@ import { useRef, useEffect } from 'react';
 import cm from './modal-overlay.module.css'
 
 
+// ProductTile.propTypes = {
+//   item:   ingredientListObject.isRequired,
+//   count:  PropTypes.number,
+// }
+
+
+
 function ModalOverlay(props)
 {
   const ref = useRef();
@@ -15,7 +22,7 @@ function ModalOverlay(props)
   }, [])
 
 
-  
+
   function keyClose(e)
   {
     if (e.key != "Escape")  return;

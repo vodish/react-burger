@@ -4,6 +4,11 @@ import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-component
 import cm from "./order-details.module.css"
 
 
+// ProductTile.propTypes = {
+//   item:   ingredientListObject.isRequired,
+//   count:  PropTypes.number,
+// }
+
 function OrderDetails(props)
 {
   return(

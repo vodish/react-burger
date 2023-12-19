@@ -11,6 +11,13 @@ const TTH = [
 
 
 
+// ProductTile.propTypes = {
+//   item:   ingredientListObject.isRequired,
+//   count:  PropTypes.number,
+// }
+
+
+
 function IngredientDetails(props)
 {
   const product = props.product;
@@ -31,7 +38,7 @@ function IngredientDetails(props)
               <div className={cm.tsum}>
                 <span className={cm.tval}>{product[name]}</span>
                 <span className={cm.text}>{ext}</span>
-                
+
               </div>
             </div>
             )

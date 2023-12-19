@@ -3,6 +3,12 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './modal.module.css'
 
 
+// ProductTile.propTypes = {
+//   item:   ingredientListObject.isRequired,
+//   count:  PropTypes.number,
+// }
+
+
 function Modal(props)
 {
   return(
