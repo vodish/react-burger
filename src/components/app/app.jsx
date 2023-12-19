@@ -69,9 +69,10 @@ function App()
       <main className={cm.main}>
         <div className={cm.ingredients}>
 
-          { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
-
           { isError && <div>На сервере беда, печаль...</div> }
+
+          { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
+          
         </div>
         
         <div className={cm.constructor}>
