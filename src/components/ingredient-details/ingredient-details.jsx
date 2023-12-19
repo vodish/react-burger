@@ -26,6 +26,7 @@ function IngredientDetails(props)
   return (
     <Modal handleClose={props.handleClose}>
       <h2 className={cm.title}>Детали ингредиента</h2>
+      
       <img className={cm.img} src={product.image_large} alt={product.name} />
 
       <h3 className={cm.name}>{product.name}</h3>
