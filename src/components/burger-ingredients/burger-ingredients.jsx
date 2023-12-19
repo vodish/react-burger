@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './burger-ingredients.module.css'
 
-import ProductTile from "../product-tile/product-tile";
+import IngredientTile from "../ingredient-tile/ingredient-tile";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import PropTypes from 'prop-types';
@@ -29,14 +29,15 @@ BurgerIngredients.propTypes = {
 
 function BurgerIngredients(props)
 {
-  const [ select, setSelect ]     =   useState("")
-  const [ exists, setExists ]     =   useState([])
-  const [ indexes, setIndexes ]   =   useState({})
-  
-  const [showProduct, setShowProduct] =   useState(null);
+  const [ select, setSelect         ] =   useState("")
+  const [ exists, setExists         ] =   useState([])
+  const [ indexes, setIndexes       ] =   useState({})
+  const [ ingredient, setIngredient ] =   useState(null);
 
   useEffect(()=> {
+
     initType()
+
   }, [])
   
   
@@ -57,10 +58,6 @@ function BurgerIngredients(props)
     setSelect(exists[0])
     setExists(exists)
     setIndexes(indexes)
-
-    // console.log(select)
-    // console.log(exists)
-    // console.log(indexes)
   }
 
 
@@ -80,12 +77,12 @@ function BurgerIngredients(props)
   function productModalOpen(e)
   {
     // console.log(e)
-    setShowProduct(e.item)
+    setIngredient(e.item)
   }
 
   function productModalClose()
   {
-    setShowProduct(null)
+    setIngredient(null)
   }
   
 
@@ -93,7 +90,7 @@ function BurgerIngredients(props)
   return(
     <>
       {
-        showProduct  &&  createPortal(<IngredientDetails  product={showProduct}  handleClose={productModalClose}  />,  document.getElementById("modal")) 
+        ingredient  &&  createPortal(<IngredientDetails  ingredient={ingredient}  handleClose={productModalClose}  />,  document.getElementById("modal"))
       }
       
 
@@ -124,7 +121,7 @@ function BurgerIngredients(props)
                 indexes[type].map( index => {
                     const product = props.ingredientList[index]
                     return (
-                      <ProductTile
+                      <IngredientTile
                         item={product}
                         key={product._id}
                         count={props.selectedList[product._id] || 0}

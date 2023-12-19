@@ -1,18 +1,20 @@
 import Modal from "../modal/modal";
 import MyImageSvg  from "../../utils/status1.svg"
 import cm from "./order-details.module.css"
+import PropTypes from 'prop-types'
 
 
-// ProductTile.propTypes = {
-//   item:   ingredientListObject.isRequired,
-//   count:  PropTypes.number,
-// }
+OrderDetails.propTypes = {
+  handleClose:  PropTypes.func,
+  order:        PropTypes.shape({
+                  number: PropTypes.string,
+                })
+}
 
 function OrderDetails(props)
 {
   const { number } = props.order;
   
-
   return(
     <Modal handleClose={props.handleClose}>
       <div className={cm.center}>

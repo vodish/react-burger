@@ -1,5 +1,4 @@
-import React from "react";
-import cm from "./product-tile.module.css"
+import cm from "./ingredient-tile.module.css"
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import PropTypes from 'prop-types';

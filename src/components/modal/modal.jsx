@@ -1,12 +1,11 @@
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './modal.module.css'
+import PropTypes from "prop-types"
 
-
-// ProductTile.propTypes = {
-//   item:   ingredientListObject.isRequired,
-//   count:  PropTypes.number,
-// }
+Modal.propTypes = {
+  handleClose:  PropTypes.func,
+}
 
 
 function Modal(props)

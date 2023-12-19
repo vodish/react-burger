@@ -1,11 +1,11 @@
 import { useRef, useEffect } from 'react';
 import cm from './modal-overlay.module.css'
+import PropTypes from "prop-types"
 
 
-// ProductTile.propTypes = {
-//   item:   ingredientListObject.isRequired,
-//   count:  PropTypes.number,
-// }
+ModalOverlay.propTypes = {
+  handleClose:   PropTypes.func,
+}
 
 
 
