@@ -1,13 +1,15 @@
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './modal.module.css'
 
 
 function Modal(props)
 {
   return(
-    <ModalOverlay>
+    <ModalOverlay handleClose={props.handleClose}>
       <div className={cm.modal}>
-          {props.children}
+        <div className={cm.close} onClick={props.handleClose}><CloseIcon type="primary" /></div>
+        {props.children}
       </div>
     </ModalOverlay>
   )

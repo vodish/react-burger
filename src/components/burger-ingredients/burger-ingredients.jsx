@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './burger-ingredients.module.css'
 
-import Modal from "../modal/modal";
 import ProductTile from "../product-tile/product-tile";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
@@ -33,7 +33,7 @@ function BurgerIngredients(props)
   const [ exists, setExists ]     =   useState([])
   const [ indexes, setIndexes ]   =   useState({})
   
-  const [showModal, setShowModal] =   useState(false);
+  const [showProduct, setShowProduct] =   useState(null);
 
   useEffect(()=> {
     initType()
@@ -77,18 +77,24 @@ function BurgerIngredients(props)
   }
 
 
-  function productClick(e)
+  function productModalOpen(e)
   {
-    console.dir(e)
-    setShowModal(true)
+    console.log(e)
+    setShowProduct(e.item)
   }
 
+  function productModalClose()
+  {
+    setShowProduct(null)
+  }
+  
 
   
   return(
     <>
-      
-      
+      {
+        showProduct  &&  createPortal(<IngredientDetails  product={showProduct}  handleClose={productModalClose}  />,  document.getElementById("modal")) 
+      }
       
 
       <h1>Соберите бургер</h1>
@@ -122,7 +128,7 @@ function BurgerIngredients(props)
                         item={product}
                         key={product._id}
                         count={props.selectedList[product._id] || 0}
-                        productClick={productClick}
+                        productModalOpen={productModalOpen}
                       />
                     )
                   }
@@ -135,11 +141,7 @@ function BurgerIngredients(props)
         }
 
       </div>
-
-
-      {
-        showModal  &&  createPortal(<Modal>sdvbsdfv</Modal>,  document.getElementById("modal"))
-      }
+      
     </>
   );
 
