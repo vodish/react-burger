@@ -6,12 +6,25 @@ import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 
 
+ProductTile.propTypes = {
+  item:   ingredientListObject.isRequired,
+  count:  PropTypes.number,
+}
+
+
 function ProductTile(props)
 {
   const item = props.item;
 
+
+  // function productClick(e)
+  // {
+  //   console.log(e.target)
+  // }
+
+
   return(
-    <div className={cm.tile}>
+    <div className={cm.tile} onClick={props.productClick}>
       <div className={cm.count}>{props.count || ''}</div>
       <img className={cm.img} src={item.image} alt={item.name} />
       <div className={cm.cost}>
@@ -23,9 +36,5 @@ function ProductTile(props)
   )
 }
 
-ProductTile.propTypes = {
-  item: ingredientListObject.isRequired,
-  count: PropTypes.number,
-}
 
 export default ProductTile;

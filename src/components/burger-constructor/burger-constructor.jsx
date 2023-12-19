@@ -6,6 +6,12 @@ import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 
 
+BurgerConstructor.propTypes = {
+  topList: PropTypes.arrayOf(ingredientListObject).isRequired,
+  addList: PropTypes.arrayOf(ingredientListObject),
+  total: PropTypes.number.isRequired
+};
+
 
 function BurgerConstructor(props)
 {
@@ -52,12 +58,6 @@ function BurgerConstructor(props)
     </>
   )
 }
-
-BurgerConstructor.propTypes = {
-  topList: PropTypes.arrayOf(ingredientListObject).isRequired,
-  addList: PropTypes.arrayOf(ingredientListObject),
-  total: PropTypes.number.isRequired
-};
 
 
 export default BurgerConstructor;

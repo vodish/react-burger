@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from 'react-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './burger-ingredients.module.css'
+
+import Modal from "../modal/modal";
 import ProductTile from "../product-tile/product-tile";
 
 import PropTypes from 'prop-types';
@@ -8,11 +11,16 @@ import { ingredientListObject } from "../../utils/data";
 
 
 
-const TYPE_NAMES  =   { bun: "Булки", main: "Начинки", sauce: "Соусы" }
+const TYPE_NAMES  =   {
+  bun:    "Булки",
+  main:   "Начинки",
+  sauce:  "Соусы",
+}
+
 
 BurgerIngredients.propTypes = {
-  selectedList: PropTypes.object,
-  ingredientList: PropTypes.arrayOf(ingredientListObject),
+  selectedList:     PropTypes.object,
+  ingredientList:   PropTypes.arrayOf(ingredientListObject),
 };
 
 
@@ -25,6 +33,8 @@ function BurgerIngredients(props)
   const [ exists, setExists ]     =   useState([])
   const [ indexes, setIndexes ]   =   useState({})
   
+  const [showModal, setShowModal] =   useState(false);
+
   useEffect(()=> {
     initType()
   }, [])
@@ -67,32 +77,23 @@ function BurgerIngredients(props)
   }
 
 
-  // вывод группы ингридиентов одного типа
-  function printList(type)
+  function productClick(e)
   {
-    return (
-      <>
-        <h2 id={type}>{getTypeName(type)}</h2>
-
-        {indexes[type].map( index => {
-          const product = props.ingredientList[index]
-
-          return (
-            <ProductTile
-              item={product}
-              key={product._id}
-              count={props.selectedList[product._id] || 0}
-            />
-          )
-
-        } )}
-      </>
-    )
+    // console.log(e.currentTarget)
+    setShowModal(true)
   }
 
 
+  
   return(
     <>
+      {/* {createPortal(<div style={{width: '100%', height: '100%', backgroundColor: 'red', opacity: 0.6, position: 'fixed', top: 0}}>sdvsdv</div>,  document.getElementById("modal") )} */}
+      {showModal && createPortal(
+        <Modal>sdvbsdfv</Modal>,
+        document.getElementById("modal")
+      )}
+      {/* {createPortal(<Modal>sdvbsdfv</Modal>,  document.getElementById("modal") )} */}
+
       <h1>Соберите бургер</h1>
       
       <div className={cm.tabs}>
@@ -109,7 +110,23 @@ function BurgerIngredients(props)
 
         {exists.map( type => (
           <div  className={cm.type}  key={type}>
-            {printList(type)}
+
+            <h2 id={type}>{getTypeName(type)}</h2>
+
+            {
+              indexes[type].map( index => {
+                const product = props.ingredientList[index]
+                return (
+                  <ProductTile
+                    item={product}
+                    key={product._id}
+                    count={props.selectedList[product._id] || 0}
+                    productClick={productClick}
+                  />
+                )
+              } )
+            }
+
           </div>
         ) )}
 
