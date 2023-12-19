@@ -17,10 +17,9 @@ BurgerConstructor.propTypes = {
 
 function BurgerConstructor(props)
 {
-  const [ order, setOrder ] = useState(null)
-
   // console.log(props);
-
+  const [ order, setOrder ] = useState(null)
+  
   const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...props.topList[0], name: `${props.topList[0].name} (верх)`}
   const { name: botName,  price: botPrice, image_mobile: botImageMobile } =   {...props.topList[1], name: `${props.topList[1].name} (низ)`}
 

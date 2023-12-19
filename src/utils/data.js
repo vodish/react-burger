@@ -1,5 +1,9 @@
 import PropTypes from 'prop-types';
 
+
+export const INGRIDIENT_DATA_URL = "https://norma.nomoreparties.space/api/ingredients";
+
+
 export const ingredientListObject = PropTypes.shape({
    _id:           PropTypes.string.isRequired,
    name:          PropTypes.string.isRequired,
@@ -14,8 +18,6 @@ export const ingredientListObject = PropTypes.shape({
    image_large:   PropTypes.string.isRequired,
    __v:           PropTypes.number
 }); 
-
-export const INGRIDIENT_DATA_URL = "https://norma.nomoreparties.space/api/ingredients";
 
 
 export const ingredientListData = [

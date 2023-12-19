@@ -71,11 +71,12 @@ function App()
 
           { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
 
+          { isError && <div>На сервере беда, печаль...</div> }
         </div>
         
         <div className={cm.constructor}>
 
-          { topList.length &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  /> }
+          { topList.length > 0  &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  /> }
 
         </div> 
         
