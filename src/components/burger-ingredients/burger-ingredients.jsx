@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { createPortal } from 'react-dom';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import cm from './burger-ingredients.module.css'
 
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
+import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
+import cm from './burger-ingredients.module.css'
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 
@@ -90,7 +90,7 @@ function BurgerIngredients(props)
   return(
     <>
       {
-        ingredient  &&  createPortal(<IngredientDetails  ingredient={ingredient}  handleClose={productModalClose}  />,  document.getElementById("modal"))
+      ingredient  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredient} /></Modal>
       }
       
 

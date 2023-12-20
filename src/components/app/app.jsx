@@ -3,7 +3,7 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
-import { INGRIDIENT_DATA_URL } from "../../utils/data";
+import { apiGetIngredients } from "../../utils/data";
 
 
 
@@ -12,30 +12,30 @@ function App()
 {
   // состояния
   const [ isLoading,      setIsLoading      ] =   useState(true)
-  const [ isError,        setIsError        ] =   useState(false)
+  const [ isError,        setIsError        ] =   useState('')
   const [ ingredientList, setIngredientList ] =   useState([])
   const [ topList,        setTopList        ] =   useState([])
   const [ addList,        setAddList        ] =   useState([])
 
   // монтирование компонента
-  useEffect(()=> {
+  useEffect( ()=> {
 
-    fetch(INGRIDIENT_DATA_URL)
-      .then(res =>  res.json())
-      .then(({data}) => {
-
-        setIngredientList(data)
-        setIsLoading(false)
-
-        setTopList([data[0], data[0]])
-        setAddList([data[4], data[2], data[7], data[5], data[5]])
-
-      })
-      .catch(e => setIsError(true))
+    (async function() {
+      const res = await apiGetIngredients();
       
-    }
-    ,[]
-  )
+      setIsLoading(false)
+
+      if ( res.error ) {
+        return setIsError(res.error)
+      }
+
+      setIngredientList(res.data)
+      setTopList([res.data[0], res.data[0]])
+      setAddList([res.data[4], res.data[2], res.data[7], res.data[5], res.data[5]])
+      
+    })()
+
+  } , [] )
 
 
   // вычислить сумму заказа
@@ -69,7 +69,7 @@ function App()
       <main className={cm.main}>
         <div className={cm.ingredients}>
 
-          { isError && <div>На сервере беда, печаль...</div> }
+          { isError && <div className={cm.error}>{isError}</div> }
 
           { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
           

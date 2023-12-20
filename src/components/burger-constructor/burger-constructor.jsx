@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { createPortal } from "react-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 import OrderDetails from "../order-details/order-details";
+import Modal from "../modal/modal";
 
 
 BurgerConstructor.propTypes = {
@@ -17,11 +17,17 @@ BurgerConstructor.propTypes = {
 
 function BurgerConstructor(props)
 {
-  // console.log(props);
   const [ order, setOrder ] = useState(null)
   
-  const { name: topName,  price: topPrice, image_mobile: topImageMobile } =   {...props.topList[0], name: `${props.topList[0].name} (верх)`}
-  const { name: botName,  price: botPrice, image_mobile: botImageMobile } =   {...props.topList[1], name: `${props.topList[1].name} (низ)`}
+  
+  const topName         =   `${props.topList[0].name} (верх)`
+  const topPrice        =   props.topList[0].price
+  const topImageMobile  =   props.topList[0].image_mobile
+
+  const botName         =   `${props.topList[1].name} (верх)`
+  const botPrice        =   props.topList[1].price
+  const botImageMobile  =   props.topList[1].image_mobile
+
 
 
   function orderModalOpen(e)
@@ -40,7 +46,7 @@ function BurgerConstructor(props)
   return(
     <>
       {
-        order  &&  createPortal(<OrderDetails  order={order}  handleClose={orderModalClose} /> ,  document.getElementById("modal")) 
+        order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
       }
 
 
@@ -53,7 +59,7 @@ function BurgerConstructor(props)
       <div className={cm.middle}>
         {props.addList.map( (item, index) => (
 
-          <div className={cm.item} key={`${item._id}${index}`}>
+          <div className={cm.item} key={index}>
             <div className={cm.drag}><DragIcon type="primary"/></div>
             <ConstructorElement extraClass={cm.elem}   text={item.name} price={item.price} thumbnail={item.image_mobile} />
           </div>

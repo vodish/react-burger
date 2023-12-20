@@ -1,7 +1,34 @@
 import PropTypes from 'prop-types';
 
 
-export const INGRIDIENT_DATA_URL = "https://norma.nomoreparties.space/api/ingredients";
+export const INGREDIENTS_URL = "https://norma.nomoreparties.space/api/ingredients";
+
+export async function apiGetIngredients()
+{
+   try {
+      const response    =  await fetch(INGREDIENTS_URL)
+      
+      if ( !response.ok ) {
+         return {error: "Ответ сети был не ok..."}
+      }
+
+      const data     =  await response.json();
+      if ( data.success !== true ) {
+         return {error: "Сервер вернул ошибку data.success..."}
+      }
+
+      return { ...data }
+      
+   }
+   catch (error)
+   {
+      return {error: `Возникла проблема с вашим fetch запросом: ${error.message}`}
+   }
+}
+
+
+
+
 
 
 export const ingredientListObject = PropTypes.shape({
@@ -18,6 +45,58 @@ export const ingredientListObject = PropTypes.shape({
    image_large:   PropTypes.string.isRequired,
    __v:           PropTypes.number
 }); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export const ingredientListData = [

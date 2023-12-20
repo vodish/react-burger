@@ -1,5 +1,4 @@
 
-import Modal from '../modal/modal';
 import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
@@ -26,7 +25,7 @@ function IngredientDetails(props)
 
 
   return (
-    <Modal handleClose={props.handleClose}>
+    <>
       <h2 className={cm.title}>Детали ингредиента</h2>
       
       <img className={cm.img} src={ingredient.image_large} alt={ingredient.name} />
@@ -47,9 +46,8 @@ function IngredientDetails(props)
             )
           )
         }
-        
       </div>
-    </Modal>
+    </>
   )
 }
 
