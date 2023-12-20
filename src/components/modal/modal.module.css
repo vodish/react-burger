@@ -1,8 +1,9 @@
 
 .modal {
     position: fixed;
-    top: calc(40vh - 270px);
-    left: calc(50vw - 360px);
+    top:  50%;
+    left: 50%;
+    transform: translate(-50%,-52%);
     width: 720px;
     min-height: 540px;
     background-color: #000;
