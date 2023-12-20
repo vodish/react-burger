@@ -1,3 +1,18 @@
 
-.modal { border-radius: 2em; width: 720px; min-height: 540px; margin-top: -6vh; background-color: #000; box-shadow: 0 0 200px #8585AD; padding: 40px; position: relative; }
-.modal .close { position: absolute; top: 40px; right: 40px; cursor: pointer; }
+.modal {
+    position: fixed;
+    top: calc(40vh - 270px);
+    left: calc(50vw - 360px);
+    width: 720px;
+    min-height: 540px;
+    background-color: #000;
+    box-shadow: 0 0 200px #8585AD;
+    border-radius: 2em;
+    padding: 40px;
+}
+.modal .close {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    cursor: pointer;
+}

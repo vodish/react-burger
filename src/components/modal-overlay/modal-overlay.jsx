@@ -22,25 +22,15 @@ function ModalOverlay(props)
   }, [])
 
 
-
   function keyClose(e)
   {
     if (e.key != "Escape")  return;
     ref.current.click()
   }
-
-
-  function handleClose(e)
-  {
-    if ( e.target != ref.current )   return;
-    props.handleClose();
-  }
-
-
+  
+  
   return(
-    <div className={cm.overlay}  ref={ref}  onClick={handleClose}>
-      {props.children}
-    </div>
+    <div className={cm.overlay}  ref={ref}  onClick={props.handleClose}></div>
   )
 }
 

@@ -14,14 +14,7 @@ ProductTile.propTypes = {
 function ProductTile(props)
 {
   const item = props.item;
-
-
-  // function productClick(e)
-  // {
-  //   console.log(e.target)
-  // }
-
-
+  
   return(
     <div className={cm.tile} onClick={ e => props.productModalOpen(props)}> 
       <div className={cm.count}>{props.count || ''}</div>
