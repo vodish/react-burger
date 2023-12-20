@@ -68,19 +68,20 @@ function App()
 
       <main className={cm.main}>
         <div className={cm.ingredients}>
+          {
+          isError && <div className={cm.error}>{isError}</div>
+          }
 
-          { isError && <div className={cm.error}>{isError}</div> }
-
-          { ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} /> }
-          
+          {
+          ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} />
+          }
         </div>
         
         <div className={cm.constructor}>
-
-          { topList.length > 0  &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  /> }
-
-        </div> 
-        
+          {
+          topList.length > 0  &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  />
+          }
+        </div>
       </main>
 
     </div>

@@ -19,7 +19,7 @@ function BurgerConstructor(props)
 {
   const [ order, setOrder ] = useState(null)
   
-  
+
   const topName         =   `${props.topList[0].name} (верх)`
   const topPrice        =   props.topList[0].price
   const topImageMobile  =   props.topList[0].image_mobile
@@ -46,7 +46,7 @@ function BurgerConstructor(props)
   return(
     <>
       {
-        order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
+      order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
       }
 
 
