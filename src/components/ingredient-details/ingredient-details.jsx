@@ -13,7 +13,6 @@ const TTH = [
 
 
 IngredientDetails.propTypes = {
-  handleClose:  PropTypes.func,
   ingredient:   ingredientListObject,
 }
 

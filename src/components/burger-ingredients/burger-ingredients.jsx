@@ -19,8 +19,8 @@ const TYPE_NAMES  =   {
 
 
 BurgerIngredients.propTypes = {
-  selectedList:     PropTypes.object,
   ingredientList:   PropTypes.arrayOf(ingredientListObject),
+  selectedList:     PropTypes.object,
 };
 
 
