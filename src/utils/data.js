@@ -51,28 +51,27 @@ export const ingredientListObject = PropTypes.shape({
 
 export function ingredientScroll(id)
 {
-   // scrollTop на сколько прокручен родитель
-   // scrollHeight - это высота блока
-   
-   let section    =   document.getElementById(id)
-   let area       =   section.parentNode;
+   let section    =  document.getElementById(id)
+   let area       =  section.parentNode;
    
    // прокрутка до точки
    let pointTop   =   0;
    while( section = section.previousSibling ) pointTop += section.scrollHeight;
    pointTop    =  pointTop === 0 ? pointTop: pointTop + 40;
    
-   
-   let offset     =  pointTop - area.scrollTop;       // смещение
-   const step     =  area.scrollTop < offset ?  15 : -15;  // шаг смещения
+   // смещение
+   // шаг
+   // duration
+   const offset   =  pointTop - area.scrollTop;
+   const step     =  area.scrollTop < offset ?  15 : -15;
    const duration =  8;
 
-
+   //анимация
    if ( window.loop ) clearInterval(window.loop)
 
    window.loop = setInterval(function(){
 
-      console.log(area.scrollTop)
+      // console.log(area.scrollTop)
       area.scrollTop += step;
       
       if (  (step > 0 && area.scrollTop >= pointTop)
