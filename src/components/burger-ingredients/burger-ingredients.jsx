@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
@@ -7,7 +7,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import cm from './burger-ingredients.module.css'
 import PropTypes from 'prop-types';
-import { ingredientListObject } from "../../utils/data";
+import { ingredientListObject, ingredientScroll } from "../../utils/data";
 
 
 
@@ -33,6 +33,8 @@ function BurgerIngredients(props)
   const [ exists, setExists         ] =   useState([])
   const [ indexes, setIndexes       ] =   useState({})
   const [ ingredient, setIngredient ] =   useState(null);
+
+  const refList   =   useRef();
 
   useEffect(()=> {
 
@@ -64,6 +66,7 @@ function BurgerIngredients(props)
 
   function clickTab(value)
   {
+    ingredientScroll(value)
     setSelect(value)
   }
 
@@ -109,13 +112,13 @@ function BurgerIngredients(props)
 
       </div>
 
-      <div className={cm.list}>
+      <div className={cm.list}  ref={refList}>
 
         {
           exists.map( type => (
-            <div  className={cm.type}  key={type}>
+            <div id={type}  className={cm.type}  key={type}>
 
-              <h2 id={type}>{getTypeName(type)}</h2>
+              <h2>{getTypeName(type)}</h2>
 
               {
                 indexes[type].map( index => {
