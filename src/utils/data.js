@@ -67,11 +67,12 @@ export function ingredientScroll(id)
    const step     =  area.scrollTop < offset ?  15 : -15;  // шаг смещения
    const duration =  8;
 
-   // area.scrollTop = offset
 
-   var loop = setInterval(function(){
+   if ( window.loop ) clearInterval(window.loop)
 
-      // console.log(area.scrollTop)
+   window.loop = setInterval(function(){
+
+      console.log(area.scrollTop)
       area.scrollTop += step;
       
       if (  (step > 0 && area.scrollTop >= pointTop)
@@ -81,7 +82,7 @@ export function ingredientScroll(id)
          area.scrollTop = pointTop
          // console.log(`pointTop = ${pointTop}`)
          // console.log(`area.scrollTop = ${area.scrollTop}`)
-         return clearInterval(loop)
+         return clearInterval(window.loop)
       }
       
    }, duration);
