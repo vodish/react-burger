@@ -62,9 +62,9 @@ export function ingredientScroll(id)
    while( section = section.previousSibling ) pointTop += section.scrollHeight;
    pointTop    =  pointTop === 0 ? pointTop: pointTop + 40;
    
-   let scrollTop  =  area.scrollTop;
+   
    let offset     =  pointTop - area.scrollTop;       // смещение
-   const step     =  scrollTop < offset ?  15 : -15;  // шаг смещения
+   const step     =  area.scrollTop < offset ?  15 : -15;  // шаг смещения
    const duration =  8;
 
    // area.scrollTop = offset
