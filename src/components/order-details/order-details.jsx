@@ -1,4 +1,3 @@
-import Modal from "../modal/modal";
 import MyImageSvg  from "../../utils/status1.svg"
 import cm from "./order-details.module.css"
 import PropTypes from 'prop-types'
