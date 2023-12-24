@@ -1,92 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
-import { ingredientList } from "../../utils/data";
+import { apiGetIngredients } from "../../utils/data";
 
 
 
-class App extends React.Component
+
+function App()
 {
-  constructor(props)
-  {
-    super(props)
+  // состояния
+  const [ isLoading,      setIsLoading      ] =   useState(true)
+  const [ isError,        setIsError        ] =   useState('')
+  const [ ingredientList, setIngredientList ] =   useState([])
+  const [ topList,        setTopList        ] =   useState([])
+  const [ addList,        setAddList        ] =   useState([])
 
-    this.state = {
-      // список доступных ингридиентов
-      ingredientList,
+  // монтирование компонента
+  useEffect( ()=> {
+
+    (async function() {
+      const res = await apiGetIngredients();
       
-      // бургер - список булок
-      topList: [
-        ingredientList[0],
-        ingredientList[0],
-      ],
+      setIsLoading(false)
 
-      // бургер - список начинок
-      addList: [
-        // ingredientList[3],
-        ingredientList[4],
-        ingredientList[2],
-        ingredientList[7],
-        ingredientList[5],
-      ],
-    }
-  }
+      if ( res.error ) {
+        return setIsError(res.error)
+      }
+
+      setIngredientList(res.data)
+      setTopList([res.data[0], res.data[0]])
+      setAddList([res.data[4], res.data[2], res.data[7], res.data[5], res.data[5]])
+      
+    })()
+
+  } , [] )
 
 
   // вычислить сумму заказа
-  getTotal = () => {
-    const sum = [...this.state.topList, ...this.state.addList].reduce((total, item) => total + item.price , 0 )
+  const getTotal = () => {
 
-    return sum;
+    return  [...topList, ...addList].reduce((total, item) => total + item.price , 0)
   }
+
 
   // выбранные товары с количеством
-  getSelectedList = () => {
-
-    const arr = [...this.state.topList, ...this.state.addList].reduce((count, item) => {
-
-        count[item._id] = count[item._id] === undefined ?  1 :  count[item._id] + 1;
+  const getSelectedList = () => {
+    
+    return [...topList, ...addList].reduce(
+      (count, item) => {
+        count[item._id] = count[item._id] === undefined ?   1 :   count[item._id] + 1;
         return count;
-
-      } , {} )
-
-      return arr;
+      }
+      ,{}
+    )
   }
+  
 
 
-  render() {
+  return(
+    <div className={cm.app}>
 
-    return(
-      <div className={cm.app}>
+      <header className={cm.header}>
+        <AppHeader />
+      </header>
 
-        <header className={cm.header}>
-          <AppHeader />
-        </header>
+      <main className={cm.main}>
+        <div className={cm.ingredients}>
+          {
+          isError && <div className={cm.error}>{isError}</div>
+          }
 
-        <main className={cm.main}>
-          
-          <div className={cm.ingredients}>
-            <BurgerIngredients
-              ingredientList={this.state.ingredientList}
-              selectedList={this.getSelectedList()}
-            /> 
-          </div>
-          
-          <div className={cm.constructor}>
-            <BurgerConstructor
-              topList={this.state.topList}
-              addList={this.state.addList}
-              total={this.getTotal()}
-            />
-          </div>
+          {
+          ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} />
+          }
+        </div>
+        
+        <div className={cm.constructor}>
+          {
+          topList.length > 0  &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  />
+          }
+        </div>
+      </main>
 
-        </main>
-
-      </div>
-    );
-  }
+    </div>
+  )
 }
 
 export default App;

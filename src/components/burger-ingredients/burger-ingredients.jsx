@@ -1,90 +1,154 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
+
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientTile from "../ingredient-tile/ingredient-tile";
+import Modal from '../modal/modal';
+import IngredientDetails from "../ingredient-details/ingredient-details";
+
 import cm from './burger-ingredients.module.css'
-import ProductTile from "../product-tile/product-tile";
-
 import PropTypes from 'prop-types';
-import { ingredientListObject } from "../../utils/data";
+import { ingredientListObject, ingredientScroll } from "../../utils/data";
 
 
 
-class BurgerIngredients extends React.Component
-{
-  constructor(props) {
-    super(props);
-    // Не вызывайте здесь this.setState()!
-    this.state = {
-      current: 'bun',
-    }
-
-  }
-
-  setType = (value) =>
-  {
-    this.setState({current: value})
-  }
-
-
-
-  // вывод группы ингридиентов одного типа
-  printList = ({value, title, list}) =>
-  {
-    return (
-      <>
-        <h2 id={value}>{title}</h2>
-
-        {list.map(product => (
-          <ProductTile
-            item={product}
-            key={product._id}
-            count={this.props.selectedList[product._id] || 0}
-          />
-        ) )}
-        
-      </>
-    )
-  }
-
-
-
-  render(){
-
-    const types = [
-      { value: 'bun',     title: "Булки",     list: this.props.ingredientList.filter(item => item.type == 'bun')    },
-      { value: 'sauce',   title: "Сосуы",     list: this.props.ingredientList.filter(item => item.type == 'sauce')  },
-      { value: 'main',    title: "Начинки",   list: this.props.ingredientList.filter(item => item.type == 'main')   },
-    ]
-    
-
-    return(
-      <>
-        <h1>Соберите бургер</h1>
-        
-        <div className={cm.tabs}>
-          {types.map(type => (
-            <Tab value={type.value} key={type.value} active={this.state.current === type.value} onClick={this.setType}>{type.title}</Tab>
-          ))}
-        </div>
-
-        <div className={cm.list}>
-          
-          {types.map( (type, i) => {
-            if ( type.list.length < 1 ) return;
-
-            return <div className={cm.type} key={i}>{this.printList(type)}</div>
-          } )}
-
-        </div>
-      </>
-    );
-  }
+const TYPE_NAMES  =   {
+  bun:    "Булки",
+  main:   "Начинки",
+  sauce:  "Соусы",
 }
 
 
 BurgerIngredients.propTypes = {
-  selectedList: PropTypes.object,
-  ingredientList: PropTypes.arrayOf(ingredientListObject),
+  ingredientList:   PropTypes.arrayOf(ingredientListObject),
+  selectedList:     PropTypes.object,
 };
+
+
+
+
+
+function BurgerIngredients(props)
+{
+  const [ select, setSelect         ] =   useState("")
+  const [ exists, setExists         ] =   useState([])
+  const [ indexes, setIndexes       ] =   useState({})
+  const [ ingredient, setIngredient ] =   useState(null);
+
+  const refList   =   useRef();
+
+  useEffect(()=> {
+
+    initType()
+
+  }, [])
+  
+  
+  async function initType()
+  {
+    let exists  = []
+    let indexes = await props.ingredientList.reduce( (ret, {type}, index) =>
+      {
+        if ( ! exists.includes(type) )   exists = [...exists, type]
+        
+        ret[type] =   ret[type] === undefined ?  [index] :  [...ret[type], index];
+        
+        return ret
+      }
+      ,{}
+    )
+    
+    setSelect(exists[0])
+    setExists(exists)
+    setIndexes(indexes)
+  }
+
+
+
+  function clickTab(value)
+  {
+    ingredientScroll(value)
+    setSelect(value)
+  }
+
+
+  function getTypeName(type)
+  {
+    return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
+  }
+
+
+  function productModalOpen(e)
+  {
+    // console.log(e)
+    setIngredient(e.item)
+  }
+
+  function productModalClose()
+  {
+    setIngredient(null)
+  }
+  
+
+  
+  return(
+    <>
+      {
+      ingredient  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredient} /></Modal>
+      }
+      
+
+      <h1>Соберите бургер</h1>
+      
+      <div className={cm.tabs}>
+
+        {
+          exists.map( type => (
+              <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
+                {getTypeName(type)}
+              </Tab>
+            )
+          )
+        }
+
+      </div>
+
+      <div className={cm.list}  ref={refList}>
+
+        {
+          exists.map( type => (
+            <div id={type}  className={cm.type}  key={type}>
+
+              <h2>{getTypeName(type)}</h2>
+
+              {
+                indexes[type].map( index => {
+                    const product = props.ingredientList[index]
+                    return (
+                      <IngredientTile
+                        item={product}
+                        key={product._id}
+                        count={props.selectedList[product._id] || 0}
+                        productModalOpen={productModalOpen}
+                      />
+                    )
+                  }
+                )
+              }
+
+            </div>
+            )
+          )
+        }
+
+      </div>
+      
+    </>
+  );
+
+}
+
+
+
 
 
 export default BurgerIngredients;

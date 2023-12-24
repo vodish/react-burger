@@ -3,39 +3,39 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import cm from './app-header.module.css'
 
 
-class AppHeader extends React.Component
+
+export default function AppHeader()
 {
-  render() {
-    return(
-      <div className={cm.content}>
 
-        <div className={cm.nav}>
-          
-          <div className={cm.btn}>
-            <BurgerIcon type="primary" />
-            <span>Конструктор</span>
-          </div>
+  const handleClick = e => e.preventDefault();
 
-          <div className={cm.btn}>
-            <ListIcon type="secondary" />
-            <span>Лента заказов</span>
-          </div>
+  return(
+    <div className={cm.content}>
 
-        </div>
+      <div className={cm.nav}>
         
-        <div className={cm.logo}>
-          <Logo />
-        </div>
-        
-        <div className={cm.user}>
-          <div className={cm.btn}>
-            <ProfileIcon type="secondary" />
-            <span>Личный кабинет</span>
-          </div>
-        </div>
+        <a href="" onClick={handleClick} className={cm.btn}>
+          <BurgerIcon type="primary" />
+          <span>Конструктор</span>
+        </a>
+
+        <a href="" onClick={handleClick} className={cm.btn}>
+          <ListIcon type="secondary" />
+          <span>Лента заказов</span>
+        </a>
+
       </div>
-    );
-  }
+      
+      <div className={cm.logo}>
+        <Logo />
+      </div>
+      
+      <div className={cm.user}>
+        <a href="" onClick={handleClick} className={cm.btn}>
+          <ProfileIcon type="secondary" />
+          <span>Личный кабинет</span>
+        </a>
+      </div>
+    </div>
+  )
 }
-
-export default AppHeader;

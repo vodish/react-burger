@@ -8,4 +8,4 @@
 
 .summary  { display: flex; justify-content: right; align-items: center; gap: 40px; margin: 40px 0; }
 .summary  .cost  { display: flex; align-items: center; gap: 10px; }
-.summary  .cost .sum { font-family: 'Iceland', sans-serif; font-size: 48px;}
+.summary  .cost .total { font-family: 'Iceland', sans-serif; font-size: 48px;}
