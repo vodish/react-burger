@@ -7,6 +7,7 @@ import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktiku
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { BConstructorContext } from "./burger-constructor-context";
+import { apiSendOrder } from "../../utils/data";
 
 
 // BurgerConstructor.propTypes = {
@@ -57,12 +58,19 @@ function BurgerConstructor()
   ])
   
 
-  function orderModalOpen(e)
+  async function orderModalOpen()
   {
-    // console.log(e)
-    setOrder({number: `0345${10 + new Date().getSeconds()}`})
+    const ingredients   =   [...topList, ...addList].map( item => item._id)
+    const sendOrder     =   await apiSendOrder({ingredients})
+
+    if ( sendOrder.error ) {
+      alert(sendOrder.error)
+    }
+    else if ( sendOrder.order ) {
+      setOrder({number: sendOrder.order.number})
+    }
   }
-  
+
 
   function orderModalClose()
   {
