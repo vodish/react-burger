@@ -1,40 +1,68 @@
-import { useState } from "react"
+import { useContext, useState, useReducer, useMemo, useCallback, useEffect } from "react"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import PropTypes from 'prop-types';
-import { ingredientListObject } from "../../utils/data";
+// import PropTypes from 'prop-types';
+// import { ingredientListObject } from "../../utils/data";
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
+import { BConstructorContext } from "./burger-constructor-context";
 
 
-BurgerConstructor.propTypes = {
-  topList: PropTypes.arrayOf(ingredientListObject).isRequired,
-  addList: PropTypes.arrayOf(ingredientListObject),
-  total: PropTypes.number.isRequired
-};
+// BurgerConstructor.propTypes = {
+//   topList: PropTypes.arrayOf(ingredientListObject).isRequired,
+//   addList: PropTypes.arrayOf(ingredientListObject),
+//   total: PropTypes.number.isRequired
+// };
 
 
-function BurgerConstructor(props)
+
+function totalReducer(state, action)
 {
-  const [ order, setOrder ] = useState(null)
+  if ( action.type=='sum'  && action.payload )
+  {
+    return  action.payload.reduce((total, item) => total + item.price , 0)
+  }
+
+  throw  Error('Unknown action: ' + action.type);
+}
+
+
+function BurgerConstructor()
+{
+  const [ order,    setOrder      ] =   useState(null)
+  const { topList,  addList       } =   useContext(BConstructorContext)
+  const [ total,    dispachTotal  ] =   useReducer(totalReducer, 0)
+
+
+  const topName         =   `${topList[0].name} (верх)`
+  const topPrice        =   topList[0].price
+  const topImageMobile  =   topList[0].image_mobile
+
+  const botName         =   `${topList[1].name} (верх)`
+  const botPrice        =   topList[1].price
+  const botImageMobile  =   topList[1].image_mobile
+
+
+
+
+  useEffect(()=>{
+
+    dispachTotal({type: 'sum', payload: [...topList, ...addList]})
+
+  }, [
+    dispachTotal,
+    topList,
+    addList,
+  ])
   
-
-  const topName         =   `${props.topList[0].name} (верх)`
-  const topPrice        =   props.topList[0].price
-  const topImageMobile  =   props.topList[0].image_mobile
-
-  const botName         =   `${props.topList[1].name} (верх)`
-  const botPrice        =   props.topList[1].price
-  const botImageMobile  =   props.topList[1].image_mobile
-
-
 
   function orderModalOpen(e)
   {
     // console.log(e)
     setOrder({number: `0345${10 + new Date().getSeconds()}`})
   }
+  
 
   function orderModalClose()
   {
@@ -57,7 +85,7 @@ function BurgerConstructor(props)
 
       {/* начинка */}
       <div className={cm.middle}>
-        {props.addList.map( (item, index) => (
+        {addList.map( (item, index) => (
 
           <div className={cm.item} key={index}>
             <div className={cm.drag}><DragIcon type="primary"/></div>
@@ -76,7 +104,7 @@ function BurgerConstructor(props)
       {/* итого отправить */}
       <div className={cm.summary}>
         <div className={cm.cost}>
-          <div className={cm.total}>{props.total}</div>
+          <div className={cm.total}>{total}</div>
           <CurrencyIcon type="primary" />
         </div>
 

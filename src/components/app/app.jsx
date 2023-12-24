@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
 import { apiGetIngredients } from "../../utils/data";
-
+import { BConstructorContext } from "../burger-constructor/burger-constructor-context";
 
 
 
 function App()
 {
   // состояния
-  const [ isLoading,      setIsLoading      ] =   useState(true)
+  // const [ isLoading,      setIsLoading      ] =   useState(true)
   const [ isError,        setIsError        ] =   useState('')
   const [ ingredientList, setIngredientList ] =   useState([])
   const [ topList,        setTopList        ] =   useState([])
   const [ addList,        setAddList        ] =   useState([])
+
+  
+  // вычислить сумму заказа
+  // const getTotal = () => {
+  //   return  [...topList, ...addList].reduce((total, item) => total + item.price , 0)
+  // }
+
+
 
   // монтирование компонента
   useEffect( ()=> {
@@ -23,13 +31,13 @@ function App()
     (async function() {
       const res = await apiGetIngredients();
       
-      setIsLoading(false)
-
+      // setIsLoading(false)
       if ( res.error ) {
         return setIsError(res.error)
       }
 
       setIngredientList(res.data)
+
       setTopList([res.data[0], res.data[0]])
       setAddList([res.data[4], res.data[2], res.data[7], res.data[5], res.data[5]])
       
@@ -37,12 +45,6 @@ function App()
 
   } , [] )
 
-
-  // вычислить сумму заказа
-  const getTotal = () => {
-
-    return  [...topList, ...addList].reduce((total, item) => total + item.price , 0)
-  }
 
 
   // выбранные товары с количеством
@@ -77,11 +79,13 @@ function App()
           }
         </div>
         
-        <div className={cm.constructor}>
-          {
-          topList.length > 0  &&  <BurgerConstructor  topList={topList}  addList={addList}  total={getTotal()}  />
-          }
-        </div>
+        <BConstructorContext.Provider  value={{topList, addList, setAddList}} >
+          <div className={cm.constructor}>
+            {
+            topList.length > 0  &&  <BurgerConstructor />
+            }
+          </div>
+        </BConstructorContext.Provider>
       </main>
 
     </div>
