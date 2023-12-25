@@ -20,7 +20,6 @@ function Modal(props)
         , document.getElementById('overlay')
       )
       }
-      
       {
       createPortal(
         <div className={cm.modal}>
