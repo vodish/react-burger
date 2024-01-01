@@ -21,7 +21,7 @@ export async function apiGetIngredients()
          return {error: "Сервер вернул ошибку data.success..."}
       }
 
-      return { ...data }
+      return { list: data.data }
       
    }
    catch (error)

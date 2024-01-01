@@ -81,11 +81,6 @@ function BurgerConstructor()
 
   return(
     <>
-      {
-      order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
-      }
-
-
       {/* верхняя булка */}
       <div className={cm.item}>
         <ConstructorElement type="top" extraClass={cm.elem} isLocked={true}   text={topName} price={topPrice} thumbnail={topImageMobile} />
@@ -119,6 +114,10 @@ function BurgerConstructor()
         <Button htmlType="button" type="primary" size="medium" onClick={orderModalOpen}>Оформить заказ</Button>
       </div>
 
+      {
+      order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
+      }
+      
     </>
   )
 }

@@ -1,0 +1,76 @@
+index
+    App
+        store.isError
+        store.ingredientList = ingredientsReducer(state=[], action)
+        store.topList
+        store.addList
+        hook.useEffect
+        
+        AppHeader
+        
+        BurgerIngredients
+            prop.ingredientList
+            prop.selectedList
+            
+            store.select
+            store.exists
+            store.indexes
+            store.ingredient
+            const.refList
+            --------------------------
+            hook.useEffect
+            func.initType
+            func.clickTab
+            func.getTypeName
+            func.productModalOpen
+            func.productModalClose
+            --------------------------
+            Modal
+                prop.productModalClose
+                
+                IngredientDetails
+                    prop.ingredient
+                    
+            Tab
+                prop.clickTab
+                
+            IngredientTile
+                prop.product
+                prop.count
+                prop.productModalOpen
+                
+        BurgerConstructor
+            redux? store.order
+            redux? store.topList
+            redux? store.addList
+            store.total
+            --------------------------
+            const.topName
+            const.topPrice
+            const.topImageMobile
+            const.botName
+            const.botPrice
+            const.botImageMobile
+            --------------------------
+            func.totalReducer
+            hook.useEffect
+            func.orderModalOpen
+            func.orderModalClose
+            --------------------------
+            ConstructorElement
+                prop.type=top
+                prop.text
+            ConstructorElement
+                prop.text
+            ConstructorElement
+                prop.type=bottom
+                prop.text
+            
+            Button
+                prop.orderModalOpen
+
+            Modal
+                prop.orderModalClose
+                
+                OrderDetails
+                    prop.order

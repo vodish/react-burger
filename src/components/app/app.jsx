@@ -5,7 +5,8 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
 import { apiGetIngredients } from "../../utils/data";
 import { BConstructorContext } from "../burger-constructor/burger-constructor-context";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setIngredients } from "../../services/ingredientsSlice";
 
 
 function App()
@@ -17,33 +18,31 @@ function App()
   const [ topList,        setTopList        ] =   useState([])
   const [ addList,        setAddList        ] =   useState([])
 
+  // const count = useSelector( state => state)
+  const dispatch = useDispatch()
   
-  // вычислить сумму заказа
-  // const getTotal = () => {
-  //   return  [...topList, ...addList].reduce((total, item) => total + item.price , 0)
-  // }
-
-
-
   // монтирование компонента
-  useEffect( ()=> {
+  useEffect(()=>{
 
     (async function() {
       const res = await apiGetIngredients();
-      
-      // setIsLoading(false)
+      dispatch( setIngredients(res) )
+
       if ( res.error ) {
         return setIsError(res.error)
       }
 
-      setIngredientList(res.data)
 
-      setTopList([res.data[0], res.data[0]])
-      setAddList([res.data[4], res.data[2], res.data[7], res.data[5], res.data[5]])
+
+
+      setIngredientList(res.list)
+
+      setTopList([res.list[0], res.list[0]])
+      setAddList([res.list[4], res.list[2], res.list[7], res.list[5], res.list[5]])
       
     })()
 
-  } , [] )
+  }, [])
 
 
 
