@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-
-
-
-
 const ingredientsSlice = createSlice({    
     name: 'ingredients',
     initialState: {
@@ -13,9 +9,6 @@ const ingredientsSlice = createSlice({
     },
     reducers: {
         setIngredients: (state, {payload}) => {
-
-            console.log(payload)
-
             state.list  =   payload.list
             state.error =   payload.error || null
         }

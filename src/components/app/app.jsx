@@ -26,6 +26,7 @@ function App()
 
     (async function() {
       const res = await apiGetIngredients();
+      
       dispatch( setIngredients(res) )
 
       if ( res.error ) {
