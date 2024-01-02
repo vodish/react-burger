@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import cm from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import cm from "./app.module.css";
 import { apiGetIngredients } from "../../utils/data";
 import { useDispatch, useSelector } from "react-redux";
 import { ingredientsSetup, orderInsert } from "../../services/appSlice";
@@ -11,16 +11,15 @@ import { ingredientsSetup, orderInsert } from "../../services/appSlice";
 
 function App()
 {
-  const dispatch    = useDispatch()
-  const ingredients = useSelector(state => state.ingredients )
-  const orderTotal  = useSelector(state => state.order.total )
+  const dispatch        =   useDispatch()
+  const { list, error } =   useSelector(state => state.ingredients )
+  const orderTotal      =   useSelector(state => state.order.total )
 
-  // монтирование компонента
+  
   useEffect(()=>{
 
     (async function() {
       const res = await apiGetIngredients();
-
       dispatch( ingredientsSetup(res) )
 
       if ( res.error ) return;
@@ -35,8 +34,6 @@ function App()
       
     })()
 
-    
-
   }, [])
 
 
@@ -50,18 +47,13 @@ function App()
 
       <main className={cm.main}>
         <div className={cm.ingredients}>
-          {
-          ingredients.error && <div className={cm.error}>{ingredients.error}</div>
-          }
-          {
-          ingredients.list.length > 0  &&  <BurgerIngredients />
-          }
+          {error && <div className={cm.error}>{error}</div>}
+
+          {list.length > 0  &&  <BurgerIngredients />}
         </div>
         
         <div className={cm.constructor}>
-          {
-          orderTotal > 0  ?  <BurgerConstructor />: <div>Перетащите сюда ингредиенты</div>
-          }
+          {orderTotal > 0 ?  <BurgerConstructor />: <div>Перетащите сюда ингредиенты</div>}
         </div>
       </main>
 

@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-
-
 const appSlice = createSlice({
     name: 'app',
     initialState: {
@@ -37,11 +35,9 @@ const appSlice = createSlice({
             const newState = stateCalculation(state)
             state.order.total = newState.order.total;
             state.ingredients = newState.ingredients;
-            
         },
 
         orderDelete: (state, {payload}) => {
-            
             state.order.adds.splice( payload, 1 )
             
             const newState = stateCalculation(state)
