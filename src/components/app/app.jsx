@@ -4,26 +4,17 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
 import { apiGetIngredients } from "../../utils/data";
-import { BConstructorContext } from "../burger-constructor/burger-constructor-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ingredientsSetup, orderInsert } from "../../services/appSlice";
+
 
 
 function App()
 {
-  const dispatch = useDispatch()
+  const dispatch    = useDispatch()
+  const ingredients = useSelector(state => state.ingredients )
+  const orderTotal  = useSelector(state => state.order.total )
 
-  // состояния
-  // const [ isLoading,      setIsLoading      ] =   useState(true)
-  const [ isError,        setIsError        ] =   useState('')
-  const [ ingredientList, setIngredientList ] =   useState([])
-  const [ topList,        setTopList        ] =   useState([])
-  const [ addList,        setAddList        ] =   useState([])
-
-  
-  // console.log(count)
-  
-  
   // монтирование компонента
   useEffect(()=>{
 
@@ -32,9 +23,7 @@ function App()
 
       dispatch( ingredientsSetup(res) )
 
-      if ( res.error ) {
-        return setIsError(res.error)
-      }
+      if ( res.error ) return;
       
       // по-умолчанию булка
       dispatch( orderInsert(res.list[0]) )
@@ -44,30 +33,12 @@ function App()
       dispatch( orderInsert(res.list[2]) )
       dispatch( orderInsert(res.list[5]) )
       
-      
-
-      setIngredientList(res.list)
-      setTopList([res.list[0], res.list[0]])
-      setAddList([res.list[4], res.list[2], res.list[5], res.list[5]])
-      
     })()
+
+    
 
   }, [])
 
-
-
-  // выбранные товары с количеством
-  const getSelectedList = () => {
-    
-    return [...topList, ...addList].reduce(
-      (count, item) => {
-        count[item._id] = count[item._id] === undefined ?   1 :   count[item._id] + 1;
-        return count;
-      }
-      ,{}
-    )
-  }
-  
 
 
   return(
@@ -80,21 +51,18 @@ function App()
       <main className={cm.main}>
         <div className={cm.ingredients}>
           {
-          isError && <div className={cm.error}>{isError}</div>
+          ingredients.error && <div className={cm.error}>{ingredients.error}</div>
           }
-
           {
-          ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} />
+          ingredients.list.length > 0  &&  <BurgerIngredients />
           }
         </div>
         
-        <BConstructorContext.Provider  value={{topList, addList, setAddList}} >
-          <div className={cm.constructor}>
-            {
-            topList.length > 0  &&  <BurgerConstructor />
-            }
-          </div>
-        </BConstructorContext.Provider>
+        <div className={cm.constructor}>
+          {
+          orderTotal > 0  ?  <BurgerConstructor />: <div>Перетащите сюда ингредиенты</div>
+          }
+        </div>
       </main>
 
     </div>

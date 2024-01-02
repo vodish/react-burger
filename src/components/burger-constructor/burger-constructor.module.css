@@ -2,6 +2,8 @@
 .item   { display: flex; align-items: center; gap: 10px; padding-left: 50px; position: relative; } 
 .item  .drag { position: absolute; margin-left: -30px; }
 .item  .elem { background-color: #1C1C21; font-size: 14px; }
+/* .item  .elemClose { composes: elem; } */
+.item  .elemClose svg { cursor: default; }
 
 .middle    { display: flex; flex-direction: column; gap: 16px; margin: 16px 0; max-height: 273px; overflow-y: auto; }
 

@@ -8,7 +8,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import cm from './burger-ingredients.module.css'
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 
@@ -23,6 +23,105 @@ BurgerIngredients.propTypes = {
   ingredientList:   PropTypes.arrayOf(ingredientListObject),
   selectedList:     PropTypes.object,
 };
+
+
+
+
+export default function BurgerIngredients()
+{
+  const dispatch  =   useDispatch();
+  const list      =   useSelector(state => state.ingredients.list)
+  const refList   =   useRef();
+
+  const [ select, setSelect         ] =   useState("")
+  const [ exists, setExists         ] =   useState([])
+  const [ indexes, setIndexes       ] =   useState({})
+  const [ ingredientModal, setIngredientModal ] =   useState(null);
+
+
+
+  useEffect(()=> {
+    let exists  = []
+    let indexes = {}
+    
+    list.map(({type}, index) => {
+      if ( ! exists.includes(type) )   exists = [...exists, type]
+      indexes[type] = indexes[type] ?  [...indexes[type], index] :  [index];
+    })
+    
+    setSelect(exists[0])
+    setExists(exists)
+    setIndexes(indexes)
+    
+  }, [])
+  
+  
+
+
+  function clickTab(value) {
+    tabClickScroll(value)
+    setSelect(value)
+  }
+
+  function getTypeName(type) {
+    return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
+  }
+
+  function modalClose() {
+    setIngredientModal(null)
+  }
+
+  
+  return(
+    <>
+      <h1>Соберите бургер</h1>
+      
+      <div className={cm.tabs}>
+        {
+        exists.map( type => 
+          <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
+            {getTypeName(type)}
+          </Tab>
+        )
+        }
+      </div>
+
+      <div className={cm.list}  ref={refList}>
+        {
+        exists.map( type =>
+          <div id={type}  className={cm.type}  key={type}>
+
+            <h2>{getTypeName(type)}</h2>
+            {
+            indexes[type].map( i =>
+              <IngredientTile
+                item={list[i]}
+                key={list[i]._id}
+                count={list[i].count}
+                productModalOpen={()=>setIngredientModal(list[i])}
+              />
+            )
+            }
+          </div>
+        )
+        }
+      </div>
+      
+
+      {
+      ingredientModal  && 
+        <Modal handleClose={modalClose}>
+          <IngredientDetails ingredient={ingredientModal} handleClose={modalClose} />
+        </Modal>
+      }
+      
+    </>
+  );
+
+}
+
+
+
 
 
 
@@ -71,103 +170,3 @@ export function tabClickScroll(id)
 
 
 
-function BurgerIngredients()
-{
-  const list    =   useSelector(state => state.ingredients.list)
-  const refList =   useRef();
-
-  const [ select, setSelect         ] =   useState("")
-  const [ exists, setExists         ] =   useState([])
-  const [ indexes, setIndexes       ] =   useState({})
-  const [ ingredientModal, setIngredientModal ] =   useState(null);
-
-
-
-  useEffect(()=> {
-    let exists  = []
-    let indexes = {}
-    
-    list.map(({type}, index) => {
-      if ( ! exists.includes(type) )   exists = [...exists, type]
-      indexes[type] = indexes[type] ?  [...indexes[type], index] :  [index];
-    })
-    
-    setSelect(exists[0])
-    setExists(exists)
-    setIndexes(indexes)
-    
-  }, [])
-  
-  
-
-
-  function clickTab(value) {
-    tabClickScroll(value)
-    setSelect(value)
-  }
-
-  function getTypeName(type) {
-    return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
-  }
-
-  function productModalOpen(e) {
-    // console.log(e)
-    setIngredientModal(e.item)
-  }
-
-  function productModalClose() {
-    setIngredientModal(null)
-  }
-  
-
-  
-  return(
-    <>
-      <h1>Соберите бургер</h1>
-      
-      <div className={cm.tabs}>
-        {
-        exists.map( type => 
-          <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
-            {getTypeName(type)}
-          </Tab>
-        )
-        }
-      </div>
-
-      <div className={cm.list}  ref={refList}>
-        {
-        exists.map( type =>
-          <div id={type}  className={cm.type}  key={type}>
-
-            <h2>{getTypeName(type)}</h2>
-            {
-            indexes[type].map( i =>
-              <IngredientTile
-                item={list[i]}
-                key={list[i]._id}
-                count={list[i].count}
-                productModalOpen={productModalOpen}
-              />
-            )
-            }
-          </div>
-        )
-        }
-      </div>
-      
-
-      {
-      ingredientModal  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredientModal} /></Modal>
-      }
-      
-    </>
-  );
-
-}
-
-
-
-
-
-export default BurgerIngredients;

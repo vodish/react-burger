@@ -2,7 +2,9 @@
 import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
-
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import { orderInsert } from '../../services/appSlice';
 
 const TTH = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
@@ -18,9 +20,15 @@ IngredientDetails.propTypes = {
 
 
 
-function IngredientDetails(props)
+function IngredientDetails({ingredient, handleClose})
 {
-  const ingredient = props.ingredient;
+  const dispath = useDispatch()
+
+
+  function handleOrderInsert() {
+    dispath( orderInsert(ingredient) )
+    handleClose()
+  }
 
 
   return (
@@ -33,18 +41,21 @@ function IngredientDetails(props)
 
       <div className={cm.tth}>
         {
-          TTH.map( ({name, title, ext}, key) => (
-            <div key={key}>
-              <div className={cm.tname}>{title}</div>
-              <div className={cm.tsum}>
-                <span className={cm.tval}>{ingredient[name]}</span>
-                <span className={cm.text}>{ext}</span>
-
-              </div>
+        TTH.map( ({name, title, ext}, key) => (
+          <div key={key}>
+            <div className={cm.tname}>{title}</div>
+            <div className={cm.tsum}>
+              <span className={cm.tval}>{ingredient[name]}</span>
+              <span className={cm.text}>{ext}</span>
             </div>
-            )
+          </div>
           )
+        )
         }
+      </div>
+      
+      <div className={cm.add}>
+        <Button htmlType="button" type="primary" size="medium" onClick={handleOrderInsert}>Добавить в заказ</Button>
       </div>
     </>
   )

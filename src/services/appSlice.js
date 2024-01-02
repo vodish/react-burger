@@ -34,15 +34,15 @@ const appSlice = createSlice({
                 state.order.adds.push(payload)
             }
             
-
             const newState = stateCalculation(state)
-            state.ingredients = newState.ingredients;
             state.order.total = newState.order.total;
+            state.ingredients = newState.ingredients;
             
         },
 
-        orderDelete: (state, action) => {
-
+        orderDelete: (state, {payload}) => {
+            
+            state.order.adds.splice( payload, 1 )
             
             const newState = stateCalculation(state)
             state.ingredients = newState.ingredients;
