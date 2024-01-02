@@ -79,20 +79,21 @@ function BurgerConstructor()
       </div>
       
       
-
       <div className={cm.summary}>
         <div className={cm.cost}>
-          <div className={cm.total}>{order.total}</div>
-          <CurrencyIcon type="primary" />
+          <div className={cm.total}>{order.total}</div> <CurrencyIcon type="primary" />
         </div>
 
-        <Button htmlType="button" type="primary" size="medium" onClick={orderModalOpen}>Оформить заказ</Button>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="medium"
+          onClick={orderModalOpen}
+          >Оформить заказ</Button>
       </div>
 
-      {
-      modalOrder  &&  <Modal handleClose={orderModalClose}><OrderDetails /></Modal>
-      }
       
+      {modalOrder  &&  <Modal handleClose={orderModalClose}><OrderDetails /></Modal>}
     </>
   )
 }
