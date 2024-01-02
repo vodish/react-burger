@@ -61,7 +61,10 @@ function BurgerConstructor()
               text={item.name}
               price={item.price}
               thumbnail={item.image_mobile}
-              handleClose={()=>dispatch(orderDelete(index))}
+              handleClose={e=>{
+                e.preventDefault()
+                dispatch(orderDelete(index))
+              }}
             />
           </div>
         )
