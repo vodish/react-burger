@@ -5,12 +5,14 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import cm from "./app.module.css";
 import { apiGetIngredients } from "../../utils/data";
 import { BConstructorContext } from "../burger-constructor/burger-constructor-context";
-import { useDispatch, useSelector } from "react-redux";
-import { setIngredients } from "../../services/ingredientsSlice";
+import { useDispatch } from "react-redux";
+import { ingredientsSetup, orderInsert } from "../../services/appSlice";
 
 
 function App()
 {
+  const dispatch = useDispatch()
+
   // состояния
   // const [ isLoading,      setIsLoading      ] =   useState(true)
   const [ isError,        setIsError        ] =   useState('')
@@ -18,28 +20,35 @@ function App()
   const [ topList,        setTopList        ] =   useState([])
   const [ addList,        setAddList        ] =   useState([])
 
-  // const count = useSelector( state => state)
-  const dispatch = useDispatch()
+  
+  // console.log(count)
+  
   
   // монтирование компонента
   useEffect(()=>{
 
     (async function() {
       const res = await apiGetIngredients();
-      
-      dispatch( setIngredients(res) )
+
+      dispatch( ingredientsSetup(res) )
 
       if ( res.error ) {
         return setIsError(res.error)
       }
-
-
-
+      
+      // по-умолчанию булка
+      dispatch( orderInsert(res.list[0]) )
+      // по-умолчанию начинка
+      dispatch( orderInsert(res.list[4]) )
+      dispatch( orderInsert(res.list[4]) )
+      dispatch( orderInsert(res.list[2]) )
+      dispatch( orderInsert(res.list[5]) )
+      
+      
 
       setIngredientList(res.list)
-
       setTopList([res.list[0], res.list[0]])
-      setAddList([res.list[4], res.list[2], res.list[7], res.list[5], res.list[5]])
+      setAddList([res.list[4], res.list[2], res.list[5], res.list[5]])
       
     })()
 

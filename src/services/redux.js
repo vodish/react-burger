@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "./counterSlice";
-import ingredientsSlice from "./ingredientsSlice";
-import orderSlice from "./orderSlice";
+// import ingredientsSlice from "./ingredientsSlice";
+// import orderSlice from "./orderSlice";
+import appSlice from "./appSlice";
+
 
 
 export default configureStore({
-    reducer: {
-        ingredients: ingredientsSlice,
-        order: orderSlice,
-        counter: counterSlice,
-    }
+    reducer: appSlice
+    // reducer: {
+    //     ingredients: ingredientsSlice,
+    //     order: orderSlice,
+    // }
 })

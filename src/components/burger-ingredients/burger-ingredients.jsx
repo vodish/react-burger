@@ -7,7 +7,8 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import cm from './burger-ingredients.module.css'
 import PropTypes from 'prop-types';
-import { ingredientListObject, ingredientScroll } from "../../utils/data";
+import { ingredientListObject } from "../../utils/data";
+import { useSelector } from "react-redux";
 
 
 
@@ -26,27 +27,73 @@ BurgerIngredients.propTypes = {
 
 
 
-
-function BurgerIngredients(props)
+export function tabClickScroll(id)
 {
+   let section    =  document.getElementById(id)
+   let area       =  section.parentNode;
+   
+   // прокрутка до точки
+   let pointTop   =   0;
+   while( section = section.previousSibling ) pointTop += section.scrollHeight;
+   pointTop    =  pointTop === 0 ? pointTop: pointTop + 40;
+   
+   // смещение
+   // шаг
+   // duration
+   const offset   =  pointTop - area.scrollTop;
+   const step     =  area.scrollTop < offset ?  15 : -15;
+   const duration =  8;
+
+   //анимация
+   if ( window.loop ) clearInterval(window.loop)
+
+   window.loop = setInterval(function(){
+
+      // console.log(area.scrollTop)
+      area.scrollTop += step;
+      
+      if (  (step > 0 && area.scrollTop >= pointTop)
+         || (step < 0 && area.scrollTop <= pointTop)
+      )
+      {
+         area.scrollTop = pointTop
+         // console.log(`pointTop = ${pointTop}`)
+         // console.log(`area.scrollTop = ${area.scrollTop}`)
+         return clearInterval(window.loop)
+      }
+      
+   }, duration);
+   
+   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function BurgerIngredients()
+{
+  const list = useSelector(state => state.ingredients.list)
+
   const [ select, setSelect         ] =   useState("")
   const [ exists, setExists         ] =   useState([])
   const [ indexes, setIndexes       ] =   useState({})
-  const [ ingredient, setIngredient ] =   useState(null);
+  const [ ingredientModal, setIngredientModal ] =   useState(null);
 
   const refList   =   useRef();
 
   useEffect(()=> {
 
-    initType()
-
-  }, [])
-  
-  
-  async function initType()
-  {
     let exists  = []
-    let indexes = await props.ingredientList.reduce( (ret, {type}, index) =>
+    let indexes = list.reduce( (ret, {type}, index) =>
       {
         if ( ! exists.includes(type) )   exists = [...exists, type]
         
@@ -60,13 +107,16 @@ function BurgerIngredients(props)
     setSelect(exists[0])
     setExists(exists)
     setIndexes(indexes)
-  }
+    
 
+  }, [])
+  
+  
 
 
   function clickTab(value)
   {
-    ingredientScroll(value)
+    tabClickScroll(value)
     setSelect(value)
   }
 
@@ -80,67 +130,56 @@ function BurgerIngredients(props)
   function productModalOpen(e)
   {
     // console.log(e)
-    setIngredient(e.item)
+    setIngredientModal(e.item)
   }
 
   function productModalClose()
   {
-    setIngredient(null)
+    setIngredientModal(null)
   }
   
 
   
   return(
     <>
-      {
-      ingredient  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredient} /></Modal>
-      }
-      
-
       <h1>Соберите бургер</h1>
       
       <div className={cm.tabs}>
-
         {
-          exists.map( type => (
-              <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
-                {getTypeName(type)}
-              </Tab>
-            )
-          )
+        exists.map( type => 
+          <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
+            {getTypeName(type)}
+          </Tab>
+        )
         }
-
       </div>
 
       <div className={cm.list}  ref={refList}>
-
         {
-          exists.map( type => (
-            <div id={type}  className={cm.type}  key={type}>
+        exists.map( type =>
+          <div id={type}  className={cm.type}  key={type}>
 
-              <h2>{getTypeName(type)}</h2>
-
-              {
-                indexes[type].map( index => {
-                    const product = props.ingredientList[index]
-                    return (
-                      <IngredientTile
-                        item={product}
-                        key={product._id}
-                        count={props.selectedList[product._id] || 0}
-                        productModalOpen={productModalOpen}
-                      />
-                    )
-                  }
-                )
-              }
-
-            </div>
+            <h2>{getTypeName(type)}</h2>
+            {
+            indexes[type].map( i =>
+              <IngredientTile
+                item={list[i]}
+                key={list[i]._id}
+                count={list[i].count}
+                productModalOpen={productModalOpen}
+              />
             )
-          )
-        }
+            }
 
+          </div>
+        )
+        }
       </div>
+      
+
+      {
+      ingredientModal  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredientModal} /></Modal>
+      }
       
     </>
   );

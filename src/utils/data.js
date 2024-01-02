@@ -85,45 +85,4 @@ export const ingredientListObject = PropTypes.shape({
 
 
 
-export function ingredientScroll(id)
-{
-   let section    =  document.getElementById(id)
-   let area       =  section.parentNode;
-   
-   // прокрутка до точки
-   let pointTop   =   0;
-   while( section = section.previousSibling ) pointTop += section.scrollHeight;
-   pointTop    =  pointTop === 0 ? pointTop: pointTop + 40;
-   
-   // смещение
-   // шаг
-   // duration
-   const offset   =  pointTop - area.scrollTop;
-   const step     =  area.scrollTop < offset ?  15 : -15;
-   const duration =  8;
-
-   //анимация
-   if ( window.loop ) clearInterval(window.loop)
-
-   window.loop = setInterval(function(){
-
-      // console.log(area.scrollTop)
-      area.scrollTop += step;
-      
-      if (  (step > 0 && area.scrollTop >= pointTop)
-         || (step < 0 && area.scrollTop <= pointTop)
-      )
-      {
-         area.scrollTop = pointTop
-         // console.log(`pointTop = ${pointTop}`)
-         // console.log(`area.scrollTop = ${area.scrollTop}`)
-         return clearInterval(window.loop)
-      }
-      
-   }, duration);
-   
-   
-}
-
-
 
