@@ -63,16 +63,8 @@ export function tabClickScroll(id)
       }
       
    }, duration);
-   
-   
+
 }
-
-
-
-
-
-
-
 
 
 
@@ -81,60 +73,49 @@ export function tabClickScroll(id)
 
 function BurgerIngredients()
 {
-  const list = useSelector(state => state.ingredients.list)
+  const list    =   useSelector(state => state.ingredients.list)
+  const refList =   useRef();
 
   const [ select, setSelect         ] =   useState("")
   const [ exists, setExists         ] =   useState([])
   const [ indexes, setIndexes       ] =   useState({})
   const [ ingredientModal, setIngredientModal ] =   useState(null);
 
-  const refList   =   useRef();
+
 
   useEffect(()=> {
-
     let exists  = []
-    let indexes = list.reduce( (ret, {type}, index) =>
-      {
-        if ( ! exists.includes(type) )   exists = [...exists, type]
-        
-        ret[type] =   ret[type] === undefined ?  [index] :  [...ret[type], index];
-        
-        return ret
-      }
-      ,{}
-    )
+    let indexes = {}
+    
+    list.map(({type}, index) => {
+      if ( ! exists.includes(type) )   exists = [...exists, type]
+      indexes[type] = indexes[type] ?  [...indexes[type], index] :  [index];
+    })
     
     setSelect(exists[0])
     setExists(exists)
     setIndexes(indexes)
     
-
   }, [])
   
   
 
 
-  function clickTab(value)
-  {
+  function clickTab(value) {
     tabClickScroll(value)
     setSelect(value)
   }
 
-
-  function getTypeName(type)
-  {
+  function getTypeName(type) {
     return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
   }
 
-
-  function productModalOpen(e)
-  {
+  function productModalOpen(e) {
     // console.log(e)
     setIngredientModal(e.item)
   }
 
-  function productModalClose()
-  {
+  function productModalClose() {
     setIngredientModal(null)
   }
   
@@ -170,7 +151,6 @@ function BurgerIngredients()
               />
             )
             }
-
           </div>
         )
         }
