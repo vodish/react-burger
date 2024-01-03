@@ -6,7 +6,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { apiGetIngredients, ingredientsSetup, orderInsert, orderReset } from "../../services/appSlice";
+import { apiGetIngredients, ingredientsSetup, orderDelete, orderInsert, orderReset } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 
 
@@ -39,7 +39,14 @@ function App()
   }, [])
 
 
-  const [ , dropRef ] = useDrop({
+  const [ , dropIngredients ] = useDrop({
+    accept: 'reorder',
+    drop(item) {
+      dispatch( orderDelete(item.index) )
+    }
+  })
+
+  const [ , dropConstructor ] = useDrop({
     accept: 'orderInsert',
     drop(item) {
       dispatch( orderInsert(item.item) )
@@ -60,26 +67,33 @@ function App()
       </header>
 
       <main className={cm.main}>
-        <div className={cm.ingredients}>
-          {error && <div className={cm.error}>{error}</div>}
-
-          {list.length > 0  &&  <BurgerIngredients />}
+        <div className={cm.ingredients} ref={dropIngredients}>
+          {error &&
+            <div className={cm.error}>{error}</div>
+          }
+          {list.length &&
+            <BurgerIngredients />
+          }
         </div>
         
-        <div className={cm.constructor} ref={dropRef}>
+        <div className={cm.constructor} ref={dropConstructor}>
           {order.total > 0
             ?
             <BurgerConstructor />
             :
             <div className={cm.empty}>
-              <h2>Выберите булки</h2>
-              чтобы сделать новый заказ
+              <h1>Выберите булки</h1>
+              <div>чтобы сделать новый заказ</div>
             </div>
           }
         </div>
       </main>
 
-      {order.number  &&  <Modal handleClose={handleOrderReset}><OrderDetails /></Modal>}
+      {order.number  &&
+        <Modal handleClose={handleOrderReset}>
+          <OrderDetails />
+        </Modal>
+      }
 
     </div>
   )

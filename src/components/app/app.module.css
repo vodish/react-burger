@@ -5,6 +5,7 @@
 .app .main   { flex-grow: 1; width: 1240px; margin: 0 auto;  display: flex; justify-content: space-between; gap: 40px; }
 .app .main .ingredients   { flex-basis: 600px; padding-top: 40px; }
 .app .main .constructor   { flex-basis: 600px; padding-top: 100px; }
-.app .main .constructor .empty  { margin: 40% auto; text-align: center; line-height: 2em; }
+.app .main .constructor .empty  { text-align: center; line-height: 3em; height: 80%; display: flex; flex-direction: column; padding-top: 10%; border: solid 2px #1C1C21; border-radius: 2em; }
+.app .main .constructor .empty  > div { color: var(--color2); }
 
 .app .error  { color: #d60000; }

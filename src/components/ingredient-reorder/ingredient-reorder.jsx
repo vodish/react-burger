@@ -61,20 +61,15 @@ export default function IngredientReorder({item, index})
   })
 
 
-  function moveCard(dragIndex, hoverIndex) {
-    console.log(dragIndex, hoverIndex)
-  }
 
 
 
 
-  const [{ opacity }, drag] = useDrag({
-		type: 'reorder',
-		item: {index},
-		collect: (monitor) => ({
-			opacity: monitor.isDragging() ? 0.2 : null
-		}),
-	})
+  const [ , drag] = useDrag({
+    type: 'reorder',
+    item: {index}
+  })
+
 
 
   drag(drop(ref))
@@ -96,7 +91,6 @@ export default function IngredientReorder({item, index})
         handleClose={e=>{
           e.preventDefault()
           dispatch(orderDelete(index))
-
         }}
       />
     </div>
