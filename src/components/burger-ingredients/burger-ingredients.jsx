@@ -29,7 +29,6 @@ BurgerIngredients.propTypes = {
 
 export default function BurgerIngredients()
 {
-  const dispatch  =   useDispatch();
   const list      =   useSelector(state => state.ingredients.list)
   const refList   =   useRef();
 
@@ -63,6 +62,11 @@ export default function BurgerIngredients()
     setSelect(value)
   }
 
+  function listScroll(e) {
+    console.log(e.target.scrollTop);
+    // console.log(e.currentTarget.scrollTop);
+  };
+
   function getTypeName(type) {
     return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
   }
@@ -86,7 +90,7 @@ export default function BurgerIngredients()
         }
       </div>
 
-      <div className={cm.list}  ref={refList}>
+      <div className={cm.list}  ref={refList} onScroll={listScroll}>
         {
         exists.map( type =>
           <div id={type}  className={cm.type}  key={type}>
