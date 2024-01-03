@@ -33,10 +33,9 @@ const appSlice = createSlice({
                 state.order.adds.push(payload)
             }
             
-            if ( state.order.buns.length === 0 )
-            {
+            if ( state.order.buns.length === 0 ) {
                 state.order.adds = []
-                return;
+                return
             }
 
             const newState      =   stateCalculation(state);
