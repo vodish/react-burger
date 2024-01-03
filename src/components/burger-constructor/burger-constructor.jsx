@@ -21,7 +21,6 @@ function BurgerConstructor()
 
 
   async function orderModalOpen() {
-    
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
     const submit      =   await apiOrderSubmit({ingredients})
     
