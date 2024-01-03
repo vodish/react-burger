@@ -3,9 +3,9 @@ import cm from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { apiGetIngredients } from "../../utils/data";
 import { useDispatch, useSelector } from "react-redux";
-import { ingredientsSetup, orderInsert } from "../../services/appSlice";
+import { apiGetIngredients, ingredientsSetup, orderInsert } from "../../services/appSlice";
+import { useDrop } from "react-dnd";
 
 
 
@@ -24,18 +24,25 @@ function App()
 
       if ( res.error ) return;
       
-      // по-умолчанию булка
-      dispatch( orderInsert(res.list[0]) )
-      // по-умолчанию начинка
-      dispatch( orderInsert(res.list[4]) )
-      dispatch( orderInsert(res.list[2]) )
-      dispatch( orderInsert(res.list[5]) )
-      dispatch( orderInsert(res.list[2]) )
+      // // по-умолчанию булка
+      // dispatch( orderInsert(res.list[0]) )
+      // // по-умолчанию начинка
+      // dispatch( orderInsert(res.list[4]) )
+      // dispatch( orderInsert(res.list[2]) )
+      // dispatch( orderInsert(res.list[5]) )
+      // dispatch( orderInsert(res.list[2]) )
       
     })()
 
   }, [])
 
+
+  const [ , dropRef ] = useDrop({
+    accept: 'orderInsert',
+    drop(item) {
+      dispatch( orderInsert(item.item) )
+    }
+  })
 
 
   return(
@@ -52,8 +59,16 @@ function App()
           {list.length > 0  &&  <BurgerIngredients />}
         </div>
         
-        <div className={cm.constructor}>
-          {orderTotal > 0 ?  <BurgerConstructor />: <div>Перетащите сюда ингредиенты</div>}
+        <div className={cm.constructor} ref={dropRef}>
+          {orderTotal > 0
+            ?
+            <BurgerConstructor />
+            :
+            <div className={cm.empty}>
+              <h2>Выберите булки</h2>
+              чтобы сделать заказ
+            </div>
+          }
         </div>
       </main>
 

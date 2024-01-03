@@ -10,21 +10,21 @@ Modal.propTypes = {
 }
 
 
-function Modal(props)
+function Modal({handleClose, children})
 {
   return(
     <>
       {
       createPortal(
-        <ModalOverlay handleClose={props.handleClose} />
+        <ModalOverlay handleClose={handleClose} />
         , document.getElementById('overlay')
       )
       }
       {
       createPortal(
         <div className={cm.modal}>
-          <div className={cm.close} onClick={props.handleClose}><CloseIcon type="primary" /></div>
-          {props.children}
+          <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
+          {children}
         </div>
         , document.getElementById('modal')
       )

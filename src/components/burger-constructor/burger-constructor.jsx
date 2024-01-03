@@ -3,12 +3,10 @@ import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { apiSendOrder } from "../../utils/data";
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { useDrop } from "react-dnd";
-import { orderInsert } from "../../services/appSlice";
+import { orderSubmit, apiOrderSubmit } from "../../services/appSlice";
 
 
 function BurgerConstructor()
@@ -16,23 +14,22 @@ function BurgerConstructor()
   const dispatch      =   useDispatch()
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
-  const [ modalOrder, setModalOrder ] =   useState(null)
-  const [ maxHeight, setMaxHeight ]   =   useState(null)
+
+  const [ modalOrder, setModalOrder ]   =   useState(null)
+  const [ maxHeight,  setMaxHeight  ]   =   useState(null)
+
 
 
   async function orderModalOpen() {
-    alert('Отправить заказ!')
-    return ;
+    
+    const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
+    const submit      =   await apiOrderSubmit({ingredients})
+    
+    dispatch( orderSubmit(submit) )
 
-    const ingredients   =   [...order.buns, ...order.adds].map( item => item._id)
-    const sendOrder     =   await apiSendOrder({ingredients})
+    if ( submit.error ) return alert(submit.error)
 
-    if ( sendOrder.error ) {
-      alert(sendOrder.error)
-    }
-    else if ( sendOrder.order ) {
-      // setOrder({number: sendOrder.order.number})
-    }
+    setModalOrder(true)
   }
 
   function orderModalClose() {
@@ -40,15 +37,8 @@ function BurgerConstructor()
   }
 
 
-  const [ , dropRef ] = useDrop({
-    accept: 'orderInsert',
-    drop(item) {
-      dispatch( orderInsert(item.item) )
-    }
-  })
-
   return(
-    <div ref={dropRef}>
+    <>
       <div className={cm.item}>
         <ConstructorElement
           type="top"
@@ -83,9 +73,12 @@ function BurgerConstructor()
       
       
       <div className={cm.summary}>
-        <div className={cm.collapse} onClick={e=>setMaxHeight(maxHeight? null:'none')}>
-          {maxHeight ?  <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="secondary" />}
-        </div>
+        {
+          order.adds.length > 3 &&
+          <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
+            {maxHeight ?  <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="secondary" />}
+          </div>
+        }
 
         <div className={cm.cost}>
           <div className={cm.total}>{order.total}</div> <CurrencyIcon type="primary" />
@@ -101,7 +94,7 @@ function BurgerConstructor()
 
       
       {modalOrder  &&  <Modal handleClose={orderModalClose}><OrderDetails /></Modal>}
-    </div>
+    </>
   )
 }
 

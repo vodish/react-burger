@@ -5,5 +5,6 @@
 .app .main   { flex-grow: 1; width: 1240px; margin: 0 auto;  display: flex; justify-content: space-between; gap: 40px; }
 .app .main .ingredients   { flex-basis: 600px; padding-top: 40px; }
 .app .main .constructor   { flex-basis: 600px; padding-top: 100px; }
+.app .main .constructor .empty  { margin: 40% auto; text-align: center; line-height: 2em; }
 
 .app .error  { color: #d60000; }

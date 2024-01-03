@@ -28,21 +28,28 @@ const appSlice = createSlice({
                     {...payload, name: `${payload.name} (верх)` },
                     {...payload, name: `${payload.name} (низ)` },
                 ]
-            } else {
+            }
+            else {
                 state.order.adds.push(payload)
             }
             
-            const newState = stateCalculation(state)
-            state.order.total = newState.order.total;
-            state.ingredients = newState.ingredients;
+            if ( state.order.buns.length === 0 )
+            {
+                state.order.adds = []
+                return;
+            }
+
+            const newState      =   stateCalculation(state);
+            state.order.total   =   newState.order.total;
+            state.ingredients   =   newState.ingredients;
         },
 
         orderDelete: (state, {payload}) => {
             state.order.adds.splice( payload, 1 )
             
-            const newState = stateCalculation(state)
-            state.ingredients = newState.ingredients;
-            state.order.total = newState.order.total;
+            const newState      =   stateCalculation(state)
+            state.ingredients   =   newState.ingredients;
+            state.order.total   =   newState.order.total;
         },
 
         orderAddsSort: (state, {payload}) => {
@@ -50,6 +57,18 @@ const appSlice = createSlice({
             state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
         },
+
+        orderSubmit: (state, {payload}) => {
+            state.order.number  =   payload.order ? payload.order.number : null
+            state.order.error   =   payload.error || null
+
+            if ( payload.error )   return;
+
+            state.order.adds    =   []
+            const newState      =   stateCalculation(state)
+            state.ingredients   =   newState.ingredients;
+            state.order.total   =   newState.order.total;
+        }
     }
 })
 
@@ -59,6 +78,7 @@ export const {
     orderInsert,
     orderDelete,
     orderAddsSort,
+    orderSubmit,
 } = appSlice.actions
 
 export default appSlice.reducer
@@ -83,4 +103,67 @@ function stateCalculation(state) {
 
 
     return state;
+}
+
+
+
+
+
+const SEND_ORDER_URL    =  "https://norma.nomoreparties.space/api/orders";
+
+export async function apiOrderSubmit(bodyData)
+{
+   try {
+      const response    =  await fetch(SEND_ORDER_URL, {
+         method: "POST",
+         headers: {
+            'Content-Type': 'application/json',
+          },
+         body: JSON.stringify(bodyData),
+      })
+      
+      if ( !response.ok ) {
+         return {error: "Ответ сети был не ok..."}
+      }
+
+      const data     =  await response.json();
+      if ( data.success !== true ) {
+         return {error: "Сервер вернул ошибку data.success..."}
+      }
+      
+      return { ...data }
+      
+   }
+   catch (error)
+   {
+      return {error: `Возникла проблема с вашим fetch запросом: ${error.message}`}
+   }
+}
+
+
+
+
+const INGREDIENTS_URL   =  "https://norma.nomoreparties.space/api/ingredients";
+
+export async function apiGetIngredients()
+{
+   try {
+      const response    =  await fetch(INGREDIENTS_URL)
+      
+      if ( !response.ok ) {
+         return {error: "Ответ сети был не ok..."}
+      }
+
+      const data     =  await response.json();
+      if ( data.success !== true ) {
+         return {error: "Сервер вернул ошибку data.success..."}
+      }
+
+      return { list: data.data }
+      
+   }
+   catch (error)
+   {
+      return {error: `Возникла проблема с вашим fetch запросом: ${error.message}`}
+   }
 }
