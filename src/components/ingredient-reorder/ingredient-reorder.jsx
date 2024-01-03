@@ -86,7 +86,7 @@ export default function IngredientReorder({item, index})
       className={cm.item}
       data-handler-id={handlerId}
       > 
-      <div className={cm.drag}><DragIcon type="primary"/></div>
+      <div className={cm.drag}><DragIcon type="secondary"/></div>
       
       <ConstructorElement
         extraClass={cm.elem}

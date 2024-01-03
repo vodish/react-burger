@@ -66,7 +66,7 @@ function BurgerConstructor()
         {
           order.adds.length > 3 &&
           <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
-            {maxHeight ?  <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="secondary" />}
+            {maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
           </div>
         }
 
