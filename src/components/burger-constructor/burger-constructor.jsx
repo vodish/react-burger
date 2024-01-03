@@ -1,8 +1,6 @@
 import { useState} from "react"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from "../order-details/order-details";
-import Modal from "../modal/modal";
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
@@ -15,24 +13,17 @@ function BurgerConstructor()
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
 
-  const [ modalOrder, setModalOrder ]   =   useState(null)
   const [ maxHeight,  setMaxHeight  ]   =   useState(null)
 
 
 
-  async function orderModalOpen() {
+  async function handleOrderSubmit() {
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
     const submit      =   await apiOrderSubmit({ingredients})
     
     dispatch( orderSubmit(submit) )
 
     if ( submit.error ) return alert(submit.error)
-
-    setModalOrder(true)
-  }
-
-  function orderModalClose() {
-    setModalOrder(null)
   }
 
 
@@ -87,12 +78,10 @@ function BurgerConstructor()
           htmlType="button"
           type="primary"
           size="large"
-          onClick={orderModalOpen}
+          onClick={handleOrderSubmit}
           >Оформить заказ</Button>
       </div>
 
-      
-      {modalOrder  &&  <Modal handleClose={orderModalClose}><OrderDetails /></Modal>}
     </>
   )
 }

@@ -6,9 +6,6 @@ import PropTypes from 'prop-types'
 
 OrderDetails.propTypes = {
   handleClose:  PropTypes.func,
-  order:        PropTypes.shape({
-                  number: PropTypes.number,
-                })
 }
 
 function OrderDetails()

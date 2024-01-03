@@ -3,8 +3,10 @@ import cm from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { apiGetIngredients, ingredientsSetup, orderInsert } from "../../services/appSlice";
+import { apiGetIngredients, ingredientsSetup, orderInsert, orderReset } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 
 
@@ -13,7 +15,7 @@ function App()
 {
   const dispatch        =   useDispatch()
   const { list, error } =   useSelector(state => state.ingredients )
-  const orderTotal      =   useSelector(state => state.order.total )
+  const order           =   useSelector(state => state.order )
 
   
   useEffect(()=>{
@@ -44,6 +46,11 @@ function App()
     }
   })
 
+  
+  function handleOrderReset() {
+    dispatch( orderReset() )
+  }
+
 
   return(
     <div className={cm.app}>
@@ -60,17 +67,19 @@ function App()
         </div>
         
         <div className={cm.constructor} ref={dropRef}>
-          {orderTotal > 0
+          {order.total > 0
             ?
             <BurgerConstructor />
             :
             <div className={cm.empty}>
               <h2>Выберите булки</h2>
-              чтобы сделать заказ
+              чтобы сделать новый заказ
             </div>
           }
         </div>
       </main>
+
+      {order.number  &&  <Modal handleClose={handleOrderReset}><OrderDetails /></Modal>}
 
     </div>
   )

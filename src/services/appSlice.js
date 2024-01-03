@@ -57,18 +57,27 @@ const appSlice = createSlice({
             state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
         },
-
+        
         orderSubmit: (state, {payload}) => {
             state.order.number  =   payload.order ? payload.order.number : null
             state.order.error   =   payload.error || null
 
             if ( payload.error )   return;
 
+            const newState      =   stateCalculation(state)
+            state.ingredients   =   newState.ingredients;
+            state.order.total   =   newState.order.total;
+        },
+        
+        orderReset: (state) => {
+            state.order.number  =   null
+            state.order.buns    =   []
             state.order.adds    =   []
             const newState      =   stateCalculation(state)
             state.ingredients   =   newState.ingredients;
             state.order.total   =   newState.order.total;
-        }
+        },
+        
     }
 })
 
@@ -79,6 +88,7 @@ export const {
     orderDelete,
     orderAddsSort,
     orderSubmit,
+    orderReset,
 } = appSlice.actions
 
 export default appSlice.reducer
