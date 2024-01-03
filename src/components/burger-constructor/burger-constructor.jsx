@@ -1,6 +1,6 @@
 import { useState} from "react"
 import cm from './burger-constructor.module.css'
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { apiSendOrder } from "../../utils/data";
@@ -15,7 +15,7 @@ function BurgerConstructor()
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
   const [ modalOrder, setModalOrder ] =   useState(null)
-
+  const [ maxHeight, setMaxHeight ]   =   useState(null)
 
 
 
@@ -38,7 +38,7 @@ function BurgerConstructor()
     setModalOrder(null)
   }
 
-  
+
 
   return(
     <>
@@ -52,7 +52,7 @@ function BurgerConstructor()
           thumbnail={top.image_mobile}
         />
       </div>
-      <div className={cm.middle}>
+      <div className={cm.middle} style={{maxHeight}}>
         {
         order.adds.map( (item, index) => 
           <IngredientReorder
@@ -76,6 +76,10 @@ function BurgerConstructor()
       
       
       <div className={cm.summary}>
+        <div className={cm.collapse} onClick={e=>setMaxHeight(maxHeight? null:'none')}>
+          {maxHeight ?  <ArrowUpIcon type="primary" /> : <ArrowDownIcon type="secondary" />}
+        </div>
+
         <div className={cm.cost}>
           <div className={cm.total}>{order.total}</div> <CurrencyIcon type="primary" />
         </div>
@@ -83,7 +87,7 @@ function BurgerConstructor()
         <Button
           htmlType="button"
           type="primary"
-          size="medium"
+          size="large"
           onClick={orderModalOpen}
           >Оформить заказ</Button>
       </div>

@@ -47,8 +47,7 @@ const appSlice = createSlice({
 
         orderAddsSort: (state, {payload}) => {
             const drag  =   state.order.adds[payload.dragIndex]
-            const drop  =   state.order.adds[payload.hoverIndex]
-            state.order.adds[payload.dragIndex]     =   drop
+            state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
         },
     }
