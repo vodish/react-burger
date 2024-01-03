@@ -4,19 +4,20 @@ import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } 
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { apiSendOrder } from "../../utils/data";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { useDrop } from "react-dnd";
+import { orderInsert } from "../../services/appSlice";
 
 
 function BurgerConstructor()
 {
+  const dispatch      =   useDispatch()
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
   const [ modalOrder, setModalOrder ] =   useState(null)
   const [ maxHeight, setMaxHeight ]   =   useState(null)
-
 
 
   async function orderModalOpen() {
@@ -39,9 +40,15 @@ function BurgerConstructor()
   }
 
 
+  const [ , dropRef ] = useDrop({
+    accept: 'orderInsert',
+    drop(item) {
+      dispatch( orderInsert(item.item) )
+    }
+  })
 
   return(
-    <>
+    <div ref={dropRef}>
       <div className={cm.item}>
         <ConstructorElement
           type="top"
@@ -94,7 +101,7 @@ function BurgerConstructor()
 
       
       {modalOrder  &&  <Modal handleClose={orderModalClose}><OrderDetails /></Modal>}
-    </>
+    </div>
   )
 }
 

@@ -95,10 +95,9 @@ export default function BurgerIngredients()
             {
             indexes[type].map( i =>
               <IngredientTile
+                key={i}
                 item={list[i]}
-                key={list[i]._id}
-                count={list[i].count}
-                productModalOpen={()=>setIngredientModal(list[i])}
+                productModalOpen={setIngredientModal}
               />
             )
             }

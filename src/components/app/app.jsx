@@ -28,9 +28,9 @@ function App()
       dispatch( orderInsert(res.list[0]) )
       // по-умолчанию начинка
       dispatch( orderInsert(res.list[4]) )
-      dispatch( orderInsert(res.list[4]) )
       dispatch( orderInsert(res.list[2]) )
       dispatch( orderInsert(res.list[5]) )
+      dispatch( orderInsert(res.list[2]) )
       
     })()
 
