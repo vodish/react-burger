@@ -4,6 +4,6 @@
 
 
 .list   { max-height: 500px; overflow-y: auto;  }
-.list .type { display: flex; flex-wrap: wrap; justify-content: space-between; }
-.list .type h2  { flex-basis: 100%; font-size: 24px; padding: 40px 0 24px 0; }
+.list .type { display: flex; flex-wrap: wrap; justify-content: space-between; padding-bottom: 40px; }
+.list .type h2  { flex-basis: 100%; font-size: 24px; padding: 0 0 24px 0; }
 .list .type:first-child h2  { padding-top: 0; }

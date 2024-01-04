@@ -8,7 +8,7 @@ import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { apiGetIngredients, ingredientsSetup, orderDelete, orderInsert, orderReset } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
-
+import bun_insert from '../../bun_insert.svg'
 
 
 function App()
@@ -27,7 +27,7 @@ function App()
       if ( res.error ) return;
       
       // // по-умолчанию булка
-      // dispatch( orderInsert(res.list[0]) )
+      // dispatch( orderInsert(res.list[ res.types[0].entries[0] ]) )
       // // по-умолчанию начинка
       // dispatch( orderInsert(res.list[4]) )
       // dispatch( orderInsert(res.list[2]) )
@@ -71,7 +71,7 @@ function App()
           {error &&
             <div className={cm.error}>{error}</div>
           }
-          {list.length &&
+          {list.length > 0 &&
             <BurgerIngredients />
           }
         </div>
@@ -84,6 +84,7 @@ function App()
             <div className={cm.empty}>
               <h1>Выберите булки</h1>
               <div>чтобы сделать новый заказ</div>
+              <img src={bun_insert} className={cm.bun_insert} alt="Выберите булки" />
             </div>
           }
         </div>

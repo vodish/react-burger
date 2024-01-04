@@ -13,9 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <DndProvider backend={HTML5Backend}>
+  <DndProvider backend={HTML5Backend}>
       <App />
-    </DndProvider>
+  </DndProvider>
   </Provider>
   // </React.StrictMode>
 );

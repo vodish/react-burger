@@ -6,71 +6,39 @@ import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import cm from './burger-ingredients.module.css'
-import PropTypes from 'prop-types';
-import { ingredientListObject } from "../../utils/data";
-import { useDispatch, useSelector } from "react-redux";
-
-
-
-const TYPE_NAMES  =   {
-  bun:    "Булки",
-  main:   "Начинки",
-  sauce:  "Соусы",
-}
-
-
-BurgerIngredients.propTypes = {
-  ingredientList:   PropTypes.arrayOf(ingredientListObject),
-  selectedList:     PropTypes.object,
-};
+import { useSelector } from "react-redux";
 
 
 
 
 export default function BurgerIngredients()
 {
-  const list      =   useSelector(state => state.ingredients.list)
-  const refList   =   useRef();
+  const { list, types }   =   useSelector(state => state.ingredients)
 
-  const [ select, setSelect         ] =   useState("")
-  const [ exists, setExists         ] =   useState([])
-  const [ indexes, setIndexes       ] =   useState({})
+  const refList   =   useRef();
+  const [ tabActive, setTabActive ]             =   useState( types[0].type )
   const [ ingredientModal, setIngredientModal ] =   useState(null);
 
 
-
-  useEffect(()=> {
-    let exists  = []
-    let indexes = {}
-    
-    list.map(({type}, index) => {
-      if ( ! exists.includes(type) )   exists = [...exists, type]
-      indexes[type] = indexes[type] ?  [...indexes[type], index] :  [index];
-    })
-    
-    setSelect(exists[0])
-    setExists(exists)
-    setIndexes(indexes)
-    
-  }, [])
   
-  
-
-
-  function clickTab(value) {
-    tabClickScroll(value)
-    setSelect(value)
-  }
-
   function listScroll(e) {
-    console.log(e.target.scrollTop);
-    // console.log(e.currentTarget.scrollTop);
+    let tab  = ''
+    let value = Infinity
+
+    for ( let i=0; i < types.length; i++ ) {
+      let offset  = Math.abs(e.target.children[i].getBoundingClientRect().top - e.target.offsetTop)
+      
+      if ( offset > value ) continue;
+
+      tab   = types[i].type
+      value = offset
+    }
+
+    // console.log({tab, value})
+    setTabActive(tab)
   };
 
-  function getTypeName(type) {
-    return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
-  }
-
+  
   function modalClose() {
     setIngredientModal(null)
   }
@@ -82,22 +50,29 @@ export default function BurgerIngredients()
       
       <div className={cm.tabs}>
         {
-        exists.map( type => 
-          <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
-            {getTypeName(type)}
-          </Tab>
+        types.map( ({type, name}) => 
+          <Tab
+            key={type}
+            value={type}
+            active={tabActive == type}
+            onClick={()=>tabClickScroll(type)}
+            >{name}</Tab>
         )
         }
       </div>
+      
 
-      <div className={cm.list}  ref={refList} onScroll={listScroll}>
+      <div
+        ref={refList}
+        className={cm.list}
+        onScroll={listScroll}
+        >
         {
-        exists.map( type =>
-          <div id={type}  className={cm.type}  key={type}>
-
-            <h2>{getTypeName(type)}</h2>
+        types.map( ({type, name, entries}) =>
+          <div key={type} className={cm.type} id={type} >
+            <h2>{name}</h2>
             {
-            indexes[type].map( i =>
+            entries.map( i =>
               <IngredientTile
                 key={i}
                 item={list[i]}
@@ -114,12 +89,15 @@ export default function BurgerIngredients()
       {
       ingredientModal  && 
         <Modal handleClose={modalClose}>
-          <IngredientDetails ingredient={ingredientModal} handleClose={modalClose} />
+          <IngredientDetails
+            ingredient={ingredientModal}
+            handleClose={modalClose}
+          />
         </Modal>
       }
       
     </>
-  );
+  )
 
 }
 
@@ -137,21 +115,17 @@ export function tabClickScroll(id)
    // прокрутка до точки
    let pointTop   =   0;
    while( section = section.previousSibling ) pointTop += section.scrollHeight;
-   pointTop    =  pointTop === 0 ? pointTop: pointTop + 40;
    
-   // смещение
-   // шаг
-   // duration
+   // смещение, // шаг, // duration
    const offset   =  pointTop - area.scrollTop;
    const step     =  area.scrollTop < offset ?  15 : -15;
-   const duration =  8;
+   const duration =  4;
 
    //анимация
-   if ( window.loop ) clearInterval(window.loop)
+   if ( window.loop1 ) clearInterval(window.loop)
 
-   window.loop = setInterval(function(){
+   window.loop1 = setInterval(function(){
 
-      // console.log(area.scrollTop)
       area.scrollTop += step;
       
       if (  (step > 0 && area.scrollTop >= pointTop)
@@ -161,7 +135,7 @@ export function tabClickScroll(id)
          area.scrollTop = pointTop
          // console.log(`pointTop = ${pointTop}`)
          // console.log(`area.scrollTop = ${area.scrollTop}`)
-         return clearInterval(window.loop)
+         return clearInterval(window.loop1)
       }
       
    }, duration);

@@ -6,6 +6,7 @@ const appSlice = createSlice({
     initialState: {
         ingredients: {
             list: [],
+            types: [],
             error: null
         },
         order: {
@@ -18,8 +19,9 @@ const appSlice = createSlice({
     },
     reducers: {
         ingredientsSetup: (state, {payload}) => {
-            state.ingredients.list  =   payload.list || []
-            state.ingredients.error =   payload.error || null
+            state.ingredients.list  =   payload.list    ||  []
+            state.ingredients.types =   payload.types   ||  []
+            state.ingredients.error =   payload.error   ||  null
         },
 
         orderInsert: (state, {payload}) => {
@@ -153,22 +155,44 @@ export async function apiOrderSubmit(bodyData)
 
 
 const INGREDIENTS_URL   =  "https://norma.nomoreparties.space/api/ingredients";
+const TYPE_NAMES = {
+    bun: "Булки",
+    main: "Начинки",
+    sauce: "Соусы",
+}
+
 
 export async function apiGetIngredients()
 {
    try {
-      const response    =  await fetch(INGREDIENTS_URL)
-      
-      if ( !response.ok ) {
-         return {error: "Ответ сети был не ok..."}
-      }
+        const response    =  await fetch(INGREDIENTS_URL)
 
-      const data     =  await response.json();
-      if ( data.success !== true ) {
-         return {error: "Сервер вернул ошибку data.success..."}
-      }
+        if ( !response.ok ) {
+            return {error: "Ответ сети был не ok..."}
+        }
 
-      return { list: data.data }
+        const data     =  await response.json();
+        if ( data.success !== true ) {
+            return {error: "Сервер вернул ошибку data.success..."}
+        }
+        
+        const types = data.data.reduce((acc, el, index)=>{
+            acc[ el.type ]  =   acc[ el.type ]  ||  {
+                type:   el.type,
+                name:   TYPE_NAMES[el.type] || el.type,
+                entries: [],
+            }
+            acc[ el.type ].entries.push(index);
+
+            return acc
+        }, {})
+
+        // console.log(types)
+
+        return {
+            list: data.data,
+            types: Object.values(types),
+        }
       
    }
    catch (error)
