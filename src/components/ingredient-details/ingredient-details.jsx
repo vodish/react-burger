@@ -3,7 +3,7 @@ import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { orderInsert } from '../../services/appSlice';
 
 const TTH = [
@@ -16,14 +16,15 @@ const TTH = [
 
 IngredientDetails.propTypes = {
   ingredient:   ingredientListObject,
+  handleClose:  PropTypes.func,
 }
 
 
 
 function IngredientDetails({ingredient, handleClose})
 {
-  const dispath = useDispatch()
-
+  const dispath   = useDispatch()
+  const orderBuns = useSelector(state => state.order.buns)
 
   function handleOrderInsert() {
     dispath( orderInsert(ingredient) )
@@ -36,7 +37,6 @@ function IngredientDetails({ingredient, handleClose})
       <h2 className={cm.title}>Детали ингредиента</h2>
       
       <img className={cm.img} src={ingredient.image_large} alt={ingredient.name} />
-
       <h3 className={cm.name}>{ingredient.name}</h3>
 
       <div className={cm.tth}>
@@ -55,7 +55,13 @@ function IngredientDetails({ingredient, handleClose})
       </div>
       
       <div className={cm.add}>
-        <Button htmlType="button" type="primary" size="medium" onClick={handleOrderInsert}>Добавить в заказ</Button>
+        {
+        ingredient.type != 'bun' && orderBuns.length == 0
+          ?
+          <div>Сначала выберите Булки</div>
+          :
+          <Button htmlType="button" type="primary" size="medium" onClick={handleOrderInsert}>Добавить в заказ</Button>
+        }
       </div>
     </>
   )
