@@ -39,7 +39,7 @@ function BurgerConstructor()
         {
         order.adds.map( (item, index) => 
           <IngredientReorder
-            key={index}
+            key={item.uuid}
             item={item}
             index={index}
           />

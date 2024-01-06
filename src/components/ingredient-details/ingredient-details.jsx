@@ -15,8 +15,8 @@ const TTH = [
 
 
 IngredientDetails.propTypes = {
-  ingredient:   ingredientListObject,
-  handleClose:  PropTypes.func,
+  ingredient:   ingredientListObject.isRequired,
+  handleClose:  PropTypes.func.isRequired,
 }
 
 

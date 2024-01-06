@@ -1,10 +1,17 @@
 import { useDispatch } from "react-redux";
+import PropTypes from 'prop-types'
+import { ingredientListObject } from '../../utils/data'
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
 import { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 
+
+IngredientReorder.propTypes = {
+  item:   ingredientListObject.isRequired,
+  index:  PropTypes.number.isRequired,
+}
 
 
 export default function IngredientReorder({item, index})

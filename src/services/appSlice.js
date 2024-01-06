@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
-const API_SERVER_NAME    =  "https://norma.nomoreparties.space";
+const baseUrl    =  "https://norma.nomoreparties.space";
 
 
 
 async function fetchRequest(endPoint, headers={}) {
-    const res   =   await fetch(`${API_SERVER_NAME}${endPoint}`, headers)
+    const res   =   await fetch(`${baseUrl}${endPoint}`, headers)
     let data;
     
     try { data = await res.json() }
@@ -61,14 +61,17 @@ const appSlice = createSlice({
     reducers: {
 
         updateOrder: (state, {payload}) => {
+
+            const product = {...payload, uuid: Date.now()}
+
             if ( payload.type === 'bun' ) {
                 state.order.buns = [
-                    {...payload, name: `${payload.name} (верх)` },
-                    {...payload, name: `${payload.name} (низ)` },
+                    {...product, name: `${payload.name} (верх)` },
+                    {...product, name: `${payload.name} (низ)` },
                 ]
             }
             else {
-                state.order.adds.push(payload)
+                state.order.adds.push(product)
             }
             
             if ( state.order.buns.length === 0 ) {

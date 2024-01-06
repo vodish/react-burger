@@ -8,7 +8,7 @@ import { useDrag } from "react-dnd";
 
 ProductTile.propTypes = {
   item:   ingredientListObject.isRequired,
-  count:  PropTypes.number,
+  productModalOpen:  PropTypes.func.isRequired,
 }
 
 

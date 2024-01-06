@@ -6,7 +6,7 @@ import PropTypes from "prop-types"
 
 
 Modal.propTypes = {
-  handleClose:  PropTypes.func,
+  handleClose:  PropTypes.func.isRequired,
 }
 
 
