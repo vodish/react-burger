@@ -6,9 +6,10 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { apiGetIngredients, ingredientsSetup, orderDelete, orderInsert, orderReset } from "../../services/appSlice";
+import { getIngredients, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
+
 
 
 function App()
@@ -19,43 +20,27 @@ function App()
 
   
   useEffect(()=>{
-
-    (async function() {
-      const res = await apiGetIngredients();
-      dispatch( ingredientsSetup(res) )
-
-      if ( res.error ) return;
-      
-      // // по-умолчанию булка
-      // dispatch( orderInsert(res.list[ res.types[0].entries[0] ]) )
-      // // по-умолчанию начинка
-      // dispatch( orderInsert(res.list[4]) )
-      // dispatch( orderInsert(res.list[2]) )
-      // dispatch( orderInsert(res.list[5]) )
-      // dispatch( orderInsert(res.list[2]) )
-      
-    })()
-
+    dispatch( getIngredients() )
   }, [])
 
 
   const [ , dropIngredients ] = useDrop({
     accept: 'reorder',
     drop(item) {
-      dispatch( orderDelete(item.index) )
+      dispatch( deleteFromOrder(item.index) )
     }
   })
 
   const [ , dropConstructor ] = useDrop({
-    accept: 'orderInsert',
+    accept: 'updateOrder',
     drop(item) {
-      dispatch( orderInsert(item.item) )
+      dispatch( updateOrder(item.item) )
     }
   })
 
   
   function handleOrderReset() {
-    dispatch( orderReset() )
+    dispatch( resetOrder() )
   }
 
 

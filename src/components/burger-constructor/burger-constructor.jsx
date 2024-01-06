@@ -4,7 +4,7 @@ import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } 
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { orderSubmit, apiOrderSubmit } from "../../services/appSlice";
+import { sendOrder } from "../../services/appSlice";
 
 
 function BurgerConstructor()
@@ -19,11 +19,7 @@ function BurgerConstructor()
 
   async function handleOrderSubmit() {
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
-    const submit      =   await apiOrderSubmit({ingredients})
-    
-    dispatch( orderSubmit(submit) )
-
-    if ( submit.error ) return alert(submit.error)
+    dispatch( sendOrder(ingredients) )
   }
 
 

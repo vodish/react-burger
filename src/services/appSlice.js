@@ -1,4 +1,45 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+
+const API_SERVER_NAME    =  "https://norma.nomoreparties.space";
+
+
+
+async function fetchRequest(endPoint, headers={}) {
+    const res   =   await fetch(`${API_SERVER_NAME}${endPoint}`, headers)
+    let data;
+    
+    try { data = await res.json() }
+    catch(err) { data = {error: `Сервер ${res.status}...`} }
+
+    if ( !res.ok && !data.error ) {
+        data.error = 'Ошибка c серверa... ' + (data.message || 'не ответил')
+    }
+
+    return data;
+}
+
+
+
+
+
+export const getIngredients = createAsyncThunk(
+    "ingredients/getIngredients"
+    , async () => fetchRequest('/api/ingredients')
+)
+
+export const sendOrder = createAsyncThunk(
+    "order/sendOrder"
+    , async (ingredients) => {
+        return fetchRequest('/api/orders', {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ingredients}),
+        })
+    }
+)
+
+
 
 
 const appSlice = createSlice({
@@ -18,13 +59,8 @@ const appSlice = createSlice({
         }
     },
     reducers: {
-        ingredientsSetup: (state, {payload}) => {
-            state.ingredients.list  =   payload.list    ||  []
-            state.ingredients.types =   payload.types   ||  []
-            state.ingredients.error =   payload.error   ||  null
-        },
 
-        orderInsert: (state, {payload}) => {
+        updateOrder: (state, {payload}) => {
             if ( payload.type === 'bun' ) {
                 state.order.buns = [
                     {...payload, name: `${payload.name} (верх)` },
@@ -45,7 +81,7 @@ const appSlice = createSlice({
             state.ingredients   =   newState.ingredients;
         },
 
-        orderDelete: (state, {payload}) => {
+        deleteFromOrder: (state, {payload}) => {
             state.order.adds.splice( payload, 1 )
             
             const newState      =   stateCalculation(state)
@@ -53,24 +89,13 @@ const appSlice = createSlice({
             state.order.total   =   newState.order.total;
         },
 
-        orderAddsSort: (state, {payload}) => {
+        resortOrder: (state, {payload}) => {
             const drag  =   state.order.adds[payload.dragIndex]
             state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
         },
         
-        orderSubmit: (state, {payload}) => {
-            state.order.number  =   payload.order ? payload.order.number : null
-            state.order.error   =   payload.error || null
-
-            if ( payload.error )   return;
-
-            const newState      =   stateCalculation(state)
-            state.ingredients   =   newState.ingredients;
-            state.order.total   =   newState.order.total;
-        },
-        
-        orderReset: (state) => {
+        resetOrder: (state) => {
             state.order.number  =   null
             state.order.buns    =   []
             state.order.adds    =   []
@@ -79,17 +104,65 @@ const appSlice = createSlice({
             state.order.total   =   newState.order.total;
         },
         
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(getIngredients.fulfilled, (state, {payload}) => {
+                
+                if ( payload.data ) {
+                    const typeNname = {
+                        bun: "Булки",
+                        main: "Начинки",
+                        sauce: "Соусы",
+                    }
+                    
+                    const types = payload.data.reduce((acc, el, index)=>{
+                        acc[ el.type ]  =   acc[ el.type ]  ||  {
+                            type:   el.type,
+                            name:   typeNname[el.type] || el.type,
+                            entries: [],
+                        }
+                        acc[ el.type ].entries.push(index);
+                
+                        return acc
+                    }, {})
+
+                    payload.types = Object.values(types)
+                }
+
+
+                state.ingredients.list  =   payload.data    ||  []
+                state.ingredients.types =   payload.types   ||  []
+                state.ingredients.error =   payload.error   ||  null
+                
+            })
+            .addCase(sendOrder.fulfilled, (state, {payload})=>{
+                state.order.number  =   payload.order ? payload.order.number : null
+                state.order.error   =   payload.error || null
+
+                if ( payload.error ) {
+                    alert(payload.error)
+                    console.log(payload)
+                    return;
+                }
+            })
+            
+
     }
 })
 
 
+
+
+
+
 export const {
     ingredientsSetup,
-    orderInsert,
-    orderDelete,
-    orderAddsSort,
+    updateOrder,
+    deleteFromOrder,
+    resortOrder,
     orderSubmit,
-    orderReset,
+    resetOrder,
 } = appSlice.actions
 
 export default appSlice.reducer
@@ -118,85 +191,3 @@ function stateCalculation(state) {
 
 
 
-
-
-const SEND_ORDER_URL    =  "https://norma.nomoreparties.space/api/orders";
-
-export async function apiOrderSubmit(bodyData)
-{
-   try {
-      const response    =  await fetch(SEND_ORDER_URL, {
-         method: "POST",
-         headers: {
-            'Content-Type': 'application/json',
-          },
-         body: JSON.stringify(bodyData),
-      })
-      
-      if ( !response.ok ) {
-         return {error: "Ответ сети был не ok..."}
-      }
-
-      const data     =  await response.json();
-      if ( data.success !== true ) {
-         return {error: "Сервер вернул ошибку data.success..."}
-      }
-      
-      return { ...data }
-      
-   }
-   catch (error)
-   {
-      return {error: `Возникла проблема с вашим fetch запросом: ${error.message}`}
-   }
-}
-
-
-
-
-const INGREDIENTS_URL   =  "https://norma.nomoreparties.space/api/ingredients";
-const TYPE_NAMES = {
-    bun: "Булки",
-    main: "Начинки",
-    sauce: "Соусы",
-}
-
-
-export async function apiGetIngredients()
-{
-   try {
-        const response    =  await fetch(INGREDIENTS_URL)
-
-        if ( !response.ok ) {
-            return {error: "Ответ сети был не ok..."}
-        }
-
-        const data     =  await response.json();
-        if ( data.success !== true ) {
-            return {error: "Сервер вернул ошибку data.success..."}
-        }
-        
-        const types = data.data.reduce((acc, el, index)=>{
-            acc[ el.type ]  =   acc[ el.type ]  ||  {
-                type:   el.type,
-                name:   TYPE_NAMES[el.type] || el.type,
-                entries: [],
-            }
-            acc[ el.type ].entries.push(index);
-
-            return acc
-        }, {})
-
-        // console.log(types)
-
-        return {
-            list: data.data,
-            types: Object.values(types),
-        }
-      
-   }
-   catch (error)
-   {
-      return {error: `Возникла проблема с вашим fetch запросом: ${error.message}`}
-   }
-}

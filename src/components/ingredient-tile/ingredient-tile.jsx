@@ -15,7 +15,7 @@ ProductTile.propTypes = {
 function ProductTile({item, productModalOpen})
 {
   const [{opacity}, dragRef, dragPrev] = useDrag({
-    type: 'orderInsert',
+    type: 'updateOrder',
     item: {item},
     collect: (monitor) => ({
       opacity: monitor.isDragging() ?  0.4 : 1

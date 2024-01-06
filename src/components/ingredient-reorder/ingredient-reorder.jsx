@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { orderAddsSort, orderDelete } from "../../services/appSlice";
+import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
 import { useRef } from "react";
@@ -50,7 +50,7 @@ export default function IngredientReorder({item, index})
       }
       // Time to actually perform the action
       // moveCard(dragIndex, hoverIndex)
-      dispatch( orderAddsSort({dragIndex, hoverIndex}) )
+      dispatch( resortOrder({dragIndex, hoverIndex}) )
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -90,7 +90,7 @@ export default function IngredientReorder({item, index})
         thumbnail={item.image_mobile}
         handleClose={e=>{
           e.preventDefault()
-          dispatch(orderDelete(index))
+          dispatch(deleteFromOrder(index))
         }}
       />
     </div>

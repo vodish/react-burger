@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { orderInsert } from '../../services/appSlice';
+import { updateOrder } from '../../services/appSlice';
 
 const TTH = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
@@ -26,8 +26,8 @@ function IngredientDetails({ingredient, handleClose})
   const dispath   = useDispatch()
   const orderBuns = useSelector(state => state.order.buns)
 
-  function handleOrderInsert() {
-    dispath( orderInsert(ingredient) )
+  function handleupdateOrder() {
+    dispath( updateOrder(ingredient) )
     handleClose()
   }
 
@@ -60,7 +60,7 @@ function IngredientDetails({ingredient, handleClose})
           ?
           <div>Сначала выберите Булки</div>
           :
-          <Button htmlType="button" type="primary" size="medium" onClick={handleOrderInsert}>Добавить в заказ</Button>
+          <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
         }
       </div>
     </>
