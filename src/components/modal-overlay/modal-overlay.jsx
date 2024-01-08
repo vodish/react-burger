@@ -9,11 +9,15 @@ ModalOverlay.propTypes = {
 
 
 
-function ModalOverlay(props)
+function ModalOverlay({handleClose})
 {
-  const ref = useRef();
-
-  useEffect( ()=>{
+  useEffect(()=>{
+    
+    function keyClose(e) {
+      if (e.key != "Escape")  return;
+      handleClose()
+    }
+    
     document.body.addEventListener('keydown', keyClose)
 
     return () =>{
@@ -22,15 +26,9 @@ function ModalOverlay(props)
   }, [])
 
 
-  function keyClose(e)
-  {
-    if (e.key != "Escape")  return;
-    ref.current.click()
-  }
-  
   
   return(
-    <div className={cm.overlay}  ref={ref}  onClick={props.handleClose}></div>
+    <div className={cm.overlay} onClick={handleClose}></div>
   )
 }
 

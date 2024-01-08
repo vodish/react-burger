@@ -1,25 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-
-const baseUrl    =  "https://norma.nomoreparties.space";
-
-
-
-async function fetchRequest(endPoint, headers={}) {
-    const res   =   await fetch(`${baseUrl}${endPoint}`, headers)
-    let data;
-    
-    try { data = await res.json() }
-    catch(err) { data = {error: `Сервер ${res.status}...`} }
-
-    if ( !res.ok && !data.error ) {
-        data.error = 'Ошибка c серверa... ' + (data.message || 'не ответил')
-    }
-
-    return data;
-}
-
-
+import { fetchRequest } from "../utils/api";
 
 
 
@@ -38,7 +18,6 @@ export const sendOrder = createAsyncThunk(
         })
     }
 )
-
 
 
 

@@ -12,25 +12,18 @@ Modal.propTypes = {
 
 function Modal({handleClose, children})
 {
-  return(
+  return createPortal(
     <>
-      {
-      createPortal(
-        <ModalOverlay handleClose={handleClose} />
-        , document.getElementById('overlay')
-      )
-      }
-      {
-      createPortal(
-        <div className={cm.modal}>
-          <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
-          {children}
-        </div>
-        , document.getElementById('modal')
-      )
-      }
+      <div className={cm.modal}>
+        <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
+        {children}
+      </div>
+
+      { createPortal(<ModalOverlay handleClose={handleClose} />, document.getElementById('overlay')) }
     </>
+    , document.getElementById('modal')
   )
+  
 }
 
 export default Modal;
