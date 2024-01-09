@@ -1,64 +1,47 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import cm from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import cm from "./app.module.css";
-import { apiGetIngredients } from "../../utils/data";
-import { BConstructorContext } from "../burger-constructor/burger-constructor-context";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
+import { useDrop } from "react-dnd";
+import bun_insert from '../../bun_insert.svg'
 
 
 
 function App()
 {
-  // состояния
-  // const [ isLoading,      setIsLoading      ] =   useState(true)
-  const [ isError,        setIsError        ] =   useState('')
-  const [ ingredientList, setIngredientList ] =   useState([])
-  const [ topList,        setTopList        ] =   useState([])
-  const [ addList,        setAddList        ] =   useState([])
+  const dispatch        =   useDispatch()
+  const { list, error } =   useSelector(state => state.ingredients )
+  const order           =   useSelector(state => state.order )
 
   
-  // вычислить сумму заказа
-  // const getTotal = () => {
-  //   return  [...topList, ...addList].reduce((total, item) => total + item.price , 0)
-  // }
+  useEffect(()=>{
+    dispatch( getIngredients() )
+  }, [])
 
 
+  const [ , dropIngredients ] = useDrop({
+    accept: 'reorder',
+    drop(item) {
+      dispatch( deleteFromOrder(item.index) )
+    }
+  })
 
-  // монтирование компонента
-  useEffect( ()=> {
+  const [ , dropConstructor ] = useDrop({
+    accept: 'updateOrder',
+    drop(item) {
+      dispatch( updateOrder(item.item) )
+    }
+  })
 
-    (async function() {
-      const res = await apiGetIngredients();
-      
-      // setIsLoading(false)
-      if ( res.error ) {
-        return setIsError(res.error)
-      }
-
-      setIngredientList(res.data)
-
-      setTopList([res.data[0], res.data[0]])
-      setAddList([res.data[4], res.data[2], res.data[7], res.data[5], res.data[5]])
-      
-    })()
-
-  } , [] )
-
-
-
-  // выбранные товары с количеством
-  const getSelectedList = () => {
-    
-    return [...topList, ...addList].reduce(
-      (count, item) => {
-        count[item._id] = count[item._id] === undefined ?   1 :   count[item._id] + 1;
-        return count;
-      }
-      ,{}
-    )
+  
+  function handleOrderReset() {
+    dispatch( resetOrder() )
   }
-  
 
 
   return(
@@ -69,24 +52,34 @@ function App()
       </header>
 
       <main className={cm.main}>
-        <div className={cm.ingredients}>
-          {
-          isError && <div className={cm.error}>{isError}</div>
+        <div className={cm.ingredients} ref={dropIngredients}>
+          {error &&
+            <div className={cm.error}>{error}</div>
           }
-
-          {
-          ingredientList.length > 0  &&  <BurgerIngredients  ingredientList={ingredientList}  selectedList={getSelectedList()} />
+          {list.length > 0 &&
+            <BurgerIngredients />
           }
         </div>
         
-        <BConstructorContext.Provider  value={{topList, addList, setAddList}} >
-          <div className={cm.constructor}>
-            {
-            topList.length > 0  &&  <BurgerConstructor />
-            }
-          </div>
-        </BConstructorContext.Provider>
+        <div className={cm.constructor} ref={dropConstructor}>
+          {order.total > 0
+            ?
+            <BurgerConstructor />
+            :
+            <div className={cm.empty}>
+              <h1>Выберите булки</h1>
+              <div>чтобы сделать новый заказ</div>
+              <img src={bun_insert} className={cm.bun_insert} alt="Выберите булки" />
+            </div>
+          }
+        </div>
       </main>
+
+      {order.number  &&
+        <Modal handleClose={handleOrderReset}>
+          <OrderDetails />
+        </Modal>
+      }
 
     </div>
   )

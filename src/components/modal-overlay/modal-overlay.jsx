@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import cm from './modal-overlay.module.css'
 import PropTypes from "prop-types"
 
@@ -9,28 +9,26 @@ ModalOverlay.propTypes = {
 
 
 
-function ModalOverlay(props)
+function ModalOverlay({handleClose})
 {
-  const ref = useRef();
-
-  useEffect( ()=>{
-    document.body.addEventListener('keydown', keyClose)
+  useEffect(()=>{
+    
+    function closeByKey(e) {
+      if (e.key != "Escape")  return;
+      handleClose()
+    }
+    
+    document.body.addEventListener('keydown', closeByKey)
 
     return () =>{
-      document.body.removeEventListener('keydown', keyClose)
+      document.body.removeEventListener('keydown', closeByKey)
     }
   }, [])
 
 
-  function keyClose(e)
-  {
-    if (e.key != "Escape")  return;
-    ref.current.click()
-  }
-  
   
   return(
-    <div className={cm.overlay}  ref={ref}  onClick={props.handleClose}></div>
+    <div className={cm.overlay} onClick={handleClose}></div>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
@@ -6,144 +6,98 @@ import Modal from '../modal/modal';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import cm from './burger-ingredients.module.css'
-import PropTypes from 'prop-types';
-import { ingredientListObject, ingredientScroll } from "../../utils/data";
-
-
-
-const TYPE_NAMES  =   {
-  bun:    "Булки",
-  main:   "Начинки",
-  sauce:  "Соусы",
-}
-
-
-BurgerIngredients.propTypes = {
-  ingredientList:   PropTypes.arrayOf(ingredientListObject),
-  selectedList:     PropTypes.object,
-};
+import { useSelector } from "react-redux";
 
 
 
 
-
-function BurgerIngredients(props)
+export default function BurgerIngredients()
 {
-  const [ select, setSelect         ] =   useState("")
-  const [ exists, setExists         ] =   useState([])
-  const [ indexes, setIndexes       ] =   useState({})
-  const [ ingredient, setIngredient ] =   useState(null);
+  const { list, types }   =   useSelector(state => state.ingredients)
 
   const refList   =   useRef();
+  const [ tabActive, setTabActive ]             =   useState( types[0].type )
+  const [ ingredientModal, setIngredientModal ] =   useState(null);
 
-  useEffect(()=> {
 
-    initType()
-
-  }, [])
   
+  function listScroll(e) {
+    let tab  = ''
+    let value = Infinity
+
+    for ( let i=0; i < types.length; i++ ) {
+      let offset  = Math.abs(e.target.children[i].getBoundingClientRect().top - e.target.offsetTop)
+      
+      if ( offset > value ) continue;
+
+      tab   = types[i].type
+      value = offset
+    }
+
+    // console.log({tab, value})
+    setTabActive(tab)
+  };
+
   
-  async function initType()
-  {
-    let exists  = []
-    let indexes = await props.ingredientList.reduce( (ret, {type}, index) =>
-      {
-        if ( ! exists.includes(type) )   exists = [...exists, type]
-        
-        ret[type] =   ret[type] === undefined ?  [index] :  [...ret[type], index];
-        
-        return ret
-      }
-      ,{}
-    )
-    
-    setSelect(exists[0])
-    setExists(exists)
-    setIndexes(indexes)
+  function modalClose() {
+    setIngredientModal(null)
   }
-
-
-
-  function clickTab(value)
-  {
-    ingredientScroll(value)
-    setSelect(value)
-  }
-
-
-  function getTypeName(type)
-  {
-    return TYPE_NAMES[type] ?  TYPE_NAMES[type] :  type;
-  }
-
-
-  function productModalOpen(e)
-  {
-    // console.log(e)
-    setIngredient(e.item)
-  }
-
-  function productModalClose()
-  {
-    setIngredient(null)
-  }
-  
 
   
   return(
     <>
-      {
-      ingredient  &&  <Modal handleClose={productModalClose}><IngredientDetails ingredient={ingredient} /></Modal>
-      }
-      
-
       <h1>Соберите бургер</h1>
       
       <div className={cm.tabs}>
-
         {
-          exists.map( type => (
-              <Tab  value={type}  key={type}  active={select == type}  onClick={clickTab} >
-                {getTypeName(type)}
-              </Tab>
-            )
-          )
+        types.map( ({type, name}) => 
+          <Tab
+            key={type}
+            value={type}
+            active={tabActive == type}
+            onClick={()=>tabClickScroll(type)}
+            >{name}</Tab>
+        )
         }
-
-      </div>
-
-      <div className={cm.list}  ref={refList}>
-
-        {
-          exists.map( type => (
-            <div id={type}  className={cm.type}  key={type}>
-
-              <h2>{getTypeName(type)}</h2>
-
-              {
-                indexes[type].map( index => {
-                    const product = props.ingredientList[index]
-                    return (
-                      <IngredientTile
-                        item={product}
-                        key={product._id}
-                        count={props.selectedList[product._id] || 0}
-                        productModalOpen={productModalOpen}
-                      />
-                    )
-                  }
-                )
-              }
-
-            </div>
-            )
-          )
-        }
-
       </div>
       
+
+      <div
+        ref={refList}
+        className={cm.list}
+        onScroll={listScroll}
+        >
+        {
+        types.map( ({type, name, entries}) =>
+          <div key={type} className={cm.type} id={type} >
+            <h2>{name}</h2>
+            {
+            entries.map( i =>
+              <IngredientTile
+                key={i}
+                item={list[i]}
+                productModalOpen={setIngredientModal}
+              />
+            )
+            }
+          </div>
+        )
+        }
+      </div>
+      
+
+      {
+      ingredientModal  && 
+        <Modal handleClose={modalClose}>
+          <IngredientDetails
+            ingredient={ingredientModal}
+            handleClose={modalClose}
+          />
+        </Modal>
+      }
+      
     </>
-  );
+  )
 
 }
 
@@ -151,4 +105,45 @@ function BurgerIngredients(props)
 
 
 
-export default BurgerIngredients;
+
+
+export function tabClickScroll(id)
+{
+   let section    =  document.getElementById(id)
+   let area       =  section.parentNode;
+   
+   // прокрутка до точки
+   let pointTop   =   0;
+   while( section = section.previousSibling ) pointTop += section.scrollHeight;
+   
+   // смещение, // шаг, // duration
+   const offset   =  pointTop - area.scrollTop;
+   const step     =  area.scrollTop < offset ?  15 : -15;
+   const duration =  4;
+
+   //анимация
+   if ( window.loop1 ) clearInterval(window.loop)
+
+   window.loop1 = setInterval(function(){
+
+      area.scrollTop += step;
+      
+      if (  (step > 0 && area.scrollTop >= pointTop)
+         || (step < 0 && area.scrollTop <= pointTop)
+      )
+      {
+         area.scrollTop = pointTop
+         // console.log(`pointTop = ${pointTop}`)
+         // console.log(`area.scrollTop = ${area.scrollTop}`)
+         return clearInterval(window.loop1)
+      }
+      
+   }, duration);
+
+}
+
+
+
+
+
+

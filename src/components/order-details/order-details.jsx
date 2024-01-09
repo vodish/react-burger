@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux"
 import MyImageSvg  from "../../utils/status1.svg"
 import cm from "./order-details.module.css"
 import PropTypes from 'prop-types'
@@ -5,14 +6,12 @@ import PropTypes from 'prop-types'
 
 OrderDetails.propTypes = {
   handleClose:  PropTypes.func,
-  order:        PropTypes.shape({
-                  number: PropTypes.number,
-                })
 }
 
-function OrderDetails(props)
+function OrderDetails()
 {
-  const { number } = props.order;
+  const number = useSelector(state => state.order.number)
+  
   
   return(
     <div className={cm.center}>

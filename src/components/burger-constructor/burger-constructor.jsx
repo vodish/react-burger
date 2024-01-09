@@ -1,123 +1,86 @@
-import { useContext, useState, useReducer, useMemo, useCallback, useEffect } from "react"
+import { useState} from "react"
 import cm from './burger-constructor.module.css'
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from "react-redux";
 
-// import PropTypes from 'prop-types';
-// import { ingredientListObject } from "../../utils/data";
-import OrderDetails from "../order-details/order-details";
+import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
+import { sendOrder, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
-import { BConstructorContext } from "./burger-constructor-context";
-import { apiSendOrder } from "../../utils/data";
 
-
-// BurgerConstructor.propTypes = {
-//   topList: PropTypes.arrayOf(ingredientListObject).isRequired,
-//   addList: PropTypes.arrayOf(ingredientListObject),
-//   total: PropTypes.number.isRequired
-// };
-
-
-
-function totalReducer(state, action)
-{
-  if ( action.type=='sum'  && action.payload )
-  {
-    return  action.payload.reduce((total, item) => total + item.price , 0)
-  }
-
-  throw  Error('Unknown action: ' + action.type);
-}
 
 
 function BurgerConstructor()
 {
-  const [ order,    setOrder      ] =   useState(null)
-  const { topList,  addList       } =   useContext(BConstructorContext)
-  const [ total,    dispachTotal  ] =   useReducer(totalReducer, 0)
+  const dispatch      =   useDispatch()
+  const order         =   useSelector(state => state.order)
+  const [ top, bot ]  =   useSelector(state => state.order.buns)
 
-
-  const topName         =   `${topList[0].name} (верх)`
-  const topPrice        =   topList[0].price
-  const topImageMobile  =   topList[0].image_mobile
-
-  const botName         =   `${topList[1].name} (верх)`
-  const botPrice        =   topList[1].price
-  const botImageMobile  =   topList[1].image_mobile
+  const [ maxHeight,  setMaxHeight  ]   =   useState(null)
 
 
 
-
-  useEffect(()=>{
-
-    dispachTotal({type: 'sum', payload: [...topList, ...addList]})
-
-  }, [
-    dispachTotal,
-    topList,
-    addList,
-  ])
-  
-
-  async function orderModalOpen()
-  {
-    const ingredients   =   [...topList, ...addList].map( item => item._id)
-    const sendOrder     =   await apiSendOrder({ingredients})
-
-    if ( sendOrder.error ) {
-      alert(sendOrder.error)
-    }
-    else if ( sendOrder.order ) {
-      setOrder({number: sendOrder.order.number})
-    }
+  async function handleOrderSubmit() {
+    const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
+    dispatch( sendOrder(ingredients) )
   }
-
-
-  function orderModalClose()
-  {
-    setOrder(null)
-  }
-
 
 
   return(
     <>
-      {
-      order  &&  <Modal handleClose={orderModalClose}><OrderDetails  order={order} /></Modal>
-      }
-
-
-      {/* верхняя булка */}
       <div className={cm.item}>
-        <ConstructorElement type="top" extraClass={cm.elem} isLocked={true}   text={topName} price={topPrice} thumbnail={topImageMobile} />
+        <ConstructorElement
+          type="top"
+          extraClass={cm.elemClose}
+          isLocked={true}
+          text={top.name}
+          price={top.price}
+          thumbnail={top.image_mobile}
+        />
       </div>
-
-      {/* начинка */}
-      <div className={cm.middle}>
-        {addList.map( (item, index) => (
-
-          <div className={cm.item} key={index}>
-            <div className={cm.drag}><DragIcon type="primary"/></div>
-            <ConstructorElement extraClass={cm.elem}   text={item.name} price={item.price} thumbnail={item.image_mobile} />
-          </div>
-          
-        ))}
+      <div className={cm.middle} style={{maxHeight}}>
+        {
+        order.adds.map( (item, index) => 
+          <IngredientReorder
+            key={item.uuid}
+            item={item}
+            index={index}
+          />
+        )
+        }
+      </div>
+      <div className={cm.item}>
+        <ConstructorElement
+          type="bottom"
+          extraClass={cm.elemClose}
+          isLocked={true}
+          text={bot.name}
+          price={bot.price}
+          thumbnail={bot.image_mobile}
+        />
       </div>
       
-      {/* нижняя булка */}
-      <div className={cm.item}>
-        <ConstructorElement type="bottom" extraClass={cm.elem} isLocked={true}   text={botName} price={botPrice} thumbnail={botImageMobile} />
-      </div>
       
-
-      {/* итого отправить */}
       <div className={cm.summary}>
+        {
+          order.adds.length > 3 &&
+          <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
+            {maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
+          </div>
+        }
+
         <div className={cm.cost}>
-          <div className={cm.total}>{total}</div>
-          <CurrencyIcon type="primary" />
+          <div className={cm.total}>{order.total}</div> <CurrencyIcon type="primary" />
         </div>
 
-        <Button htmlType="button" type="primary" size="medium" onClick={orderModalOpen}>Оформить заказ</Button>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleOrderSubmit}
+          >Оформить заказ</Button>
       </div>
+      
+      {order.error && <Modal handleClose={()=>dispatch(closeOrderError())}><div className="error" dangerouslySetInnerHTML={{__html:order.error}}></div></Modal>}
 
     </>
   )
