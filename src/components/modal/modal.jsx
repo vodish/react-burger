@@ -14,12 +14,12 @@ function Modal({handleClose, children})
 {
   return createPortal(
     <>
+      <ModalOverlay handleClose={handleClose} />
+      
       <div className={cm.modal}>
         <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
         {children}
       </div>
-
-      { createPortal(<ModalOverlay handleClose={handleClose} />, document.getElementById('overlay')) }
     </>
     , document.getElementById('modal')
   )
