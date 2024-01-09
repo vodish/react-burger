@@ -14,7 +14,7 @@ export const sendOrder = createAsyncThunk(
         return fetchRequest('/api/orders', {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({sdvc:ingredients}),
+            body: JSON.stringify({ingredients}),
         })
     }
 )
@@ -139,9 +139,7 @@ const appSlice = createSlice({
                 }
             })
             .addCase(sendOrder.rejected, (state, action) => {
-                console.log(action)
-                state.order.error = `${action.type}... ${action.error.message}`
-
+                state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
             })
             
 
