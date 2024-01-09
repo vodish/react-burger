@@ -14,7 +14,7 @@ export const sendOrder = createAsyncThunk(
         return fetchRequest('/api/orders', {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ingredients}),
+            body: JSON.stringify({sdvc:ingredients}),
         })
     }
 )
@@ -85,6 +85,10 @@ const appSlice = createSlice({
             state.ingredients   =   newState.ingredients;
             state.order.total   =   newState.order.total;
         },
+
+        closeOrderError: (state) => {
+            state.order.error = null
+        }
         
     },
     extraReducers(builder) {
@@ -118,6 +122,12 @@ const appSlice = createSlice({
                 state.ingredients.error =   payload.error   ||  null
                 
             })
+            .addCase(getIngredients.rejected, (state, action) => {
+                console.log(action)
+                state.ingredients.error = `${action.type}... ${action.error.message}`
+
+            })
+            
             .addCase(sendOrder.fulfilled, (state, {payload})=>{
                 state.order.number  =   payload.order ? payload.order.number : null
                 state.order.error   =   payload.error || null
@@ -127,6 +137,11 @@ const appSlice = createSlice({
                     console.log(payload)
                     return;
                 }
+            })
+            .addCase(sendOrder.rejected, (state, action) => {
+                console.log(action)
+                state.order.error = `${action.type}... ${action.error.message}`
+
             })
             
 
@@ -141,6 +156,7 @@ export const {
     resortOrder,
     orderSubmit,
     resetOrder,
+    closeOrderError,
 } = appSlice.actions
 
 export default appSlice.reducer

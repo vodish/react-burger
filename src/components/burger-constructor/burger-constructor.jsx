@@ -4,7 +4,9 @@ import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } 
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { sendOrder } from "../../services/appSlice";
+import { sendOrder, closeOrderError } from "../../services/appSlice";
+import Modal from "../modal/modal";
+
 
 
 function BurgerConstructor()
@@ -77,6 +79,8 @@ function BurgerConstructor()
           onClick={handleOrderSubmit}
           >Оформить заказ</Button>
       </div>
+      
+      {order.error && <Modal handleClose={()=>dispatch(closeOrderError())}><div className="error">{order.error}</div></Modal>}
 
     </>
   )

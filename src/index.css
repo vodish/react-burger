@@ -26,3 +26,5 @@ body {
   color: var(--color1);
 }
 
+
+.error { color: red; }
