@@ -15,8 +15,9 @@ async function checkResponse(res) {
   // console.log(res)
   if ( !res )     return Promise.reject(`Ошибка сервера...`)
   if ( !res.ok ) {
+    res = await res.json()
     console.log(res)
-    return Promise.reject( new Error() {...res, res: res})
+    console.log('== res.ok')
   }  
 
   return res
@@ -25,6 +26,6 @@ async function checkResponse(res) {
 
 async function checkJson(res) {
   console.log(`checkJson`)
-  console.dir(res)
+  console.log(res)
   return await res.json().then(null, err=>Promise.reject(err))
 }
