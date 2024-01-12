@@ -3,22 +3,35 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import PropTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
+import { useDrag } from "react-dnd";
 
 
 ProductTile.propTypes = {
   item:   ingredientListObject.isRequired,
-  count:  PropTypes.number,
+  productModalOpen:  PropTypes.func.isRequired,
 }
 
 
-function ProductTile(props)
+function ProductTile({item, productModalOpen})
 {
-  const item = props.item;
+  const [{opacity}, dragRef, dragPrev] = useDrag({
+    type: 'updateOrder',
+    item: {item},
+    collect: (monitor) => ({
+      opacity: monitor.isDragging() ?  0.4 : 1
+    })
+  })
   
+
   return(
-    <div className={cm.tile} onClick={ e => props.productModalOpen(props)}> 
-      <div className={cm.count}>{props.count || ''}</div>
-      <img className={cm.img} src={item.image} alt={item.name} />
+    <div
+      className={cm.tile}
+      onClick={e=>productModalOpen(item)}
+      ref={dragRef}
+      style={{opacity}}
+      >
+      <div className={cm.count}>{item.count || ''}</div>
+      <img className={cm.img} src={item.image} alt={item.name} ref={dragPrev} />
       <div className={cm.cost}>
         <div className={cm.price}>{item.price}</div>
         <CurrencyIcon />

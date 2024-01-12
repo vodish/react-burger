@@ -6,31 +6,24 @@ import PropTypes from "prop-types"
 
 
 Modal.propTypes = {
-  handleClose:  PropTypes.func,
+  handleClose:  PropTypes.func.isRequired,
 }
 
 
-function Modal(props)
+function Modal({handleClose, children})
 {
-  return(
+  return createPortal(
     <>
-      {
-      createPortal(
-        <ModalOverlay handleClose={props.handleClose} />
-        , document.getElementById('overlay')
-      )
-      }
-      {
-      createPortal(
-        <div className={cm.modal}>
-          <div className={cm.close} onClick={props.handleClose}><CloseIcon type="primary" /></div>
-          {props.children}
-        </div>
-        , document.getElementById('modal')
-      )
-      }
+      <ModalOverlay handleClose={handleClose} />
+      
+      <div className={cm.modal}>
+        <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
+        {children}
+      </div>
     </>
+    , document.getElementById('modal')
   )
+  
 }
 
 export default Modal;

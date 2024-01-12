@@ -1,11 +1,15 @@
 
 .item   { display: flex; align-items: center; gap: 10px; padding-left: 50px; position: relative; } 
-.item  .drag { position: absolute; margin-left: -30px; }
+.item  .drag { position: absolute; margin-left: -30px; cursor: grab; }
+.item  .drag:active { cursor: grabbing; }
+
 .item  .elem { background-color: #1C1C21; font-size: 14px; }
+.item  .elemClose svg { cursor: default; }
 
 .middle    { display: flex; flex-direction: column; gap: 16px; margin: 16px 0; max-height: 273px; overflow-y: auto; }
 
 
-.summary  { display: flex; justify-content: right; align-items: center; gap: 40px; margin: 40px 0; }
+.summary  { display: flex; justify-content: right; align-items: center; gap: 40px; margin: 40px 40px 40px 0; }
+.summary  .collapse { margin-right: 10px; cursor: pointer; }
 .summary  .cost  { display: flex; align-items: center; gap: 10px; }
 .summary  .cost .total { font-family: 'Iceland', sans-serif; font-size: 48px;}

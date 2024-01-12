@@ -2,7 +2,9 @@
 import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
-
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateOrder } from '../../services/appSlice';
 
 const TTH = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
@@ -13,14 +15,21 @@ const TTH = [
 
 
 IngredientDetails.propTypes = {
-  ingredient:   ingredientListObject,
+  ingredient:   ingredientListObject.isRequired,
+  handleClose:  PropTypes.func.isRequired,
 }
 
 
 
-function IngredientDetails(props)
+function IngredientDetails({ingredient, handleClose})
 {
-  const ingredient = props.ingredient;
+  const dispath   = useDispatch()
+  const orderBuns = useSelector(state => state.order.buns)
+
+  function handleupdateOrder() {
+    dispath( updateOrder(ingredient) )
+    handleClose()
+  }
 
 
   return (
@@ -28,22 +37,30 @@ function IngredientDetails(props)
       <h2 className={cm.title}>Детали ингредиента</h2>
       
       <img className={cm.img} src={ingredient.image_large} alt={ingredient.name} />
-
       <h3 className={cm.name}>{ingredient.name}</h3>
 
       <div className={cm.tth}>
         {
-          TTH.map( ({name, title, ext}, key) => (
-            <div key={key}>
-              <div className={cm.tname}>{title}</div>
-              <div className={cm.tsum}>
-                <span className={cm.tval}>{ingredient[name]}</span>
-                <span className={cm.text}>{ext}</span>
-
-              </div>
+        TTH.map( ({name, title, ext}, key) => (
+          <div key={key}>
+            <div className={cm.tname}>{title}</div>
+            <div className={cm.tsum}>
+              <span className={cm.tval}>{ingredient[name]}</span>
+              <span className={cm.text}>{ext}</span>
             </div>
-            )
+          </div>
           )
+        )
+        }
+      </div>
+      
+      <div className={cm.add}>
+        {
+        ingredient.type != 'bun' && orderBuns.length == 0
+          ?
+          <div>Сначала выберите Булки</div>
+          :
+          <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
         }
       </div>
     </>

@@ -8,3 +8,4 @@
 .tth > div .tsum    { display: flex; gap: 0.5ch; justify-content: center; align-items: baseline; }
 .tth > div .tsum .tval  { font-size: 28px; font-family: var(--fontNumber); }
 
+.add    { text-align: center; margin-top: 2em; }
