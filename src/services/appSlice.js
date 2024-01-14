@@ -1,27 +1,13 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 
 
-
-export const getIngredients = createAsyncThunk(
-    "ingredients/getIngredients"
-    , async () => fetchRequest('/api/ingredients')
-)
-
-export const sendOrder = createAsyncThunk(
-    "order/sendOrder"
-    , async (ingredients) => {
-        return fetchRequest('/api/orders', {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ingredients}),
-        })
-    }
-)
+const createSliceWhitThunks = buildCreateSlice({
+    creators: {asyncThunk: asyncThunkCreator }
+})
 
 
-
-const appSlice = createSlice({
+const appSlice = createSliceWhitThunks({
     name: 'app',
     initialState: {
         ingredients: {
@@ -37,9 +23,48 @@ const appSlice = createSlice({
             error: null,
         }
     },
-    reducers: {
+    reducers: create => ({
+        
+        getIngredientsThunk: create.asyncThunk(
+            async () => fetchRequest('/api/ingredients'),
+            {
+                fulfilled:  (state, {payload}) => {
+                    if ( payload.data ) {
+                        const typeNname = {
+                            bun: "Булки",
+                            main: "Начинки",
+                            sauce: "Соусы",
+                        }
+                        
+                        const types = payload.data.reduce((acc, el, index)=>{
+                            acc[ el.type ]  =   acc[ el.type ]  ||  {
+                                type:   el.type,
+                                name:   typeNname[el.type] || el.type,
+                                entries: [],
+                            }
+                            acc[ el.type ].entries.push(index);
+                    
+                            return acc
+                        }, {})
+    
+                        payload.types = Object.values(types)
+                    }
+    
+                    state.ingredients.list  =   payload.data    ||  []
+                    state.ingredients.types =   payload.types   ||  []
+                    state.ingredients.error =   payload.error   ||  null
+                    
+                },
+                rejected: (state, action) => {
+                    console.log(action)
+                    state.ingredients.error = `${action.type}... ${action.error.message}`
+    
+                }
+            }
+        ),
+        
 
-        updateOrder: (state, {payload}) => {
+        updateOrder: create.reducer( (state, {payload}) => {
 
             const product = {...payload, uuid: Date.now()}
 
@@ -61,93 +86,71 @@ const appSlice = createSlice({
             const newState      =   stateCalculation(state);
             state.order.total   =   newState.order.total;
             state.ingredients   =   newState.ingredients;
-        },
+        }),
 
-        deleteFromOrder: (state, {payload}) => {
+
+        deleteFromOrder: create.reducer( (state, {payload}) => {
             state.order.adds.splice( payload, 1 )
             
             const newState      =   stateCalculation(state)
             state.ingredients   =   newState.ingredients;
             state.order.total   =   newState.order.total;
-        },
+        }),
 
-        resortOrder: (state, {payload}) => {
+
+        resortOrder: create.reducer( (state, {payload}) => {
             const drag  =   state.order.adds[payload.dragIndex]
             state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
-        },
+        }),
         
-        resetOrder: (state) => {
+
+        resetOrder: create.reducer( state => {
             state.order.number  =   null
             state.order.buns    =   []
             state.order.adds    =   []
             const newState      =   stateCalculation(state)
             state.ingredients   =   newState.ingredients;
             state.order.total   =   newState.order.total;
-        },
+        }),
 
-        closeOrderError: (state) => {
+
+        closeOrderError: create.reducer( state => {
             state.order.error = null
-        }
+        }),
+
         
-    },
-    extraReducers(builder) {
-        builder
-            .addCase(getIngredients.fulfilled, (state, {payload}) => {
-                
-                if ( payload.data ) {
-                    const typeNname = {
-                        bun: "Булки",
-                        main: "Начинки",
-                        sauce: "Соусы",
+        sendOrderThunk: create.asyncThunk(
+            async (ingredients) => {
+                return fetchRequest('/api/orders', {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ingredients}),
+                })
+            },
+            {
+                fulfilled: (state, {payload})=>{
+                    state.order.number  =   payload.order ? payload.order.number : null
+                    state.order.error   =   payload.error || null
+    
+                    if ( payload.error ) {
+                        alert(payload.error)
+                        console.log(payload)
+                        return;
                     }
-                    
-                    const types = payload.data.reduce((acc, el, index)=>{
-                        acc[ el.type ]  =   acc[ el.type ]  ||  {
-                            type:   el.type,
-                            name:   typeNname[el.type] || el.type,
-                            entries: [],
-                        }
-                        acc[ el.type ].entries.push(index);
-                
-                        return acc
-                    }, {})
-
-                    payload.types = Object.values(types)
-                }
-
-
-                state.ingredients.list  =   payload.data    ||  []
-                state.ingredients.types =   payload.types   ||  []
-                state.ingredients.error =   payload.error   ||  null
-                
-            })
-            .addCase(getIngredients.rejected, (state, action) => {
-                console.log(action)
-                state.ingredients.error = `${action.type}... ${action.error.message}`
-
-            })
-            
-            .addCase(sendOrder.fulfilled, (state, {payload})=>{
-                state.order.number  =   payload.order ? payload.order.number : null
-                state.order.error   =   payload.error || null
-
-                if ( payload.error ) {
-                    alert(payload.error)
-                    console.log(payload)
-                    return;
-                }
-            })
-            .addCase(sendOrder.rejected, (state, action) => {
-                state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
-            })
-            
-
-    }
+                },
+                rejected: (state, action) => {
+                    state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
+                },
+            }
+        )
+        
+    })
 })
 
 
 export const {
+    getIngredientsThunk,
     ingredientsSetup,
     updateOrder,
     deleteFromOrder,
@@ -155,6 +158,8 @@ export const {
     orderSubmit,
     resetOrder,
     closeOrderError,
+    sendOrderThunk,
+
 } = appSlice.actions
 
 export default appSlice.reducer

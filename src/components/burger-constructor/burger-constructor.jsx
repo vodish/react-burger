@@ -4,7 +4,7 @@ import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } 
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { sendOrder, closeOrderError } from "../../services/appSlice";
+import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
 
 
@@ -21,7 +21,7 @@ function BurgerConstructor()
 
   async function handleOrderSubmit() {
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
-    dispatch( sendOrder(ingredients) )
+    dispatch( sendOrderThunk(ingredients) )
   }
 
 

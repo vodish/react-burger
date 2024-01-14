@@ -6,7 +6,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngredients, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
+import { getIngredients, getIngredientsThunk, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
 
@@ -20,7 +20,7 @@ function App()
 
   
   useEffect(()=>{
-    dispatch( getIngredients() )
+    dispatch( getIngredientsThunk() )
   }, [])
 
 
