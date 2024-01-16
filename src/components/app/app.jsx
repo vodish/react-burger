@@ -1,88 +1,31 @@
-import { useEffect } from "react";
-import cm from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredientsThunk, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
-import { useDrop } from "react-dnd";
-import bun_insert from '../../bun_insert.svg'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Constructor from "../../pages/constructor/constructor";
+import Page404 from '../../pages/page404/page404';
+import Profile from '../../pages/profile/profile';
+import Orders from '../../pages/orders/orders';
+import Login from '../../pages/login/login';
+import Register from '../../pages/register/register';
+import ForgotPassword from '../../pages/forgot-password/forgot-password';
+import ResetPassword from '../../pages/reset-password/reset-password';
 
 
-
-function App()
+export default function App()
 {
-  const dispatch        =   useDispatch()
-  const { list, error } =   useSelector(state => state.ingredients )
-  const order           =   useSelector(state => state.order )
-
-  
-  useEffect(()=>{
-    dispatch( getIngredientsThunk() )
-  }, [])
-
-
-  const [ , dropIngredients ] = useDrop({
-    accept: 'reorder',
-    drop(item) {
-      dispatch( deleteFromOrder(item.index) )
-    }
-  })
-
-  const [ , dropConstructor ] = useDrop({
-    accept: 'updateOrder',
-    drop(item) {
-      dispatch( updateOrder(item.item) )
-    }
-  })
-
-  
-  function handleOrderReset() {
-    dispatch( resetOrder() )
-  }
-
-
   return(
-    <div className={cm.app}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/reset-password" element={<ResetPassword />}></Route>
+        <Route path="/reset-password" element={<ResetPassword />}></Route>
 
-      <header className={cm.header}>
-        <AppHeader />
-      </header>
-
-      <main className={cm.main}>
-        <div className={cm.ingredients} ref={dropIngredients}>
-          {error &&
-            <div className={cm.error}>{error}</div>
-          }
-          {list.length > 0 &&
-            <BurgerIngredients />
-          }
-        </div>
+        <Route path="/" element={<Constructor />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/orders" element={<Orders />}></Route>
         
-        <div className={cm.constructor} ref={dropConstructor}>
-          {order.total > 0
-            ?
-            <BurgerConstructor />
-            :
-            <div className={cm.empty}>
-              <h1>Выберите булки</h1>
-              <div>чтобы сделать новый заказ</div>
-              <img src={bun_insert} className={cm.bun_insert} alt="Выберите булки" />
-            </div>
-          }
-        </div>
-      </main>
-
-      {order.number  &&
-        <Modal handleClose={handleOrderReset}>
-          <OrderDetails />
-        </Modal>
-      }
-
-    </div>
+        <Route path="*" element={<Page404 />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App;

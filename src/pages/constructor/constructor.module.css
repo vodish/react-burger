@@ -1,0 +1,14 @@
+.ingredients   { flex-basis: 600px; padding-top: 40px; }
+.constructor   { flex-basis: 600px; padding-top: 100px; }
+.constructor .empty  { text-align: center; line-height: 3em; height: 80%; display: flex; flex-direction: column; padding-top: 20%; border: solid 2px #1C1C21; border-radius: 40px; }
+.constructor .empty  > div { color: var(--color2); }
+
+.error  { color: #d60000; }
+
+.constructor .bun_insert { width: 400px; display: block; margin: 6em auto; animation: blinker 2.5s linear infinite; }
+
+@keyframes blinker {
+    50% {
+        opacity: .4;
+    }
+}
