@@ -26,5 +26,13 @@ body {
   color: var(--color1);
 }
 
-
 .error { color: red; }
+
+
+
+.form  { text-align: center; margin-top: -10vh; color: var(--color2); }
+.form  h1   { font-size: 24px; color: var(--color1); }
+.form  a    { color: #4C4CFF; }
+.form .row    { margin-top: 24px; }
+.form .row.submit   { margin-bottom: 80px; }
+.form .note.list    { margin-top: 16px; }

@@ -12,6 +12,7 @@
 .btn:hover      { background-color: #131316; cursor: pointer; border-radius: .5em; transition: all .3s ease-in; }
 
 .main           { flex-grow: 1; width: 1240px; margin: 0 auto;  display: flex; justify-content: space-between; gap: 40px; }
+.mainCenter     { justify-content: center; align-items: center; }
 
 .pages  { display: flex; justify-content: center; gap: 3ch; padding: 20px; }
 .pages a  { color: antiquewhite; }
