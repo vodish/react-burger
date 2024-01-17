@@ -25,6 +25,7 @@ export default function Register()
         <li><NavLink to="/profile">Профиль</NavLink></li>
         <li><NavLink to="/orders">История заказов</NavLink></li>
         <li><NavLink to="/login">Выход</NavLink></li>
+        <li><NavLink to="/ingredients/643d69a5c3f7b9001cfa093c">Ингредиент</NavLink></li>
       </ul>
     </div>
 

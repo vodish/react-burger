@@ -16,7 +16,7 @@ const TTH = [
 
 IngredientDetails.propTypes = {
   ingredient:   ingredientListObject.isRequired,
-  handleClose:  PropTypes.func.isRequired,
+  handleClose:  PropTypes.func,
 }
 
 
@@ -28,7 +28,10 @@ function IngredientDetails({ingredient, handleClose})
 
   function handleupdateOrder() {
     dispath( updateOrder(ingredient) )
-    handleClose()
+
+    if ( handleClose ) {
+      handleClose()
+    }
   }
 
 
@@ -55,13 +58,12 @@ function IngredientDetails({ingredient, handleClose})
       </div>
       
       <div className={cm.add}>
-        {
-        ingredient.type != 'bun' && orderBuns.length == 0
-          ?
-          <div>Сначала выберите Булки</div>
-          :
-          <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
+
+        { ingredient.type != 'bun' && orderBuns.length == 0
+          ? <div>Сначала выберите Булки</div>
+          : (handleClose && <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>)
         }
+
       </div>
     </>
   )

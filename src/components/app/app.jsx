@@ -7,6 +7,7 @@ import Login from '../../pages/login/login';
 import Register from '../../pages/register/register';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
+import IngredientsId from '../../pages/ingredients-id/ingredients-id';
 
 
 export default function App()
@@ -23,6 +24,7 @@ export default function App()
         <Route path="/" element={<Constructor />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/orders" element={<Orders />}></Route>
+        <Route path="/ingredients/:id" element={<IngredientsId />}></Route>
         
         <Route path="*" element={<Page404 />}></Route>
       </Routes>
