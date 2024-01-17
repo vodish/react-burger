@@ -7,7 +7,6 @@ import { NavLink } from "react-router-dom";
 
 
 AppHeader.propTypes = {
-  children:  PropTypes.element,
   view:  PropTypes.string,
 }
 
@@ -43,9 +42,8 @@ export default function AppHeader({children, view})
 
 function checkMainView(view)
 {
-  if ( view == 'center' ) {
-    return cm.mainCenter;
+  switch(view) {
+    case 'center': return cm.mainCenter;
+    case 'double': return cm.mainDouble;
   }
-
-  return '';
 }

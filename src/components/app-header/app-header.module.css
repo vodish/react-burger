@@ -11,8 +11,9 @@
 .btn            { font-size: 16px; padding: 8px; display: flex; gap: 8px; align-items: center; white-space: nowrap; }
 .btn:hover      { background-color: #131316; cursor: pointer; border-radius: .5em; transition: all .3s ease-in; }
 
-.main           { flex-grow: 1; width: 1240px; margin: 0 auto;  display: flex; justify-content: space-between; gap: 40px; }
+.main           { flex-grow: 1; width: 1240px; margin: 40px auto 0 auto;  display: flex; gap: 80px; }
 .mainCenter     { justify-content: center; align-items: center; }
+.mainDouble     { margin-top: 80px; }
 
 .pages  { display: flex; justify-content: center; gap: 3ch; padding: 20px; }
 .pages a  { color: antiquewhite; }

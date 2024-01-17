@@ -1,5 +1,5 @@
 
-.tile   { flex-basis: 260px; margin: 16px; text-align: center; position: relative; }
+.tile   { flex-basis: 250px; margin: 16px; text-align: center; position: relative; }
 /* .tile   { border: solid 1px #333; } */
 
 .tile .count    { font-family: 'Iceland'; font-size: 28px; position: absolute; top: 0; right: 0; line-height: 0; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: white; background-color: #4C4CFF; }

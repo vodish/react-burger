@@ -1,0 +1,8 @@
+
+.menu   { flex-basis: 300px; }
+
+.menu > ul  { list-style: none; }
+.menu > ul > li { margin-bottom: 1em; }
+.menu > ul > li > a { display: block; font-size: 24px; padding: 5px 0; color: var(--color1); text-decoration: none; }
+.menu > ul > li > a.active { color: var(--color2); }
+.menu > ul > li > a:hover { color: var(--color2); }

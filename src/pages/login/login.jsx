@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState } from 'react'
@@ -7,11 +7,12 @@ export default function Login()
 {
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
-  
+  const navigate = useNavigate()
 
   function handleSubmit(e) {
     e.preventDefault()
-    alert("Отправить форму")
+    // alert("Отправить форму")
+    navigate('/')
   }
 
   return <AppHeader view="center">

@@ -1,5 +1,5 @@
-.ingredients   { flex-basis: 600px; padding-top: 40px; }
-.constructor   { flex-basis: 600px; padding-top: 100px; }
+.ingredients   { flex-basis: 600px; }
+.constructor   { flex-basis: 600px; padding-top: 60px; }
 .constructor .empty  { text-align: center; line-height: 3em; height: 80%; display: flex; flex-direction: column; padding-top: 20%; border: solid 2px #1C1C21; border-radius: 40px; }
 .constructor .empty  > div { color: var(--color2); }
 
