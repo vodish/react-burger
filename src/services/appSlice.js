@@ -31,6 +31,7 @@ const appSlice = createSliceWhitThunks({
     },
     reducers: create => ({
         
+        // каталог
         getIngredientsThunk: create.asyncThunk(
             async () => fetchRequest('/api/ingredients'),
             {
@@ -70,6 +71,7 @@ const appSlice = createSliceWhitThunks({
         ),
         
 
+        // заказ
         updateOrder: create.reducer( (state, {payload}) => {
 
             const product = {...payload, uuid: Date.now()}
@@ -94,7 +96,6 @@ const appSlice = createSliceWhitThunks({
             state.ingredients   =   newState.ingredients;
         }),
 
-
         deleteFromOrder: create.reducer( (state, {payload}) => {
             state.order.adds.splice( payload, 1 )
             
@@ -103,14 +104,12 @@ const appSlice = createSliceWhitThunks({
             state.order.total   =   newState.order.total;
         }),
 
-
         resortOrder: create.reducer( (state, {payload}) => {
             const drag  =   state.order.adds[payload.dragIndex]
             state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
             state.order.adds[payload.hoverIndex]    =   drag
         }),
         
-
         resetOrder: create.reducer( state => {
             state.order.number  =   null
             state.order.buns    =   []
@@ -120,11 +119,9 @@ const appSlice = createSliceWhitThunks({
             state.order.total   =   newState.order.total;
         }),
 
-
         closeOrderError: create.reducer( state => {
             state.order.error = null
         }),
-
         
         sendOrderThunk: create.asyncThunk(
             async (ingredients) => {
@@ -152,6 +149,7 @@ const appSlice = createSliceWhitThunks({
         ),
 
 
+        // регистрация, токены, пользователь
         sendRegister: create.reducer( (state, {payload}) => {
             console.log(payload)
         })
@@ -170,6 +168,8 @@ export const {
     resetOrder,
     closeOrderError,
     sendOrderThunk,
+
+    sendRegister,
 
 } = appSlice.actions
 
