@@ -1,14 +1,24 @@
 import { Link, useNavigate } from 'react-router-dom'
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeApiError } from '../../services/appSlice'
 
 export default function Login()
 {
+  const apiError = useSelector( state => state.apiError )
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
-  const navigate = useNavigate()
 
+
+  useEffect(()=>{
+    dispatch(removeApiError())
+  }, [])
+
+  
   function handleSubmit(e) {
     e.preventDefault()
     // alert("Отправить форму")

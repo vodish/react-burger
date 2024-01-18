@@ -1,10 +1,21 @@
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
+import { sendRegister } from "../../services/appSlice"
+
+
+const cssError = {marginTop: '2em'}
+const cssLogin = {marginTop: '0.5em', fontSize: '1.2em'}
+
 
 export default function Register()
 {
+  const apiError  = useSelector( state => state.apiError )
+  const user      = useSelector( state => state.user )
+  const dispatch  = useDispatch()
+
   const [ name, setName ] = useState('')
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
@@ -12,13 +23,27 @@ export default function Register()
 
   function handleSubmit(e) {
     e.preventDefault()
-    alert("Отправить форму")
+
+    dispatch(sendRegister({name, email, password}))
+
+    // alert("Отправить форму")
   }
 
   return <AppHeader view="center">
 
     <form className="form" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
+
+      {apiError == "User already exists"
+        ? <div style={cssError}>
+            Сервер узнал вас, но почему-то хочет чтобы вы обязательно прошли форму входа...
+            <p style={cssLogin}><Link to="/login">Войти</Link></p>
+          </div>
+        : apiError 
+          ? <pre className="error" style={cssError}>{apiError}</pre>
+          : null
+      }
+
       <div className="row">
         <Input
           type={'text'}

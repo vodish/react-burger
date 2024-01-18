@@ -3,7 +3,7 @@ const BASE_URL = "https://norma.nomoreparties.space";
 
 
 export async function fetchRequest(endPoint, headers={}) {
-
+  
   const res = await fetch(`${BASE_URL}${endPoint}`, headers)
     .then(checkResponse)
     .then(checkJson)
@@ -15,6 +15,7 @@ async function checkResponse(res) {
   if ( !res ) {
     return Promise.reject(`Server error...`)
   }
+
   if ( !res.ok ) {
     return await res.json().then(err=>Promise.reject(err))
   }
