@@ -1,17 +1,17 @@
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import cm from './profile.module.css'
+import ProfileMenu from "../../components/profile-menu/profile-menu"
 
 
 
-export default function Register()
+export default function Profile()
 {
   const [ name, setName ] = useState('')
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   
+
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -20,14 +20,7 @@ export default function Register()
 
   return <AppHeader view="double">
 
-    <div className={cm.menu}>
-      <ul>
-        <li><NavLink to="/profile">Профиль</NavLink></li>
-        <li><NavLink to="/orders">История заказов</NavLink></li>
-        <li><NavLink to="/login">Выход</NavLink></li>
-        <li><NavLink to="/ingredients/643d69a5c3f7b9001cfa093c">Ингредиент</NavLink></li>
-      </ul>
-    </div>
+    <ProfileMenu />
 
     <form className="form v2" onSubmit={handleSubmit}>
       <p style={{maxWidth: 450}}>В этом разделе вы можете изменить свои персональные данные.</p>

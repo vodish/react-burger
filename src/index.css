@@ -27,12 +27,13 @@ a { transition: all .15s ease-in; }
 a:hover { transition: all .15s ease-in; }
 
 
-.form   { text-align: center; margin-top: -10vh; color: var(--color2); max-width: 480px; }
+.form     { text-align: center; margin-top: -10vh; color: var(--color2); max-width: 480px; }
 .form  h1   { font-size: 24px; color: var(--color1); }
-.form  a    { color: #4C4CFF; }
-.form .row    { margin-top: 24px; }
+.form  a        { color: #4C4CFF; }
+.form  a:hover  { text-decoration: none; }
+.form .row          { margin-top: 24px; }
 .form .row.submit   { margin-bottom: 80px; }
 .form .note.list    { margin-top: 16px; }
 
-.form.v2    { text-align: left; margin-top: 0; }
+.form.v2  { text-align: left; margin-top: 0; }
 .form.v2 .row.submit   { text-align: right; }
