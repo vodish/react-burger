@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 // import { useAuth } from '../services/auth';
 
@@ -13,12 +13,12 @@ import { useEffect, useState } from 'react';
 */
 
 
-export function ProtectedRouteElement({ element })
+export function ProtectedRoute()
 {
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   // console.log(element)
-  
+
   // let { getUser, ...auth } = useAuth();
 
   // const init = async () => {
@@ -38,5 +38,5 @@ export function ProtectedRouteElement({ element })
   // return auth.user ? element : <Navigate to="/login" replace/>;
   
 
-  return element;
+  return <Outlet />;
 }
