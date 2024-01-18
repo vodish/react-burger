@@ -149,7 +149,12 @@ const appSlice = createSliceWhitThunks({
                     state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
                 },
             }
-        )
+        ),
+
+
+        sendRegister: create.reducer( (state, {payload}) => {
+            console.log(payload)
+        })
         
     })
 })
