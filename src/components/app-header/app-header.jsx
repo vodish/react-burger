@@ -26,7 +26,7 @@ export default function AppHeader({children, view})
                 : <><BurgerIcon type="primary" /><span>Конструктор</span></>
               }
             </NavLink>
-            <NavLink to="/orders" className={cm.link}>
+            <NavLink to="/feed" className={cm.link}>
               { it => it.isActive
                 ? <><ListIcon type="secondary" /><span className={cm.active1}>Лента заказов</span></>
                 : <><ListIcon type="primary" /><span>Лента заказов</span></>

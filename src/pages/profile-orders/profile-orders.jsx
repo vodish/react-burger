@@ -3,7 +3,7 @@ import ProfileMenu from "../../components/profile-menu/profile-menu"
 
 
 
-export default function Orders()
+export default function ProfileOrders()
 {
   
   return <AppHeader view="double">
@@ -11,8 +11,7 @@ export default function Orders()
     <ProfileMenu />
 
     <div>
-      Список заказов
-
+      История заказов
     </div>
 
   </AppHeader>
