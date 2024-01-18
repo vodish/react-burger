@@ -21,7 +21,13 @@ const appSlice = createSliceWhitThunks({
             total: 0,
             number: null,
             error: null,
-        }
+        },
+        user: {
+            email: null,
+            name: null,
+        },
+        accessToken: null,
+        refreshToken: null,
     },
     reducers: create => ({
         

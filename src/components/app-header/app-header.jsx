@@ -2,6 +2,7 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import cm from './app-header.module.css'
 import PropTypes from "prop-types"
 import { NavLink } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 
 
@@ -13,6 +14,9 @@ AppHeader.propTypes = {
 
 export default function AppHeader({children, view})
 {
+  const userName = useSelector( state => state.user.name )
+
+  // console.log(userName)
 
   return (
     <div className={cm.app}>
@@ -35,12 +39,22 @@ export default function AppHeader({children, view})
           </div>
           <NavLink to="/"  className={cm.logo}><Logo /></NavLink>
           <div className={cm.user}>
-            <NavLink to="/profile" className={cm.link}>
-              { it => it.isActive
-                ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>
-                : <><ProfileIcon type="primary" /><span>Личный кабинет</span></>
-              }
-            </NavLink>
+
+            {userName === null
+              ? <NavLink to="/login" className={cm.link}>
+                  { it => it.isActive
+                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Войти</span></>
+                    : <><ProfileIcon type="primary" /><span>Войти</span></>
+                  }
+                </NavLink>
+              : <NavLink to="/profile" className={cm.link}>
+                  { it => it.isActive
+                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>
+                    : <><ProfileIcon type="primary" /><span>Личный кабинет</span></>
+                  }
+                </NavLink>
+            }
+            
           </div>
         </div>
       </header>
