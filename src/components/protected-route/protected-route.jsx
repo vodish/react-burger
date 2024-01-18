@@ -13,9 +13,14 @@ import { useEffect, useState } from 'react';
 */
 
 
-export function ProtectedRoute()
+export default function ProtectedRoute({element})
 {
-  const [isUserLoaded, setUserLoaded] = useState(false);
+  return element;
+}
+
+
+
+  // const [isUserLoaded, setUserLoaded] = useState(false);
 
   // console.log(element)
 
@@ -37,6 +42,3 @@ export function ProtectedRoute()
 
   // return auth.user ? element : <Navigate to="/login" replace/>;
   
-
-  return <Outlet />;
-}
