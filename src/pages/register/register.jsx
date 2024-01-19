@@ -27,7 +27,8 @@ export default function Register()
     // alert("Отправить форму")
   }
 
-  return (
+  return <AppHeader view="center">
+
     <form className="form" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
 
@@ -74,8 +75,9 @@ export default function Register()
         >Зарегистрироваться</Button>
       </div>
       
+
       <p className="note">Уже зарегистрированы? <Link to="/login">Войти</Link></p>
     </form>
-    
-  )
+
+  </AppHeader>
 }

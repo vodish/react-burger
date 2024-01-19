@@ -13,8 +13,9 @@ import Register from '../../pages/register/register';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 
-import ProtectedRoute from '../protected-route/protected-route';
 import ProfileUser from '../../pages/profile-user/profile-user';
+import ProtectedProfile from '../protected-profile/protected-profile';
+import ProtectedLogin from '../protected-login/protected-login';
 
 
 export default function App()
@@ -24,17 +25,17 @@ export default function App()
       <Routes>
         <Route path="/"                 element={<Constructor/>} />
 
-        <Route path="/login"            element={ <ProtectedRoute element={<Login/>}/> } />
-        <Route path="/register"         element={ <ProtectedRoute element={<Register/>}/> } />
-        <Route path="/forgot-password"  element={ <ProtectedRoute element={<ForgotPassword/>}/> } />
-        <Route path="/reset-password"   element={ <ProtectedRoute element={<ResetPassword/>}/> } />
-        <Route path="/reset-password"   element={ <ProtectedRoute element={<ResetPassword/>}/> } />
+        <Route path="/login"            element={ <ProtectedLogin element={<Login/>}/> } />
+        <Route path="/register"         element={ <ProtectedLogin element={<Register/>}/> } />
+        <Route path="/forgot-password"  element={ <ProtectedLogin element={<ForgotPassword/>}/> } />
+        <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
+        <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
 
         <Route path="/ingredients/:id"  element={<IngredientsId/>} />
         <Route path="/feed"             element={<Feed/>} />
         <Route path="/feed/:id"         element={<Feed/>} />
         
-        <Route path="/profile"          element={ <ProtectedRoute element={<Profile/>}/> }>
+        <Route path="/profile"          element={ <ProtectedProfile element={<Profile/>}/> }>
           <Route  path=""               element={<ProfileUser/>} />
           <Route  path="orders"         element={<ProfileOrders/>} />
         </Route>
