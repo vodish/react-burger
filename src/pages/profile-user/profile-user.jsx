@@ -1,17 +1,15 @@
-import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
-import ProfileMenu from "../../components/profile-menu/profile-menu"
 import { useSelector } from "react-redux"
 
 
 
 export default function ProfileUser()
 {
-  const stateUser = useSelector( state => state.user )
-  const [ name, setName ] = useState('')
-  const [ email, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
+  const stateUser                   = useSelector( state => state.user )
+  const [ name, setName ]           = useState('')
+  const [ email, setEmail ]         = useState('')
+  const [ password, setPassword ]   = useState('')
   
   useEffect(()=>{
     setName( stateUser.name )
