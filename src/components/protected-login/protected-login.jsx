@@ -1,5 +1,5 @@
-import { Outlet, Navigate } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux';
 
 /*
 только для прохожих
@@ -12,7 +12,13 @@ import { useEffect, useState } from 'react';
 
 export default function ProtectedLogin({element})
 {
-  console.log('защитить авторизацию')
+  const refreshToken = useSelector(state => state.refreshToken)
+
+
+  if ( refreshToken ) {
+    return <Navigate to="/?ProtectedLogin" replace />
+  }
+
   
   return element;
 }

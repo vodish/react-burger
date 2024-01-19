@@ -15,7 +15,9 @@ export default function Login()
 
 
   useEffect(()=>{
-    dispatch(removeApiError())
+    if ( apiError ) {
+      dispatch(removeApiError())
+    }
   }, [])
 
   

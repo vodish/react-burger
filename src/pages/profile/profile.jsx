@@ -25,6 +25,7 @@ export default function Profile()
         <li><NavLink to="/profile/orders" className={it=>it.isActive ? cm.active: ''}>История заказов</NavLink></li>
         <li><span onClick={handleLogout}>Выход</span></li>
         <li><NavLink to="/ingredients/643d69a5c3f7b9001cfa093c">Ингредиент</NavLink></li>
+        <li><NavLink to="/login">Login</NavLink></li>
       </ul>
     </div>
 
