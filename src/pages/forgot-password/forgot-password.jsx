@@ -1,7 +1,7 @@
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { fetchRequest } from "../../utils/api"
 
 /*
@@ -16,12 +16,17 @@ import { fetchRequest } from "../../utils/api"
 После успешного завершения запроса нужно удалить этот флаг из localStorage и сделать редирект 
 на страницу авторизации (это единственное место в проекте кроме ProtectedRoute 
 где может потребоваться такой редирект).
+
+ответ успеха {
+  "success": true,
+  "message": "Reset email sent"
+} 
 */
 
 export default function Register()
 {
   const [ email, setEmail ] = useState('')
-  
+  const navigate = useNavigate()
 
 
   async function handleSubmit(e) {
@@ -33,9 +38,12 @@ export default function Register()
       body: JSON.stringify({email}),
     })
 
-    console.log(res)
-
-
+    if ( res.success ) {
+      navigate('/reset-password')
+    }
+    else {
+      console.log(res)
+    }
   }
 
   return <AppHeader view="center">
