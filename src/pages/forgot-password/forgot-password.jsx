@@ -48,6 +48,7 @@ export default function Register()
     }
   }
 
+  
   return <AppHeader view="center">
 
     <form className="form" onSubmit={handleSubmit}>
