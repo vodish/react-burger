@@ -1,15 +1,25 @@
+import { useDispatch, useSelector } from 'react-redux'
 import cm from './profile-menu.module.css'
 import { NavLink } from 'react-router-dom'
+import { sendLogoutThunk } from '../../services/appSlice'
 
 
 export default function ProfileMenu()
 {
+  const refreshToken = useSelector(state => state.refreshToken)
+  const dispatch = useDispatch()
+
+
+  function handleLogout() {
+    dispatch( sendLogoutThunk({token: refreshToken}) )
+  }
+
   return (
     <div className={cm.menu}>
       <ul>
         <li><NavLink to="/profile" className={it=>it.isActive ? cm.active: ''} end>Профиль</NavLink></li>
         <li><NavLink to="/profile/orders" className={it=>it.isActive ? cm.active: ''}>История заказов</NavLink></li>
-        <li><NavLink to="/login">Выход</NavLink></li>
+        <li><span onClick={handleLogout}>Выход</span></li>
         <li><NavLink to="/ingredients/643d69a5c3f7b9001cfa093c">Ингредиент</NavLink></li>
       </ul>
     </div>   

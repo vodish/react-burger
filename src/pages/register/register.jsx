@@ -3,11 +3,9 @@ import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-de
 import { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
-import { sendRegister } from "../../services/appSlice"
+import { sendRegisterThunk } from "../../services/appSlice"
 
 
-const cssError = {marginTop: '2em'}
-const cssLogin = {marginTop: '0.5em', fontSize: '1.2em'}
 
 
 export default function Register()
@@ -24,23 +22,22 @@ export default function Register()
   function handleSubmit(e) {
     e.preventDefault()
 
-    dispatch(sendRegister({name, email, password}))
+    dispatch(sendRegisterThunk({name, email, password}))
 
     // alert("Отправить форму")
   }
 
-  return <AppHeader view="center">
-
+  return (
     <form className="form" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
 
       {apiError == "User already exists"
-        ? <div style={cssError}>
+        ? <div className="apiError">
             Сервер узнал вас, но почему-то хочет чтобы вы обязательно прошли форму входа...
-            <p style={cssLogin}><Link to="/login">Войти</Link></p>
+            <p style={{marginTop: '0.5em', fontSize: '1.2em'}}><Link to="/login">Войти</Link></p>
           </div>
         : apiError 
-          ? <pre className="error" style={cssError}>{apiError}</pre>
+          ? <pre className="error apiError">{apiError}</pre>
           : null
       }
 
@@ -77,9 +74,8 @@ export default function Register()
         >Зарегистрироваться</Button>
       </div>
       
-
       <p className="note">Уже зарегистрированы? <Link to="/login">Войти</Link></p>
     </form>
-
-  </AppHeader>
+    
+  )
 }

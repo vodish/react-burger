@@ -153,24 +153,28 @@ const appSlice = createSliceWhitThunks({
 
 
     // регистрация, токены, пользователь
-    removeApiError: create.reducer(state => { state.apiError = null }),
+    
+    removeApiError: create.reducer(state => {
+        state.apiError = null
+    }),
 
-    sendRegister: create.asyncThunk(
-      async (newUser) => {
+
+    sendRegisterThunk: create.asyncThunk(
+      async (userData) => {
         return await fetchRequest('/api/auth/register', {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify(newUser),
+            body: JSON.stringify(userData),
         })
       },
       {
         fulfilled: (state, {payload})=>{
           console.log(payload)
           
-          state.user.name = payload.user.name
-          state.user.email = payload.user.email
+          state.user.name   =   payload.user.name
+          state.user.email  =   payload.user.email
           
         },
         rejected: (state, action) => {
@@ -183,8 +187,60 @@ const appSlice = createSliceWhitThunks({
           }
         },
       }
+    ),
 
-    )
+    sendLoginThunk: create.asyncThunk(
+        async (userData) => {
+            return await fetchRequest('/api/auth/login', {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(userData),
+            })
+        },
+        {
+            fulfilled: (state, {payload}) => {
+                console.log(payload)
+                state.user          =   payload.user
+                state.accessToken   =   payload.accessToken
+                state.refreshToken  =   payload.refreshToken
+                state.apiError      =   null
+            },
+            rejected: (state, action) => {
+                console.log(action)
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            }
+        }
+    ),
+
+    
+    sendLogoutThunk: create.asyncThunk(
+        async (userData) => {
+            return await fetchRequest('/api/auth/logout', {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(userData),
+            })
+        },
+        {
+            fulfilled: (state, {payload}) => {
+                state.user.name     =   null
+                state.user.email    =   null
+                state.accessToken   =   null
+                state.refreshToken  =   null
+                state.apiError      =   null
+            },
+            rejected: (state, action) => {
+                console.log(action)
+                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            }
+        }
+    ),
+
+    
       
   })
 })
@@ -202,7 +258,9 @@ export const {
     sendOrderThunk,
 
     removeApiError,
-    sendRegister,
+    sendRegisterThunk,
+    sendLoginThunk,
+    sendLogoutThunk,
 
 } = appSlice.actions
 

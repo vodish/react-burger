@@ -1,15 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeApiError } from '../../services/appSlice'
+import { removeApiError, sendLoginThunk } from '../../services/appSlice'
 
 export default function Login()
 {
-  const apiError = useSelector( state => state.apiError )
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const apiError  = useSelector( state => state.apiError )
+  const userName  = useSelector( state => state.user.name )
+  const dispatch  = useDispatch()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
 
@@ -21,14 +21,25 @@ export default function Login()
   
   function handleSubmit(e) {
     e.preventDefault()
-    // alert("Отправить форму")
-    navigate('/')
+    
+    dispatch( sendLoginThunk({email, password}) );    
+  }
+
+  if ( userName ) {
+    // alert('Перенаправить пользователя')
+    return <Navigate to="/" replace={true} />
   }
 
   return <AppHeader view="center">
 
     <form className="form" onSubmit={handleSubmit}>
       <h1>Вход</h1>
+
+      {apiError 
+          ? <pre className="error apiError">{apiError}</pre>
+          : null
+      }
+
       <div className="row">
         <EmailInput
           onChange={e => setEmail(e.target.value)}

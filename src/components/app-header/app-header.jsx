@@ -43,14 +43,14 @@ export default function AppHeader({children, view})
             {userName === null
               ? <NavLink to="/login" className={cm.link}>
                   { it => it.isActive
-                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Войти</span></>
-                    : <><ProfileIcon type="primary" /><span>Войти</span></>
+                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>
+                    : <><ProfileIcon type="primary" /><span>Личный кабинет</span></>
                   }
                 </NavLink>
               : <NavLink to="/profile" className={cm.link}>
                   { it => it.isActive
-                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>
-                    : <><ProfileIcon type="primary" /><span>Личный кабинет</span></>
+                    ? <><ProfileIcon type="secondary" /><span className={cm.active1}>{userName}</span></>
+                    : <><ProfileIcon type="primary" /><span>{userName}</span></>
                   }
                 </NavLink>
             }

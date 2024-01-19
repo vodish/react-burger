@@ -34,6 +34,7 @@ a:hover { transition: all .15s ease-in; }
 .form .row          { margin-top: 24px; }
 .form .row.submit   { margin-bottom: 80px; }
 .form .note.list    { margin-top: 16px; }
+.form .apiError     { margin-top: '2em'; }
 
 .form.v2  { text-align: left; margin-top: 0; }
 .form.v2 .row.submit   { text-align: right; }

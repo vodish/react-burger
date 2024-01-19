@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 
 export default function ProtectedRoute({element})
 {
+  console.log('проверить права')
   return element;
 }
 
