@@ -26,6 +26,7 @@ import { fetchRequest } from "../../utils/api"
 export default function Register()
 {
   const [ email, setEmail ] = useState('')
+  const [ apiError, setApiError ] = useState(null)
   const navigate = useNavigate()
 
 
@@ -43,6 +44,7 @@ export default function Register()
     }
     else {
       console.log(res)
+      setApiError(res)
     }
   }
 
@@ -52,6 +54,11 @@ export default function Register()
 
       <h1>Восстановление пароля</h1>
       
+      {apiError 
+        ? <pre className="error apiError">{apiError}</pre>
+        : null
+      }
+
       <div className="row">
         <EmailInput
           onChange={e => setEmail(e.target.value)}
