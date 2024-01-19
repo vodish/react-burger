@@ -226,21 +226,38 @@ const appSlice = createSliceWhitThunks({
             })
         },
         {
-            fulfilled: (state, {payload}) => {
+            fulfilled: state => {
                 state.user.name     =   null
                 state.user.email    =   null
                 state.accessToken   =   null
                 state.refreshToken  =   null
                 state.apiError      =   null
             },
-            rejected: (state, action) => {
+            rejected: (_, action) => {
                 console.log(action)
                 // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
-
     
+    forgotPasswordThunk: create.asyncThunk(
+        async userData => await fetchRequest('/api/password-reset', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(userData),
+        }),
+        {
+            fulfilled: (state, action) => {
+
+            },
+            rejected: (state, action) => {
+
+            }
+        }
+    ),
+
       
   })
 })

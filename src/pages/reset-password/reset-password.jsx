@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 export default function Register()
 {
-  const [ code, setCode ] = useState('')
-  const [ password, setPassword ] = useState('')
+  const [ password, setPassword ] =   useState('')
+  const [ code, setCode ]         =   useState('')
   
 
   function handleSubmit(e) {
@@ -17,7 +17,9 @@ export default function Register()
   return <AppHeader view="center">
 
     <form className="form" onSubmit={handleSubmit}>
-      <h1>Восстановление пароля</h1>
+
+      <h1>Замена пароля</h1>
+      
       <div className="row">
         <PasswordInput
           placeholder={'Введите новый пароль'}
@@ -29,7 +31,7 @@ export default function Register()
       <div className="row">
         <Input
           type={'text'}
-          placeholder={'Введите код из письма'}
+          placeholder={'Код из письма'}
           onChange={e => setCode(e.target.value)}
           value={code}
           name={'name'}
