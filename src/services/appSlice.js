@@ -175,6 +175,8 @@ const appSlice = createSliceWhitThunks({
           
           state.user.name   =   payload.user.name
           state.user.email  =   payload.user.email
+          state.accessToken     =   payload.accessToken
+          state.refreshToken    =   payload.refreshToken
           
         },
         rejected: (state, action) => {

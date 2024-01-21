@@ -41,7 +41,7 @@ export default function Login()
       {apiError 
           ? <pre className="apiError">{apiError}</pre>
           : location.state && location.state.redirect
-            ? <pre className="apiError redirect">{location.state.redirect}</pre>
+            ? <div className="apiError redirect">{location.state.redirect}</div>
             : null
       }
 

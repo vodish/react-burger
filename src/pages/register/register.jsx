@@ -19,7 +19,6 @@ import { sendRegisterThunk } from "../../services/appSlice"
 export default function Register()
 {
   const apiError  = useSelector( state => state.apiError )
-  const user      = useSelector( state => state.user )
   const dispatch  = useDispatch()
 
   const [ name, setName ] = useState('')
@@ -29,10 +28,7 @@ export default function Register()
 
   function handleSubmit(e) {
     e.preventDefault()
-
     dispatch(sendRegisterThunk({name, email, password}))
-
-    // alert("Отправить форму")
   }
 
   return <AppHeader view="center">
@@ -46,7 +42,7 @@ export default function Register()
             <p style={{marginTop: '0.5em', fontSize: '1.2em'}}><Link to="/login">Войти</Link></p>
           </div>
         : apiError 
-          ? <pre className="error apiError">{apiError}</pre>
+          ? <pre className="apiError">{apiError}</pre>
           : null
       }
 
