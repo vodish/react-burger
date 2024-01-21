@@ -1,4 +1,4 @@
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
@@ -7,30 +7,30 @@ import { removeApiError, sendLoginThunk } from '../../services/appSlice'
 
 export default function Login()
 {
-  const apiError  = useSelector( state => state.apiError )
-  const userName  = useSelector( state => state.user.name )
-  const dispatch  = useDispatch()
+  const location  =   useLocation()
+  const apiError  =   useSelector( state => state.apiError )
+  const dispatch  =   useDispatch()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
 
 
   useEffect(()=>{
+    
     if ( apiError ) {
       dispatch(removeApiError())
     }
+
+    console.log(location)
+    
   }, [])
 
   
   function handleSubmit(e) {
     e.preventDefault()
-    
     dispatch( sendLoginThunk({email, password}) );    
   }
 
-  if ( userName ) {
-    // alert('Перенаправить пользователя')
-    return <Navigate to="/" replace={true} />
-  }
+
 
   return <AppHeader view="center">
 
@@ -39,8 +39,10 @@ export default function Login()
       <h1>Вход</h1>
 
       {apiError 
-          ? <pre className="error apiError">{apiError}</pre>
-          : null
+          ? <pre className="apiError">{apiError}</pre>
+          : location.state && location.state.redirect
+            ? <pre className="apiError redirect">{location.state.redirect}</pre>
+            : null
       }
 
       <div className="row">

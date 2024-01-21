@@ -6,16 +6,12 @@ import { fetchRequest } from "../../utils/api"
 
 /*
 @kruglovand
-3) Реализовать проверку того, что на страницу reset-password можно попасть только с forgot-paassword,
+3)
+Реализовать проверку того, что на страницу reset-password можно попасть только с forgot-paassword,
 можно следующим образом: после сабмита формы на странице forgot-password
 отправляете запрос на сервер (не надо делать для этого экшен, просто обычная функция)
 и когда запрос завершится успешно (в then) записываете в localStorage флаг
-и делаете редирект на reset-password. На странице reset-password у вас перед return должна 
-быть проверка, что если в localStorage нет флага с таким именем, то проиcходит редирект 
-на главную страницу (<Navigate>). Запрос для сброса пароля тоже не нужно оформлять в виде экшена. 
-После успешного завершения запроса нужно удалить этот флаг из localStorage и сделать редирект 
-на страницу авторизации (это единственное место в проекте кроме ProtectedRoute 
-где может потребоваться такой редирект).
+и делаете редирект на reset-password.
 
 ответ успеха {
   "success": true,
@@ -40,6 +36,7 @@ export default function Register()
     })
 
     if ( res.success ) {
+      sessionStorage.setItem('forgot-password', 1);
       navigate('/reset-password')
     }
     else {
