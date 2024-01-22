@@ -19,7 +19,7 @@ import ProtectedProfile from '../protected-profile/protected-profile';
 import ProtectedLogin from '../protected-login/protected-login';
 import { useDispatch } from 'react-redux';
 import { getProfileThunk } from '../../services/appSlice';
-import { OnlyAuth } from '../protected-route/protected-route';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 
 
 export default function App()
@@ -39,17 +39,15 @@ export default function App()
         <Route path="/"                 element={<Constructor/>} />
         <Route path="/ingredients/:id"  element={<IngredientsId/>} />
 
-        <Route path="/login"            element={ <ProtectedLogin element={<Login/>}/> } />
-        <Route path="/register"         element={ <ProtectedLogin element={<Register/>}/> } />
-        <Route path="/forgot-password"  element={ <ProtectedLogin element={<ForgotPassword/>}/> } />
-        <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
-        <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
+        <Route path="/login"            element={ <OnlyUnAuth component={<Login/>}/> } />
+        <Route path="/register"         element={ <OnlyUnAuth component={<Register/>}/> } />
+        <Route path="/forgot-password"  element={ <OnlyUnAuth component={<ForgotPassword/>}/> } />
+        <Route path="/reset-password"   element={ <OnlyUnAuth component={<ResetPassword/>}/> } />
 
         <Route path="/feed"             element={<Feed/>} />
         <Route path="/feed/:id"         element={<Feed/>} />
         
         <Route path="/profile"          element={ <OnlyAuth component={<Profile/>}/> }>
-        {/* <Route path="/profile"          element={ <ProtectedProfile element={<Profile/>}/> }> */}
           <Route  path=""               element={<ProfileUser/>} />
           <Route  path="orders"         element={<ProfileOrders/>} />
         </Route>

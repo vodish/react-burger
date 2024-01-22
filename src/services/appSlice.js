@@ -200,6 +200,7 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 setToken(payload)
+                // state.user.isAuthChecked    =   true
                 state.user          =   payload.user
                 state.apiError      =   null
             },
@@ -222,6 +223,7 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: state => {
+                // state.user.isAuthChecked    =   false
                 state.user.name     =   null
                 state.user.email    =   null
                 state.apiError      =   null
@@ -245,8 +247,7 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                // console.log(payload)
-                state.user.isAuthChecked    =   true
+                // state.user.isAuthChecked    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
                 state.apiError      =   null
