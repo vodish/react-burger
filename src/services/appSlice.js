@@ -235,7 +235,6 @@ const appSlice = createSliceWhitThunks({
     
     getProfileThunk: create.asyncThunk(
         async () => {
-            // return await fetchWithRefresh('/api/auth/user', {
             return await fetchRequest('/api/auth/user', {
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
@@ -257,8 +256,33 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
+    updateProfileThunk: create.asyncThunk(
+        async (userData) => {
+            return await fetchRequest('/api/auth/user', {
+                method: "PATCH",
+                headers: {
+                  'authorization': localStorage.getItem('accessToken'),
+                  'Content-Type': 'application/json;charset=utf-8',
+                },
+                body: JSON.stringify(userData),
+            })
+        },
+        {
+            fulfilled: (state, {payload}) => {
+                console.log(payload)
+                state.user.name     =   payload.user.name
+                state.user.email    =   payload.user.email
+                state.apiError      =   null
+            },
+            rejected: (_, action) => {
+                console.log(action)
+                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            }
+        }
+    ),
+    
 
-
+    
   })
 })
 
@@ -279,6 +303,7 @@ export const {
     sendLoginThunk,
     sendLogoutThunk,
     getProfileThunk,
+    updateProfileThunk,
 
 } = appSlice.actions
 

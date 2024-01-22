@@ -27,7 +27,6 @@ export default function App()
 
   useEffect(()=>{
     if ( localStorage.getItem('accessToken') ) {
-      // console.log('Запрос пользователя')
       dispatch( getProfileThunk() )
     }
   }, [])

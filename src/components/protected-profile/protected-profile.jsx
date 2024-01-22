@@ -7,10 +7,10 @@ import { Navigate } from 'react-router-dom'
 export default function ProtectedProfile({element})
 {
   const userEmail = useSelector(state=>state.user.email)
+  
 
 
-
-  if ( ! userEmail ) {
+  if ( ! localStorage.getItem('accessToken') ) {
     return <Navigate to="/login" replace />
   }
 
