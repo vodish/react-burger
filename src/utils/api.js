@@ -10,6 +10,7 @@ export async function fetchRequest(endPoint, options={}) {
     return Promise.reject(`Server error...`)
   }
 
+  
   const json  = await res.json()
   options     = await checkTokenRefresh(options, json)
   

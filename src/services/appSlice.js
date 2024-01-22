@@ -199,10 +199,11 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                setToken(payload)
-                // state.user.isAuthChecked    =   true
-                state.user          =   payload.user
+                state.user.isAuthChecked    =   true
+                state.user.name     =   payload.user.name
+                state.user.email    =   payload.user.email
                 state.apiError      =   null
+                setToken(payload)
             },
             rejected: (state, action) => {
                 console.log(action)
@@ -223,7 +224,6 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: state => {
-                // state.user.isAuthChecked    =   false
                 state.user.name     =   null
                 state.user.email    =   null
                 state.apiError      =   null
@@ -236,6 +236,10 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
+    setIsAuthCheck: create.reducer( state => {
+        state.user.isAuthChecked = true
+    }),
+
     getProfileThunk: create.asyncThunk(
         async () => {
             return await fetchRequest('/api/auth/user', {
@@ -247,15 +251,16 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                // state.user.isAuthChecked    =   true
+                console.log(payload)
+                state.user.isAuthChecked    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
                 state.apiError      =   null
             },
-            rejected: (_, action) => {
-                console.log(action)
+            rejected: (state, {payload}) => {
+                console.log(payload)
                 // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
-            }
+            },
         }
     ),
     
@@ -306,6 +311,7 @@ export const {
     sendLoginThunk,
     sendLogoutThunk,
     getProfileThunk,
+    setIsAuthCheck,
     updateProfileThunk,
 
 } = appSlice.actions

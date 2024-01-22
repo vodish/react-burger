@@ -15,10 +15,8 @@ import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ResetPassword from '../../pages/reset-password/reset-password';
 
 import ProfileUser from '../../pages/profile-user/profile-user';
-import ProtectedProfile from '../protected-profile/protected-profile';
-import ProtectedLogin from '../protected-login/protected-login';
 import { useDispatch } from 'react-redux';
-import { getProfileThunk } from '../../services/appSlice';
+import { getProfileThunk, setIsAuthCheck } from '../../services/appSlice';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 
 
@@ -29,6 +27,8 @@ export default function App()
   useEffect(()=>{
     if ( localStorage.getItem('accessToken') ) {
       dispatch( getProfileThunk() )
+    } else {
+      dispatch( setIsAuthCheck() )
     }
   }, [])
 
