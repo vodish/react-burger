@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import cm from './profile.module.css'
 import { NavLink, Outlet } from 'react-router-dom'
 import { sendLogoutThunk } from '../../services/appSlice'
@@ -7,12 +7,11 @@ import AppHeader from '../../components/app-header/app-header'
 
 export default function Profile()
 {
-  const refreshToken = useSelector(state => state.refreshToken)
   const dispatch = useDispatch()
 
 
   function handleLogout() {
-    dispatch( sendLogoutThunk({token: refreshToken}) )
+    dispatch( sendLogoutThunk({token: localStorage.getItem('refreshToken')}) )
   }
 
 

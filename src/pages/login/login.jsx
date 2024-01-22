@@ -15,19 +15,15 @@ export default function Login()
 
 
   useEffect(()=>{
-    
     if ( apiError ) {
       dispatch(removeApiError())
     }
-
-    console.log(location)
-    
   }, [])
 
   
   function handleSubmit(e) {
     e.preventDefault()
-    dispatch( sendLoginThunk({email, password}) );    
+    dispatch( sendLoginThunk({email, password}) );
   }
 
 

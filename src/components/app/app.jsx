@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Page404 from '../../pages/page404/page404';
 
@@ -16,14 +17,27 @@ import ResetPassword from '../../pages/reset-password/reset-password';
 import ProfileUser from '../../pages/profile-user/profile-user';
 import ProtectedProfile from '../protected-profile/protected-profile';
 import ProtectedLogin from '../protected-login/protected-login';
+import { useDispatch } from 'react-redux';
+import { getProfileThunk } from '../../services/appSlice';
 
 
 export default function App()
 {
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    if ( localStorage.getItem('accessToken') ) {
+      // console.log('Запрос пользователя')
+      dispatch( getProfileThunk() )
+    }
+  }, [])
+
+
   return(
     <BrowserRouter>
       <Routes>
         <Route path="/"                 element={<Constructor/>} />
+        <Route path="/ingredients/:id"  element={<IngredientsId/>} />
 
         <Route path="/login"            element={ <ProtectedLogin element={<Login/>}/> } />
         <Route path="/register"         element={ <ProtectedLogin element={<Register/>}/> } />
@@ -31,7 +45,6 @@ export default function App()
         <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
         <Route path="/reset-password"   element={ <ProtectedLogin element={<ResetPassword/>}/> } />
 
-        <Route path="/ingredients/:id"  element={<IngredientsId/>} />
         <Route path="/feed"             element={<Feed/>} />
         <Route path="/feed/:id"         element={<Feed/>} />
         

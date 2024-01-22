@@ -1,5 +1,6 @@
+// import { useEffect, useState }  from 'react'
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import { useSelector } from 'react-redux';
 
 /*
 только для прохожих
@@ -12,10 +13,11 @@ import { useSelector } from 'react-redux';
 
 export default function ProtectedLogin({element})
 {
-  const refreshToken = useSelector(state => state.refreshToken)
+  const userEmail = useSelector(state=>state.user.email)
+  
+  
 
-
-  if ( refreshToken ) {
+  if ( userEmail ) {
     return <Navigate to="/?ProtectedLogin" replace />
   }
 

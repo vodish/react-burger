@@ -1,5 +1,6 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
-import { fetchRequest } from "../utils/api";
+import { fetchRequest, fetchWithRefresh } from "../utils/api";
+import { removeToken, setToken } from "../utils/storage";
 
 
 const createSliceWhitThunks = buildCreateSlice({
@@ -27,8 +28,6 @@ const appSlice = createSliceWhitThunks({
       name: null,
     },
     apiError: null,
-    accessToken: null,
-    refreshToken: null,
   },
   reducers: create => ({
       
@@ -158,7 +157,6 @@ const appSlice = createSliceWhitThunks({
         state.apiError = null
     }),
 
-
     sendRegisterThunk: create.asyncThunk(
       async (userData) => {
         return await fetchRequest('/api/auth/register', {
@@ -172,12 +170,9 @@ const appSlice = createSliceWhitThunks({
       {
         fulfilled: (state, {payload})=>{
           console.log(payload)
-          
           state.user.name   =   payload.user.name
           state.user.email  =   payload.user.email
-          state.accessToken     =   payload.accessToken
-          state.refreshToken    =   payload.refreshToken
-          
+          setToken(payload)
         },
         rejected: (state, action) => {
           console.log(action)
@@ -203,10 +198,8 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                console.log(payload)
+                setToken(payload)
                 state.user          =   payload.user
-                state.accessToken   =   payload.accessToken
-                state.refreshToken  =   payload.refreshToken
                 state.apiError      =   null
             },
             rejected: (state, action) => {
@@ -215,14 +208,13 @@ const appSlice = createSliceWhitThunks({
             }
         }
     ),
-
     
     sendLogoutThunk: create.asyncThunk(
         async (userData) => {
             return await fetchRequest('/api/auth/logout', {
                 method: "POST",
                 headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
+                  'Content-Type': 'application/json;charset=utf-8',
                 },
                 body: JSON.stringify(userData),
             })
@@ -231,8 +223,31 @@ const appSlice = createSliceWhitThunks({
             fulfilled: state => {
                 state.user.name     =   null
                 state.user.email    =   null
-                state.accessToken   =   null
-                state.refreshToken  =   null
+                state.apiError      =   null
+                removeToken()
+            },
+            rejected: (_, action) => {
+                console.log(action)
+                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            }
+        }
+    ),
+    
+    getProfileThunk: create.asyncThunk(
+        async () => {
+            // return await fetchWithRefresh('/api/auth/user', {
+            return await fetchRequest('/api/auth/user', {
+                headers: {
+                  'authorization': localStorage.getItem('accessToken'),
+                  'Content-Type': 'application/json;charset=utf-8',
+                }
+            })
+        },
+        {
+            fulfilled: (state, {payload}) => {
+                // console.log(payload)
+                state.user.name     =   payload.user.name
+                state.user.email    =   payload.user.email
                 state.apiError      =   null
             },
             rejected: (_, action) => {
@@ -242,6 +257,8 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
+
+
   })
 })
 
@@ -261,6 +278,7 @@ export const {
     sendRegisterThunk,
     sendLoginThunk,
     sendLogoutThunk,
+    getProfileThunk,
 
 } = appSlice.actions
 
@@ -276,8 +294,8 @@ function stateCalculation(state) {
     let counts = {};
 
     [...state.order.buns, ...state.order.adds ].map( item => {
-        counts[item._id] = counts[item._id] ? ++counts[item._id]:  1;
-        state.order.total += item.price;
+        counts[item._id]    =   counts[item._id] ? ++counts[item._id]:  1;
+        state.order.total   +=  item.price;
     })
     
     state.ingredients.list  =   state.ingredients.list.map( item => {
