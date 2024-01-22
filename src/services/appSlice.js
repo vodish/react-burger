@@ -12,20 +12,21 @@ const appSlice = createSliceWhitThunks({
   name: 'app',
   initialState: {
     ingredients: {
-      list: [],
-      types: [],
-      error: null
+        list: [],
+        types: [],
+        error: null
     },
     order: {
-      buns: [],
-      adds: [],
-      total: 0,
-      number: null,
-      error: null,
+        buns: [],
+        adds: [],
+        total: 0,
+        number: null,
+        error: null,
     },
     user: {
-      email: null,
-      name: null,
+        isAuthChecked: false,
+        email: null,
+        name: null,
     },
     apiError: null,
   },
@@ -245,6 +246,7 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 // console.log(payload)
+                state.user.isAuthChecked    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
                 state.apiError      =   null

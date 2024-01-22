@@ -8,19 +8,11 @@ import { getProfileThunk, updateProfileThunk } from '../../services/appSlice'
 export default function ProfileUser()
 {
   const dispatch    = useDispatch()  
-  const user        = useSelector( state => state.user.name )
+  const user        = useSelector( state => state.user )
   
   const [ name, setName ]           = useState(user.name)
-  const [ email, setEmail ]         = useState('')
+  const [ email, setEmail ]         = useState(user.email)
   const [ password, setPassword ]   = useState('')
-  
-  useEffect(()=>{
-    if ( user ) {
-      console.log('const user = useSelector( state => state.user.name )')
-      console.log(user)
-    }
-  }, [])
-
   
 
 
@@ -43,7 +35,7 @@ export default function ProfileUser()
           type={'text'}
           placeholder={'Имя'}
           onChange={e => setName(e.target.value)}
-          value={name? name: ''}
+          value={name}
           name={'name'}
         />
       </div>
