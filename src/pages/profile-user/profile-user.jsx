@@ -18,17 +18,19 @@ export default function ProfileUser()
     console.log(stateUser)
     // setName( stateUser.name )
     // setEmail( stateUser.email )
-  }, [useSelector, stateUser])
+  }, [])
 
 
   function handleSubmit(e) {
     e.preventDefault()
 
+    console.log({name, email, password})
+
     dispatch( updateProfileThunk({name, email, password}) )
     // alert("Сделать отправку данных на сервер")
   }
 
-  
+
   return(
     <form className="form v2" onSubmit={handleSubmit}>
       <p style={{maxWidth: 450}}>В этом разделе вы можете изменить свои персональные данные.</p>
