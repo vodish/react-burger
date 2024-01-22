@@ -1,24 +1,27 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { updateProfileThunk } from '../../services/appSlice'
+import { getProfileThunk, updateProfileThunk } from '../../services/appSlice'
 
 
 
 export default function ProfileUser()
 {
-  const stateUser   = useSelector( state => state.user )
   const dispatch    = useDispatch()  
-
-  const [ name, setName ]           = useState('')
+  const user        = useSelector( state => state.user.name )
+  
+  const [ name, setName ]           = useState(user.name)
   const [ email, setEmail ]         = useState('')
   const [ password, setPassword ]   = useState('')
   
   useEffect(()=>{
-    console.log(stateUser)
-    // setName( stateUser.name )
-    // setEmail( stateUser.email )
+    if ( user ) {
+      console.log('const user = useSelector( state => state.user.name )')
+      console.log(user)
+    }
   }, [])
+
+  
 
 
   function handleSubmit(e) {
@@ -30,7 +33,6 @@ export default function ProfileUser()
     // alert("Сделать отправку данных на сервер")
   }
 
-
   return(
     <form className="form v2" onSubmit={handleSubmit}>
       <p style={{maxWidth: 450}}>В этом разделе вы можете изменить свои персональные данные.</p>
@@ -41,7 +43,7 @@ export default function ProfileUser()
           type={'text'}
           placeholder={'Имя'}
           onChange={e => setName(e.target.value)}
-          value={name}
+          value={name? name: ''}
           name={'name'}
         />
       </div>
