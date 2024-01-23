@@ -1,5 +1,4 @@
 import cm from "./constructor.module.css";
-import AppHeader from "../../components/app-header/app-header";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import Modal from "../../components/modal/modal";
@@ -18,8 +17,6 @@ export default function Constructor()
   const order           =   useSelector(state => state.order )
 
   
-
-
   const [ , dropIngredients ] = useDrop({
     accept: 'reorder',
     drop(item) {

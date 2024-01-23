@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux'
 import cm from './profile.module.css'
 import { NavLink, Outlet } from 'react-router-dom'
 import { sendLogoutThunk } from '../../services/appSlice'
-import AppHeader from '../../components/app-header/app-header'
 
 
 export default function Profile()

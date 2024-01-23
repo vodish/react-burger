@@ -1,5 +1,4 @@
 import { Link, Navigate, useLocation } from 'react-router-dom'
-import AppHeader from "../../components/app-header/app-header"
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

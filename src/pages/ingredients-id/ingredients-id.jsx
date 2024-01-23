@@ -1,6 +1,5 @@
 import { useMemo } from "react"
 import { useSelector } from "react-redux"
-import AppHeader from "../../components/app-header/app-header"
 import IngredientDetails from "../../components/ingredient-details/ingredient-details"
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"

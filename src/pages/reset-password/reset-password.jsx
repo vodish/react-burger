@@ -1,4 +1,3 @@
-import AppHeader from "../../components/app-header/app-header"
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
