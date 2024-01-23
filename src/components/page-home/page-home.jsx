@@ -19,9 +19,6 @@ function App()
   const order           =   useSelector(state => state.order )
 
   
-  useEffect(()=>{
-    dispatch( getIngredientsThunk() )
-  }, [])
 
 
   const [ , dropIngredients ] = useDrop({

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import cm from "./constructor.module.css";
 import AppHeader from "../../components/app-header/app-header";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
@@ -19,9 +18,6 @@ export default function Constructor()
   const order           =   useSelector(state => state.order )
 
   
-  useEffect(()=>{
-    dispatch( getIngredientsThunk() )
-  }, [])
 
 
   const [ , dropIngredients ] = useDrop({

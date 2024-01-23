@@ -25,6 +25,7 @@ function BurgerConstructor()
   async function handleOrderSubmit() {
     if ( ! userName ) {
       navigate('/login')
+      return;
     }
 
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
