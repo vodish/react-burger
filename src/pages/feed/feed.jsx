@@ -5,9 +5,9 @@ import AppHeader from "../../components/app-header/app-header"
 export default function Feed()
 {
   
-  return <AppHeader view="double">
+  return <>
 
-    <div className="list">
+    <div className="list double">
       <h1>Лента заказов</h1>
       <ul>
         <li>#987213</li>
@@ -18,7 +18,7 @@ export default function Feed()
       </ul>
     </div>
 
-    <div className="tablo">
+    <div className="tablo double">
 
       <div className="state">
       <div>
@@ -41,5 +41,5 @@ export default function Feed()
       
     </div>
 
-  </AppHeader>
+  </>
 }

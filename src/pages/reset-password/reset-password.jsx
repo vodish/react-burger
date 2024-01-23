@@ -64,9 +64,8 @@ export default function Register()
   
 
 
-  return <AppHeader view="center">
-
-    <form className="form" onSubmit={handleSubmit}>
+  return(
+    <form className="form center" onSubmit={handleSubmit}>
 
       <h1>Замена пароля</h1>
       
@@ -104,6 +103,5 @@ export default function Register()
       
       <p className="note">Вспомнили пароль? <Link to="/login">Войти</Link></p>
     </form>
-
-  </AppHeader>
+  )
 }

@@ -41,8 +41,7 @@ export default function Constructor()
 
 
   return(
-    <AppHeader>
-      
+    <>
       <div className={cm.ingredients} ref={dropIngredients}>
         {error &&
           <div className={cm.error}>{error}</div>
@@ -64,12 +63,12 @@ export default function Constructor()
           </div>
         }
       </div>
-
+      
       {order.number  &&
         <Modal handleClose={handleOrderReset}>
           <OrderDetails />
         </Modal>
       }
-    </AppHeader>
+    </>
   )
 }

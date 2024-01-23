@@ -31,9 +31,9 @@ export default function Register()
     dispatch(sendRegisterThunk({name, email, password}))
   }
 
-  return <AppHeader view="center">
+  return(
 
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form center" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
 
       {apiError == "User already exists"
@@ -82,6 +82,5 @@ export default function Register()
 
       <p className="note">Уже зарегистрированы? <Link to="/login">Войти</Link></p>
     </form>
-
-  </AppHeader>
+  )
 }

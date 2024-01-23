@@ -47,13 +47,11 @@ export default function IngredientsId()
 
   // карточка товара на отдельной странице
   return (
-    <AppHeader>
-      <div style={{margin: 'auto', marginTop: '10vh'}}>
-        { ingredient
-          ? <IngredientDetails ingredient={ingredient} />
-          : 'Ингредиент не найден'
-        }
-      </div>
-    </AppHeader>
+    <div className="center">
+      { ingredient
+        ? <IngredientDetails ingredient={ingredient} />
+        : 'Ингредиент не найден'
+      }
+    </div>
   )
 }

@@ -26,7 +26,7 @@ export default function ProfileUser()
   }
 
   return(
-    <form className="form v2" onSubmit={handleSubmit}>
+    <form className="form v2 double" onSubmit={handleSubmit}>
       <p style={{maxWidth: 450}}>В этом разделе вы можете изменить свои персональные данные.</p>
 
        

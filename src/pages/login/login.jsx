@@ -28,9 +28,9 @@ export default function Login()
 
 
 
-  return <AppHeader view="center">
+  return <>
 
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form center" onSubmit={handleSubmit}>
       
       <h1>Вход</h1>
 
@@ -70,5 +70,5 @@ export default function Login()
       <p className="note list">Забыли пароль? <Link to="/forgot-password">Восстановить пароль</Link></p>
     </form>
 
-  </AppHeader>
+  </>
 }

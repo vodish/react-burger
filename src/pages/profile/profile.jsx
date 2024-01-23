@@ -16,19 +16,15 @@ export default function Profile()
 
 
 
-  return <AppHeader view="double">
-
-    <div className={cm.menu}>
+  return <>
+    <div className={`${cm.menu} double`}>
       <ul>
         <li><NavLink to="/profile" className={it=>it.isActive ? cm.active: ''} end>Профиль</NavLink></li>
         <li><NavLink to="/profile/orders" className={it=>it.isActive ? cm.active: ''}>История заказов</NavLink></li>
         <li><span onClick={handleLogout}>Выход</span></li>
-        <li><NavLink to="/ingredients/643d69a5c3f7b9001cfa093c">Ингредиент</NavLink></li>
-        <li><NavLink to="/login">Login</NavLink></li>
       </ul>
     </div>
 
     <Outlet />
-
-</AppHeader>
+  </>
 }
