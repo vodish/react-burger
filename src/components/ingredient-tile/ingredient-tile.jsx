@@ -2,7 +2,7 @@ import cm from "./ingredient-tile.module.css"
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { Link, useLocation } from "react-router-dom"
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { ingredientListObject } from "../../utils/data";
 import { useDrag } from "react-dnd";
 

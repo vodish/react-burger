@@ -1,7 +1,8 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useEffect, useState } from 'react'
+import cm from './profile.module.css'
+import { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { getProfileThunk, updateProfileThunk } from '../../services/appSlice'
+import { updateProfileThunk } from '../../services/appSlice'
 
 
 
@@ -27,7 +28,7 @@ export default function ProfileUser()
 
   return(
     <form className="form v2 double" onSubmit={handleSubmit}>
-      <p style={{maxWidth: 450}}>В этом разделе вы можете изменить свои персональные данные.</p>
+      <p className={cm.note}>В этом разделе вы можете изменить свои персональные данные.</p>
 
        
       <div className="row">

@@ -38,7 +38,7 @@ export default function Register()
       {apiError == "User already exists"
         ? <div className="apiError">
             Сервер узнал вас, но почему-то хочет чтобы вы обязательно прошли форму входа...
-            <p style={{marginTop: '0.5em', fontSize: '1.2em'}}><Link to="/login">Войти</Link></p>
+            <p className="link"><Link to="/login">Войти</Link></p>
           </div>
         : apiError 
           ? <pre className="apiError">{apiError}</pre>
