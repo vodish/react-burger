@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
@@ -16,32 +16,32 @@ const TTH = [
 
 IngredientDetails.propTypes = {
   ingredient:   ingredientListObject.isRequired,
-  handleClose:  PropTypes.func,
 }
 
 
 
-function IngredientDetails({ingredient, handleClose})
+function IngredientDetails({ingredient})
 {
   const navigate  = useNavigate();
+  const location  = useLocation();
+  const isModal   = location.state && location.state.background
   const dispath   = useDispatch()
   const orderBuns = useSelector(state => state.order.buns)
 
-  
+
+  // console.log( 'isModal' )
+  // console.log( isModal )
+
 
   function handleupdateOrder() {
     dispath( updateOrder(ingredient) )
-
-    if ( handleClose ) {
-      navigate(-1)
-      // handleClose()
-    }
   }
 
 
   return (
     <>
-      <h2 className={cm.title}>Детали ингредиента</h2>
+      {isModal &&  <h2 className={cm.title}>Детали ингредиента</h2> }
+      
       
       <img className={cm.img} src={ingredient.image_large} alt={ingredient.name} />
       <h3 className={cm.name}>{ingredient.name}</h3>
@@ -61,14 +61,15 @@ function IngredientDetails({ingredient, handleClose})
         }
       </div>
       
-      <div className={cm.add}>
-
-        { ingredient.type != 'bun' && orderBuns.length == 0
-          ? <div>Сначала выберите Булки</div>
-          : (handleClose && <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>)
-        }
-
-      </div>
+      { isModal && (
+        <div className={cm.add}>
+          { ingredient.type != 'bun' && orderBuns.length == 0
+                ? <div>Сначала выберите Булки</div>
+                : <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
+          }
+        </div>
+        )
+       }
     </>
   )
 }

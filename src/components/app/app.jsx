@@ -16,7 +16,7 @@ import ResetPassword from '../../pages/reset-password/reset-password';
 
 import ProfileUser from '../../pages/profile-user/profile-user';
 import { useDispatch } from 'react-redux';
-import { getProfileThunk, setIsAuthCheck } from '../../services/appSlice';
+import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
 import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 
 
@@ -30,6 +30,7 @@ export default function App()
 
   useEffect(()=>{
     dispatch( getProfileThunk() )
+    dispatch( getIngredientsThunk() )
   }, [])
 
 
@@ -53,14 +54,11 @@ export default function App()
 
       <Route path="*"                 element={<Page404/>} />
     </Routes>
-
+    
     {background && (
-        <Routes>
-	        <Route
-	          path='/ingredients/:id'
-	          element={<IngredientsId/>}
-	        />
-        </Routes>
-      )}
+      <Routes>
+        <Route path='/ingredients/:id' element={<IngredientsId/>}  />
+      </Routes>
+    )}
   </>
 }

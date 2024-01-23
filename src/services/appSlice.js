@@ -236,9 +236,6 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
-    setIsAuthCheck: create.reducer( state => {
-        state.user.checkAuth = true
-    }),
 
     getProfileThunk: create.asyncThunk(
         async () => {
@@ -317,7 +314,6 @@ export const {
     sendLoginThunk,
     sendLogoutThunk,
     getProfileThunk,
-    setIsAuthCheck,
     updateProfileThunk,
 
 } = appSlice.actions

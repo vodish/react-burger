@@ -9,15 +9,14 @@ import { useDrag } from "react-dnd";
 
 ProductTile.propTypes = {
   item:   ingredientListObject.isRequired,
-  productModalOpen:  PropTypes.func.isRequired,
 }
 
 
-function ProductTile({item, productModalOpen})
+function ProductTile({item})
 {
   const location = useLocation()
 
-
+  // перетаскивание в конструктор
   const [{opacity}, dragRef, dragPrev] = useDrag({
     type: 'updateOrder',
     item: {item},
@@ -28,22 +27,15 @@ function ProductTile({item, productModalOpen})
   
 
 
-
   return(
     <Link
       to={`/ingredients/${item._id}`}
       state={{ background: location }}
       className={cm.tile}
-      // onClick={e=>productModalOpen(item)}
       ref={dragRef}
       style={{opacity}}
       >
-      {/* <div
-        className={cm.tile}
-        onClick={e=>productModalOpen(item)}
-        ref={dragRef}
-        style={{opacity}}
-        > */}
+
         <div className={cm.count}>{item.count || ''}</div>
         <img className={cm.img} src={item.image} alt={item.name} ref={dragPrev} />
         <div className={cm.cost}>
@@ -51,7 +43,7 @@ function ProductTile({item, productModalOpen})
           <CurrencyIcon />
         </div>
         <div className={cm.name}>{item.name}</div>
-      {/* </div> */}
+
     </Link>
   )
 }
