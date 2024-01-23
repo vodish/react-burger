@@ -35,6 +35,7 @@ function IngredientDetails({ingredient})
 
   function handleupdateOrder() {
     dispath( updateOrder(ingredient) )
+    navigate(-1)
   }
 
 
@@ -64,8 +65,8 @@ function IngredientDetails({ingredient})
       { isModal && (
         <div className={cm.add}>
           { ingredient.type != 'bun' && orderBuns.length == 0
-                ? <div>Сначала выберите Булки</div>
-                : <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
+              ? <div>Сначала выберите Булки</div>
+              : <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
           }
         </div>
         )

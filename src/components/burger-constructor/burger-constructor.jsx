@@ -1,4 +1,5 @@
 import { useState} from "react"
+import { useNavigate } from "react-router-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +13,8 @@ import Modal from "../modal/modal";
 function BurgerConstructor()
 {
   const dispatch      =   useDispatch()
+  const navigate      =   useNavigate()
+  const userName      =   useSelector(state => state.user.name )
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
 
@@ -20,6 +23,10 @@ function BurgerConstructor()
 
 
   async function handleOrderSubmit() {
+    if ( ! userName ) {
+      navigate('/login')
+    }
+
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
     dispatch( sendOrderThunk(ingredients) )
   }

@@ -29,7 +29,6 @@ export default function IngredientsId()
   
 
   // меню еще не загружено
-  
   if ( ! ingredientList ) {
     return null;
   }
@@ -37,22 +36,24 @@ export default function IngredientsId()
 
 
   // карточка товара в модалке
-  
   if ( location.state && location.state.background && ingredient) {
-    return <Modal handleClose={()=>{navigate(-1)}}>
-      <IngredientDetails ingredient={ingredient} />
-    </Modal>
+    return (
+      <Modal handleClose={()=>{navigate(-1)}}>
+        <IngredientDetails ingredient={ingredient} />
+      </Modal>
+    )
   }
 
 
   // карточка товара на отдельной странице
-  
-  return <AppHeader>
-    <div style={{margin: 'auto', marginTop: '10vh'}}>
-      { ingredient
-        ? <IngredientDetails ingredient={ingredient} />
-        : 'Ингредиент не найден'
-      }
-    </div>
-  </AppHeader>
+  return (
+    <AppHeader>
+      <div style={{margin: 'auto', marginTop: '10vh'}}>
+        { ingredient
+          ? <IngredientDetails ingredient={ingredient} />
+          : 'Ингредиент не найден'
+        }
+      </div>
+    </AppHeader>
+  )
 }
