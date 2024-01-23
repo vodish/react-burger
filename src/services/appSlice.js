@@ -280,7 +280,6 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                console.log(payload)
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
                 state.apiError      =   null

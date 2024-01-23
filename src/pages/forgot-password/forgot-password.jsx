@@ -2,6 +2,7 @@ import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-comp
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchRequest } from "../../utils/api"
+import { useForm } from '../../hooks/useForm'
 
 /*
 @kruglovand
@@ -20,18 +21,18 @@ import { fetchRequest } from "../../utils/api"
 
 export default function Register()
 {
-  const [ email, setEmail ] = useState('')
-  const [ apiError, setApiError ] = useState(null)
   const navigate = useNavigate()
+  const [ apiError, setApiError ] = useState(null)
+  const {values, handleChange} = useForm({email: ''})
 
-
+  
   async function handleSubmit(e) {
     e.preventDefault()
     
     let res = await fetchRequest('/api/password-reset', {
       method: "POST",
       headers: {'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({email}),
+      body: JSON.stringify({...values}),
     })
 
     if ( res.success ) {
@@ -57,9 +58,9 @@ export default function Register()
 
       <div className="row">
         <EmailInput
-          onChange={e => setEmail(e.target.value)}
-          value={email}
           name="email"
+          value={values.email}
+          onChange={handleChange}
         />
       </div>
       

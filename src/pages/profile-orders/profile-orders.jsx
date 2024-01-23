@@ -4,7 +4,7 @@ export default function ProfileOrders()
 {
   
   return (
-    <div class="double">
+    <div className="double">
       История заказов
     </div>
   )

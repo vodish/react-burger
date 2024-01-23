@@ -1,17 +1,20 @@
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeApiError, sendLoginThunk } from '../../services/appSlice'
+import { useForm } from '../../hooks/useForm'
 
 export default function Login()
 {
   const location  =   useLocation()
   const apiError  =   useSelector( state => state.apiError )
   const dispatch  =   useDispatch()
-  const [ email, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
 
+  const { values, handleChange } = useForm({
+    email:    '',
+    password: '',
+  })
 
   useEffect(()=>{
     if ( apiError ) {
@@ -22,7 +25,7 @@ export default function Login()
   
   function handleSubmit(e) {
     e.preventDefault()
-    dispatch( sendLoginThunk({email, password}) );
+    dispatch( sendLoginThunk(values) );
   }
 
 
@@ -42,17 +45,17 @@ export default function Login()
 
       <div className="row">
         <EmailInput
-          onChange={e => setEmail(e.target.value)}
-          value={email}
-          name="email"
           isIcon={false}
+          name="email"
+          value={values.email}
+          onChange={handleChange}
         />
       </div>
       <div className="row">
         <PasswordInput
-          onChange={e => setPassword(e.target.value)}
           name="password"
-          value={password}
+          value={values.password}
+          onChange={handleChange}
         />
       </div>
       

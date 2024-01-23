@@ -1,9 +1,8 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
 import { sendRegisterThunk } from "../../services/appSlice"
-
+import { useForm } from '../../hooks/useForm'
 
 /*
 @kruglovand
@@ -20,14 +19,16 @@ export default function Register()
   const apiError  = useSelector( state => state.apiError )
   const dispatch  = useDispatch()
 
-  const [ name, setName ] = useState('')
-  const [ email, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
   
+  const { values, handleChange } = useForm({
+    name:     '',
+    email:    '',
+    password: '',
+  })
 
   function handleSubmit(e) {
     e.preventDefault()
-    dispatch(sendRegisterThunk({name, email, password}))
+    dispatch(sendRegisterThunk(values))
   }
 
   return(
@@ -47,26 +48,26 @@ export default function Register()
 
       <div className="row">
         <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={e => setName(e.target.value)}
-          value={name}
-          name={'name'}
+          type="text"
+          placeholder="Имя"
+          name="name"
+          value={values.name}
+          onChange={handleChange}
         />
       </div>
       <div className="row">
         <EmailInput
-          onChange={e => setEmail(e.target.value)}
-          value={email}
-          name="email"
           isIcon={false}
+          name="email"
+          value={values.email}
+          onChange={handleChange}
         />
       </div>
       <div className="row">
         <PasswordInput
-          onChange={e => setPassword(e.target.value)}
           name="password"
-          value={password}
+          value={values.password}
+          onChange={handleChange}
         />
       </div>
       

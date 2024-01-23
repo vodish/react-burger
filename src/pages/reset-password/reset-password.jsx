@@ -1,8 +1,8 @@
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { fetchRequest } from "../../utils/api"
-
+import { useForm } from '../../hooks/useForm'
 
 
 /*
@@ -33,15 +33,16 @@ export default function Register()
   const navigate  = useNavigate()
 
   const [ apiError, setApiError ] =   useState(null)
-  const [ password, setPassword ] =   useState('')
-  const [ token, setToken ]       =   useState('')
-  
+  const {values, handleChange}    =   useForm({
+    password: '',
+    token:    '',
+  })
+
 
   if ( ! sessionStorage.getItem('forgot-password') ) {
     return <Navigate to="/login" replace />
   }
-
-
+  
   
   async function handleSubmit(e) {
     e.preventDefault()
@@ -49,7 +50,7 @@ export default function Register()
     const res = await fetchRequest('/api/password-reset/reset', {
       method: "POST",
       headers: {'Content-Type': 'application/json;charset=utf-8' },
-      body: JSON.stringify({password, token}),
+      body: JSON.stringify({...values}),
     }).catch( err => {
       console.log(err)
       setApiError(err.message)
@@ -61,8 +62,6 @@ export default function Register()
     }
   }
   
-
-
   return(
     <form className="form center" onSubmit={handleSubmit}>
 
@@ -75,19 +74,19 @@ export default function Register()
 
       <div className="row">
         <PasswordInput
-          placeholder={'Введите новый пароль'}
-          onChange={e => setPassword(e.target.value)}
+          placeholder="Введите новый пароль"
           name="password"
-          value={password}
+          value={values.password}
+          onChange={handleChange}
         />
       </div>
       <div className="row">
         <Input
-          type={'text'}
-          placeholder={'Код из письма'}
-          onChange={e => setToken(e.target.value)}
-          value={token}
-          name={'name'}
+          type="text"
+          placeholder="Код из письма"
+          name="token"
+          value={values.token}
+          onChange={handleChange}
         />
       </div>
       
