@@ -87,7 +87,12 @@ function BurgerConstructor()
           >Оформить заказ</Button>
       </div>
       
-      {order.error && <Modal handleClose={()=>dispatch(closeOrderError())}><div className="error" dangerouslySetInnerHTML={{__html:order.error}}></div></Modal>}
+
+      {order.error && (
+        <Modal handleClose={ ()=> dispatch(closeOrderError()) }>
+            <div className="error" dangerouslySetInnerHTML={{__html:order.error}}></div>
+        </Modal>
+      )}
 
     </>
   )
