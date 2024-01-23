@@ -1,4 +1,4 @@
-
+import { useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
 import PropTypes from 'prop-types'
 import { ingredientListObject } from '../../utils/data'
@@ -23,14 +23,18 @@ IngredientDetails.propTypes = {
 
 function IngredientDetails({ingredient, handleClose})
 {
+  const navigate  = useNavigate();
   const dispath   = useDispatch()
   const orderBuns = useSelector(state => state.order.buns)
+
+  
 
   function handleupdateOrder() {
     dispath( updateOrder(ingredient) )
 
     if ( handleClose ) {
-      handleClose()
+      navigate(-1)
+      // handleClose()
     }
   }
 

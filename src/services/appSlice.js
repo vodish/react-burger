@@ -24,7 +24,7 @@ const appSlice = createSliceWhitThunks({
         error: null,
     },
     user: {
-        isAuthChecked: false,
+        checkAuth: false,
         email: null,
         name: null,
     },
@@ -199,7 +199,7 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                state.user.isAuthChecked    =   true
+                state.user.checkAuth    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
                 state.apiError      =   null
@@ -237,11 +237,15 @@ const appSlice = createSliceWhitThunks({
     ),
     
     setIsAuthCheck: create.reducer( state => {
-        state.user.isAuthChecked = true
+        state.user.checkAuth = true
     }),
 
     getProfileThunk: create.asyncThunk(
         async () => {
+            if ( ! localStorage.getItem('accessToken') ) {
+                return Promise.resolve("tokenUnknown");
+            }
+
             return await fetchRequest('/api/auth/user', {
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
@@ -251,11 +255,13 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload}) => {
-                console.log(payload)
-                state.user.isAuthChecked    =   true
+                // console.log(payload)
+                state.user.checkAuth    =   true
+                state.apiError          =   null
+
+                if ( payload == 'tokenUnknown' )    return;
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
-                state.apiError      =   null
             },
             rejected: (state, {payload}) => {
                 console.log(payload)

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/app/app';
 // import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom'
 import { Provider as Redux } from 'react-redux'
 import store from './services/redux';
 import { DndProvider as Dnd } from 'react-dnd'
@@ -13,11 +14,13 @@ ReactDOM
   .createRoot( document.getElementById('root') as HTMLElement )
   .render(
   // <StrictMode>
-    <Redux store={store}>
-      <Dnd backend={HTML5Backend}>
-          <App />
-      </Dnd>
-    </Redux>
+    <BrowserRouter>
+      <Redux store={store}>
+        <Dnd backend={HTML5Backend}>
+            <App />
+        </Dnd>
+      </Redux>
+    </BrowserRouter>
   // </StrictMode>
 );
 

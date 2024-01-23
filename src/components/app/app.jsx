@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import Page404 from '../../pages/page404/page404';
 
 import Constructor from "../../pages/constructor/constructor";
@@ -23,37 +23,44 @@ import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 export default function App()
 {
   const dispatch = useDispatch()
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  
+
 
   useEffect(()=>{
-    if ( localStorage.getItem('accessToken') ) {
-      dispatch( getProfileThunk() )
-    } else {
-      dispatch( setIsAuthCheck() )
-    }
+    dispatch( getProfileThunk() )
   }, [])
 
 
-  return(
-    <BrowserRouter>
-      <Routes>
-        <Route path="/"                 element={<Constructor/>} />
-        <Route path="/ingredients/:id"  element={<IngredientsId/>} />
+  return <>
+    <Routes location={background || location}>
+      <Route path="/"                 element={<Constructor/>} />
+      <Route path="/ingredients/:id"  element={<IngredientsId />} />
+    
+      <Route path="/login"            element={ <OnlyUnAuth component={<Login/>}/> } />
+      <Route path="/register"         element={ <OnlyUnAuth component={<Register/>}/> } />
+      <Route path="/forgot-password"  element={ <OnlyUnAuth component={<ForgotPassword/>}/> } />
+      <Route path="/reset-password"   element={ <OnlyUnAuth component={<ResetPassword/>}/> } />
 
-        <Route path="/login"            element={ <OnlyUnAuth component={<Login/>}/> } />
-        <Route path="/register"         element={ <OnlyUnAuth component={<Register/>}/> } />
-        <Route path="/forgot-password"  element={ <OnlyUnAuth component={<ForgotPassword/>}/> } />
-        <Route path="/reset-password"   element={ <OnlyUnAuth component={<ResetPassword/>}/> } />
+      <Route path="/feed"             element={<Feed/>} />
+      <Route path="/feed/:id"         element={<Feed/>} />
+      
+      <Route path="/profile"          element={ <OnlyAuth component={<Profile/>}/> }>
+        <Route  path=""               element={<ProfileUser/>} />
+        <Route  path="orders"         element={<ProfileOrders/>} />
+      </Route>
 
-        <Route path="/feed"             element={<Feed/>} />
-        <Route path="/feed/:id"         element={<Feed/>} />
-        
-        <Route path="/profile"          element={ <OnlyAuth component={<Profile/>}/> }>
-          <Route  path=""               element={<ProfileUser/>} />
-          <Route  path="orders"         element={<ProfileOrders/>} />
-        </Route>
+      <Route path="*"                 element={<Page404/>} />
+    </Routes>
 
-        <Route path="*"                 element={<Page404/>} />
-      </Routes>
-    </BrowserRouter>
-  )
+    {background && (
+        <Routes>
+	        <Route
+	          path='/ingredients/:id'
+	          element={<IngredientsId/>}
+	        />
+        </Routes>
+      )}
+  </>
 }
