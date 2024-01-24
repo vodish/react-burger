@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
 
-const Protected = ({ onlyUnAuth = false, component }) => {
+const Protected = ({ NoAuth = false, component }) => {
   // checkAuth это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
@@ -16,23 +16,23 @@ const Protected = ({ onlyUnAuth = false, component }) => {
     return null;
   }
 
-  if ( onlyUnAuth  && user ) {
+  if ( NoAuth  && user ) {
     // Пользователь авторизован, но роут предназначен для неавторизованного пользователя
     // Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from} />;
   }
 
-  if ( ! onlyUnAuth  && ! user ) {
+  if ( ! NoAuth  && ! user ) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  // !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
+  // !NoAuth && user Пользователь авторизован и роут для авторизованного пользователя
 
   return component;
 };
 
-export const OnlyAuth = Protected;
-export const OnlyUnAuth = ({ component }) => (
-  <Protected onlyUnAuth={true} component={component} />
+export const IsAuth = Protected;
+export const NoAuth = ({ component }) => (
+  <Protected NoAuth={true} component={component} />
 );

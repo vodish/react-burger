@@ -18,7 +18,7 @@ import Page404 from '../../pages/page404/page404';
 import AppHeader from '../app-header/app-header';
 import { useDispatch } from 'react-redux';
 import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
-import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
+import { IsAuth, NoAuth } from '../protected-route/protected-route';
 
 
 export default function App()
@@ -44,15 +44,15 @@ export default function App()
           <Route path="/"                 element={<Constructor/>} />
           <Route path="/ingredients/:id"  element={<IngredientsId />} />
         
-          <Route path="/login"            element={ <OnlyUnAuth component={<Login/>}/> } />
-          <Route path="/register"         element={ <OnlyUnAuth component={<Register/>}/> } />
-          <Route path="/forgot-password"  element={ <OnlyUnAuth component={<ForgotPassword/>}/> } />
-          <Route path="/reset-password"   element={ <OnlyUnAuth component={<ResetPassword/>}/> } />
+          <Route path="/login"            element={ <NoAuth component={<Login/>}/> } />
+          <Route path="/register"         element={ <NoAuth component={<Register/>}/> } />
+          <Route path="/forgot-password"  element={ <NoAuth component={<ForgotPassword/>}/> } />
+          <Route path="/reset-password"   element={ <NoAuth component={<ResetPassword/>}/> } />
 
           <Route path="/feed"             element={<Feed/>} />
           <Route path="/feed/:id"         element={<Feed/>} />
           
-          <Route path="/profile"          element={ <OnlyAuth component={<Profile/>}/> }>
+          <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
             <Route  path=""               element={<ProfileUser/>} />
             <Route  path="orders"         element={<ProfileOrders/>} />
           </Route>
