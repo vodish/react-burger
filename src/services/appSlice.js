@@ -1,5 +1,5 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
-import { fetchRequest, fetchWithRefresh } from "../utils/api";
+import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
 
 
