@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
 import { TIngredient } from '../../utils/types'
 
-const TTH = [
+type Ttth = {
+  name:   'calories' | 'proteins' | 'fat' | 'carbohydrates'
+  title:  string
+  ext:    string
+}
+const TTH: Array<Ttth> = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
   {name: "proteins",      title: "Белки",     ext: "г"    },
   {name: "fat",           title: "Жиры",      ext: "г"    },
@@ -13,9 +18,6 @@ const TTH = [
 ]
 
 
-
-
-// const IngredientDetails : React.FC<TIngredientDetails> = ({ingredient}) => {
 function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Element {
   
   const navigate  = useNavigate();
@@ -25,18 +27,13 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Elem
   // @ts-ignore
   const orderBuns = useSelector(state => state.order.buns)
   
-
-
-  // const handleUpdateOrder = () => {
+  
   function handleUpdateOrder() {
     dispath( updateOrder(ingredient) )
     navigate(-1)
   }
 
 
-  function getIngredientValue(name: string): string {
-    return ingredient[name]
-  }
 
   return (
     <>
@@ -47,20 +44,17 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Elem
       <h3 className={cm.name}>{ingredient.name}</h3>
 
       <div className={cm.tth}>
-        {
-        TTH.map( ({name, title, ext}: {name: string; title: string; ext: string}, key) => (
+        {TTH.map( ({name, title, ext}: Ttth, key: number) => (
           <div key={key}>
             <div className={cm.tname}>{title}</div>
             <div className={cm.tsum}>
               
               <span className={cm.tval}>{ingredient[name]}</span>
-              <span className={cm.tval}>{getIngredientValue(name)}</span>
               <span className={cm.text}>{ext}</span>
             </div>
           </div>
           )
-        )
-        }
+        )}
       </div>
       
       { isModal && (
