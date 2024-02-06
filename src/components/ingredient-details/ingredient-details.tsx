@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
 import { TIngredient } from '../../utils/types'
 
+
 type Ttth = {
   name:   'calories' | 'proteins' | 'fat' | 'carbohydrates'
   title:  string
@@ -18,7 +19,8 @@ const TTH: Array<Ttth> = [
 ]
 
 
-function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Element {
+
+function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Element {
   
   const navigate  = useNavigate();
   const location  = useLocation();
