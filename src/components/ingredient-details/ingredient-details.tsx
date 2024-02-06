@@ -13,13 +13,6 @@ const TTH = [
 ]
 
 
-// import PropTypes from 'prop-types'
-// import { ingredientListObject } from '../../utils/data'
-
-
-// IngredientDetails.propTypes = {
-//   ingredient:   ingredientListObject.isRequired,
-// }
 
 
 // const IngredientDetails : React.FC<TIngredientDetails> = ({ingredient}) => {
@@ -36,18 +29,12 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Elem
 
   // const handleUpdateOrder = () => {
   function handleUpdateOrder() {
-    // @@ts-ignore
     dispath( updateOrder(ingredient) )
     navigate(-1)
   }
 
 
-
-
-
-  const getIngredientValue = (name: string) => {
-  // function getIngredientValue(name: string) {
-    // @ts-ignore
+  function getIngredientValue(name: string): string {
     return ingredient[name]
   }
 
@@ -61,12 +48,12 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Elem
 
       <div className={cm.tth}>
         {
-        TTH.map( ({name, title, ext}, key) => (
+        TTH.map( ({name, title, ext}: {name: string; title: string; ext: string}, key) => (
           <div key={key}>
             <div className={cm.tname}>{title}</div>
             <div className={cm.tsum}>
               
-              {/* <span className={cm.tval}>{ingredient[name]}</span> */}
+              <span className={cm.tval}>{ingredient[name]}</span>
               <span className={cm.tval}>{getIngredientValue(name)}</span>
               <span className={cm.text}>{ext}</span>
             </div>
