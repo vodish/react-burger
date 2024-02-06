@@ -2,8 +2,8 @@ import { useState, useRef } from "react";
 
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
-import Modal from '../modal/modal';
-import IngredientDetails from "../ingredient-details/ingredient-details";
+// import Modal from '../modal/modal';
+// import IngredientDetails from "../ingredient-details/ingredient-details";
 
 import cm from './burger-ingredients.module.css'
 import { useSelector } from "react-redux";
@@ -16,8 +16,8 @@ export default function BurgerIngredients()
   const { list, types }   =   useSelector(state => state.ingredients)
 
   const refList   =   useRef();
-  const [ tabActive, setTabActive ]             =   useState( types[0].type )
-  const [ ingredientModal, setIngredientModal ] =   useState(null);
+  const [ tabActive, setTabActive ] =   useState( types[0].type )
+  // const [ ingredientModal, setIngredientModal ] =   useState(null);
 
 
   
@@ -39,9 +39,9 @@ export default function BurgerIngredients()
   };
 
   
-  function modalClose() {
-    setIngredientModal(null)
-  }
+  // function modalClose() {
+  //   setIngredientModal(null)
+  // }
 
   
   return(
@@ -76,7 +76,7 @@ export default function BurgerIngredients()
               <IngredientTile
                 key={i}
                 item={list[i]}
-                productModalOpen={setIngredientModal}
+                // productModalOpen={setIngredientModal}
               />
             )
             }
@@ -86,7 +86,7 @@ export default function BurgerIngredients()
       </div>
       
 
-      {
+      {/* {
       ingredientModal  && 
         <Modal handleClose={modalClose}>
           <IngredientDetails
@@ -94,7 +94,7 @@ export default function BurgerIngredients()
             handleClose={modalClose}
           />
         </Modal>
-      }
+      } */}
       
     </>
   )

@@ -1,88 +1,72 @@
-import { useEffect } from "react";
-import cm from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients, deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
-import { useDrop } from "react-dnd";
-import bun_insert from '../../bun_insert.svg'
+import { useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom';
+
+import Constructor from "../../pages/constructor/constructor";
+import IngredientsId from '../../pages/ingredients-id/ingredients-id';
+import Profile from '../../pages/profile/profile';
+import ProfileUser from '../../pages/profile-user/profile-user';
+import ProfileOrders from '../../pages/profile-orders/profile-orders';
+
+import Login from '../../pages/login/login';
+import Register from '../../pages/register/register';
+import ForgotPassword from '../../pages/forgot-password/forgot-password';
+import ResetPassword from '../../pages/reset-password/reset-password';
+
+import Feed from '../../pages/feed/feed';
+import Page404 from '../../pages/page404/page404';
+
+import AppHeader from '../app-header/app-header';
+import { useDispatch } from 'react-redux';
+import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
+import { IsAuth, NoAuth } from '../protected-route/protected-route';
 
 
-
-function App()
+export default function App()
 {
-  const dispatch        =   useDispatch()
-  const { list, error } =   useSelector(state => state.ingredients )
-  const order           =   useSelector(state => state.order )
-
+  const dispatch = useDispatch()
+  const location = useLocation();
+  const background = location.state && location.state.background;
   
+
+
   useEffect(()=>{
-    dispatch( getIngredients() )
+    dispatch( getProfileThunk() )
+    dispatch( getIngredientsThunk() )
   }, [])
 
 
-  const [ , dropIngredients ] = useDrop({
-    accept: 'reorder',
-    drop(item) {
-      dispatch( deleteFromOrder(item.index) )
-    }
-  })
+  return (
+    <div className="app">
+      <AppHeader />
 
-  const [ , dropConstructor ] = useDrop({
-    accept: 'updateOrder',
-    drop(item) {
-      dispatch( updateOrder(item.item) )
-    }
-  })
-
-  
-  function handleOrderReset() {
-    dispatch( resetOrder() )
-  }
-
-
-  return(
-    <div className={cm.app}>
-
-      <header className={cm.header}>
-        <AppHeader />
-      </header>
-
-      <main className={cm.main}>
-        <div className={cm.ingredients} ref={dropIngredients}>
-          {error &&
-            <div className={cm.error}>{error}</div>
-          }
-          {list.length > 0 &&
-            <BurgerIngredients />
-          }
-        </div>
+      <main className="main">
+        <Routes location={background || location}>
+          <Route path="/"                 element={<Constructor/>} />
+          <Route path="/ingredients/:id"  element={<IngredientsId />} />
         
-        <div className={cm.constructor} ref={dropConstructor}>
-          {order.total > 0
-            ?
-            <BurgerConstructor />
-            :
-            <div className={cm.empty}>
-              <h1>Выберите булки</h1>
-              <div>чтобы сделать новый заказ</div>
-              <img src={bun_insert} className={cm.bun_insert} alt="Выберите булки" />
-            </div>
-          }
-        </div>
-      </main>
+          <Route path="/login"            element={ <NoAuth component={<Login/>}/> } />
+          <Route path="/register"         element={ <NoAuth component={<Register/>}/> } />
+          <Route path="/forgot-password"  element={ <NoAuth component={<ForgotPassword/>}/> } />
+          <Route path="/reset-password"   element={ <NoAuth component={<ResetPassword/>}/> } />
 
-      {order.number  &&
-        <Modal handleClose={handleOrderReset}>
-          <OrderDetails />
-        </Modal>
-      }
+          <Route path="/feed"             element={<Feed/>} />
+          <Route path="/feed/:id"         element={<Feed/>} />
+          
+          <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
+            <Route  path=""               element={<ProfileUser/>} />
+            <Route  path="orders"         element={<ProfileOrders/>} />
+          </Route>
+
+          <Route path="*"                 element={<Page404/>} />
+        </Routes>
+        
+        {background && (
+          <Routes>
+            <Route path='/ingredients/:id' element={<IngredientsId/>}  />
+          </Routes>
+        )}
+      </main>
 
     </div>
   )
 }
-
-export default App;

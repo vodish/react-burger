@@ -1,10 +1,11 @@
 import { useState} from "react"
+import { useNavigate } from "react-router-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { sendOrder, closeOrderError } from "../../services/appSlice";
+import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
 
 
@@ -12,6 +13,8 @@ import Modal from "../modal/modal";
 function BurgerConstructor()
 {
   const dispatch      =   useDispatch()
+  const navigate      =   useNavigate()
+  const userName      =   useSelector(state => state.user.name )
   const order         =   useSelector(state => state.order)
   const [ top, bot ]  =   useSelector(state => state.order.buns)
 
@@ -20,8 +23,13 @@ function BurgerConstructor()
 
 
   async function handleOrderSubmit() {
+    if ( ! userName ) {
+      navigate('/login')
+      return;
+    }
+
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
-    dispatch( sendOrder(ingredients) )
+    dispatch( sendOrderThunk(ingredients) )
   }
 
 
@@ -61,8 +69,7 @@ function BurgerConstructor()
       
       
       <div className={cm.summary}>
-        {
-          order.adds.length > 3 &&
+        {order.adds.length > 3 &&
           <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
             {maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
           </div>
@@ -80,7 +87,12 @@ function BurgerConstructor()
           >Оформить заказ</Button>
       </div>
       
-      {order.error && <Modal handleClose={()=>dispatch(closeOrderError())}><div className="error" dangerouslySetInnerHTML={{__html:order.error}}></div></Modal>}
+
+      {order.error && (
+        <Modal handleClose={ ()=> dispatch(closeOrderError()) }>
+            <div className="error" dangerouslySetInnerHTML={{__html:order.error}}></div>
+        </Modal>
+      )}
 
     </>
   )

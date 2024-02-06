@@ -1,11 +1,10 @@
 
-.content        { width: 1240px; margin: 16px auto; display: flex; justify-content: space-between; align-items: center; }
-.content  a     { color: inherit; text-decoration: none; }
+.header         { background-color: #1C1C21; }
+.header .wrap         { width: 1240px; margin: 16px auto; display: flex; justify-content: space-between; align-items: center; }
+.header .wrap .nav    { flex-basis: 33%; display: flex; gap: 16px; }
+.header .wrap .logo   { flex-basis: 33%; text-align: center; margin-bottom: -7px; }
+.header .wrap .user   { flex-basis: 33%; display: flex; justify-content: flex-end;  }
 
-.content .nav    { flex-basis: 33%; display: flex; gap: 16px; }
-.content .logo   { flex-basis: 33%; text-align: center; margin-bottom: -7px; }
-.content .user   { flex-basis: 33%; display: flex; justify-content: flex-end;  }
-
-.btn    { font-size: 16px; padding: 8px; display: flex; gap: 8px; align-items: center; white-space: nowrap; }
-.btn:hover    { background-color: #131316; cursor: pointer; border-radius: .5em; transition: all .3s ease-in; }
-
+.header .wrap .link         { font-size: 16px; padding: 8px; display: flex; gap: 8px; align-items: center; white-space: nowrap; color: inherit; text-decoration: none; }
+.header .wrap .link:hover   { color: var(--color2); cursor: pointer; transition: all .3s ease-in; }
+.header .wrap .active1     { color: var(--color2); }
