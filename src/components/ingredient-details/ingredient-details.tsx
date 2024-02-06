@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
-
-
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
+import { TIngredient } from '../../utils/types'
 
 const TTH = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
@@ -16,35 +15,15 @@ const TTH = [
 
 // import PropTypes from 'prop-types'
 // import { ingredientListObject } from '../../utils/data'
-// import { TIngredientListObject } from '../../utils/types'
+
 
 // IngredientDetails.propTypes = {
 //   ingredient:   ingredientListObject.isRequired,
 // }
 
 
-
-type TIngredient = {
-  _id:            string
-  name:           string
-  type:           string
-  proteins?:      number
-  fat?:           number
-  carbohydrates?: number
-  calories?:      number
-  price:          number
-  image:          string
-  image_mobile:   string
-  image_large:    string
-  __v?:           number
-}
-
-type TComp = {
-  ingredient: TIngredient
-}
-
 // const IngredientDetails : React.FC<TIngredientDetails> = ({ingredient}) => {
-function IngredientDetails ({ingredient} :TComp ) :JSX.Element {
+function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Element {
   
   const navigate  = useNavigate();
   const location  = useLocation();
@@ -54,8 +33,6 @@ function IngredientDetails ({ingredient} :TComp ) :JSX.Element {
   const orderBuns = useSelector(state => state.order.buns)
   
 
-  console.log(ingredient)
-  
 
   // const handleUpdateOrder = () => {
   function handleUpdateOrder() {

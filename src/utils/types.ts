@@ -1,4 +1,4 @@
-export type TIngredientListObject = {
+export type TIngredient = {
     _id:            string
     name:           string
     type:           string
@@ -11,4 +11,4 @@ export type TIngredientListObject = {
     image_mobile:   string
     image_large:    string
     __v?:           number
- }
+  }

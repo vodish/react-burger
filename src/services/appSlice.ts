@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-
+import { TIngredient } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
@@ -38,13 +38,25 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled:  (state, {payload}) => {
                 if ( payload.data ) {
-                    const typeNname = {
+
+                    
+                    const typeNname :{[n: string]: string} = {
                         bun: "Булки",
                         main: "Начинки",
                         sauce: "Соусы",
                     }
                     
-                    const types = payload.data.reduce((acc, el, index)=>{
+                    type Tacc = {
+                        [n: string]: Tel
+                    }
+                    type Tel = {
+                        entries: Array<number>
+                        name: string
+                        type: string
+                    }
+
+                    const types :Tacc  = payload.data.reduce((acc: Tacc, el: Tel, index: number) => {
+                        
                         acc[ el.type ]  =   acc[ el.type ]  ||  {
                             type:   el.type,
                             name:   typeNname[el.type] || el.type,
@@ -54,6 +66,7 @@ const appSlice = createSliceWhitThunks({
                 
                         return acc
                     }, {})
+                    
 
                     payload.types = Object.values(types)
                 }
@@ -65,6 +78,7 @@ const appSlice = createSliceWhitThunks({
             },
             rejected: (state, action) => {
                 console.log(action)
+                // @ts-ignore
                 state.ingredients.error = `${action.type}... ${action.error.message}`
 
             }
@@ -73,17 +87,20 @@ const appSlice = createSliceWhitThunks({
     
 
     // заказ
-    updateOrder: create.reducer( (state, {payload}) => {
+    updateOrder: create.reducer( (state, {payload} :{payload: TIngredient} ) => {
 
         const product = {...payload, uuid: Date.now()}
 
         if ( payload.type === 'bun' ) {
             state.order.buns = [
+                // @ts-ignore
                 {...product, name: `${payload.name} (верх)` },
+                // @ts-ignore
                 {...product, name: `${payload.name} (низ)` },
             ]
         }
         else {
+            // @ts-ignore
             state.order.adds.push(product)
         }
         
@@ -98,6 +115,7 @@ const appSlice = createSliceWhitThunks({
     }),
 
     deleteFromOrder: create.reducer( (state, {payload}) => {
+        // @ts-ignore
         state.order.adds.splice( payload, 1 )
         
         const newState      =   stateCalculation(state)
@@ -106,8 +124,11 @@ const appSlice = createSliceWhitThunks({
     }),
 
     resortOrder: create.reducer( (state, {payload}) => {
+        // @ts-ignore
         const drag  =   state.order.adds[payload.dragIndex]
+        // @ts-ignore
         state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
+        // @ts-ignore
         state.order.adds[payload.hoverIndex]    =   drag
     }),
     
@@ -146,6 +167,7 @@ const appSlice = createSliceWhitThunks({
                 }
             },
             rejected: (state, action) => {
+                // @ts-ignore
                 state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
             },
         }
@@ -179,8 +201,10 @@ const appSlice = createSliceWhitThunks({
           console.log(action)
 
           if ( action.error && action.error.message && action.error.message == "User already exists" ) {
+            // @ts-ignore
             state.apiError = action.error.message
           } else {
+            // @ts-ignore
             state.apiError = `${action.type}...\nServer message: ${action.error.message}` 
           }
         },
@@ -207,6 +231,7 @@ const appSlice = createSliceWhitThunks({
             },
             rejected: (state, action) => {
                 console.log(action)
+                // @ts-ignore
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
@@ -299,11 +324,9 @@ const appSlice = createSliceWhitThunks({
 
 export const {
     getIngredientsThunk,
-    ingredientsSetup,
     updateOrder,
     deleteFromOrder,
     resortOrder,
-    orderSubmit,
     resetOrder,
     closeOrderError,
     sendOrderThunk,
@@ -321,7 +344,7 @@ export default appSlice.reducer
 
 
 
-
+// @ts-ignore
 function stateCalculation(state) {
     state = JSON.parse( JSON.stringify(state) )
 
@@ -329,11 +352,14 @@ function stateCalculation(state) {
     let counts = {};
 
     [...state.order.buns, ...state.order.adds ].map( item => {
+        // @ts-ignore
         counts[item._id]    =   counts[item._id] ? ++counts[item._id]:  1;
         state.order.total   +=  item.price;
     })
     
+    // @ts-ignore
     state.ingredients.list  =   state.ingredients.list.map( item => {
+        // @ts-ignore
         return {...item, count: counts[item._id] || 0}
     })
 
