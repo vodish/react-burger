@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
-import PropTypes from 'prop-types'
-import { ingredientListObject } from '../../utils/data'
+
+
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
@@ -14,30 +14,65 @@ const TTH = [
 ]
 
 
-IngredientDetails.propTypes = {
-  ingredient:   ingredientListObject.isRequired,
+// import PropTypes from 'prop-types'
+// import { ingredientListObject } from '../../utils/data'
+// import { TIngredientListObject } from '../../utils/types'
+
+// IngredientDetails.propTypes = {
+//   ingredient:   ingredientListObject.isRequired,
+// }
+
+
+
+type TIngredient = {
+  _id:            string
+  name:           string
+  type:           string
+  proteins?:      number
+  fat?:           number
+  carbohydrates?: number
+  calories?:      number
+  price:          number
+  image:          string
+  image_mobile:   string
+  image_large:    string
+  __v?:           number
 }
 
+type TComp = {
+  ingredient: TIngredient
+}
 
-
-function IngredientDetails({ingredient})
-{
+// const IngredientDetails : React.FC<TIngredientDetails> = ({ingredient}) => {
+function IngredientDetails ({ingredient} :TComp ) :JSX.Element {
+  
   const navigate  = useNavigate();
   const location  = useLocation();
   const isModal   = location.state && location.state.background
   const dispath   = useDispatch()
+  // @ts-ignore
   const orderBuns = useSelector(state => state.order.buns)
+  
 
+  console.log(ingredient)
+  
 
-  // console.log( 'isModal' )
-  // console.log( isModal )
-
-
-  function handleupdateOrder() {
+  // const handleUpdateOrder = () => {
+  function handleUpdateOrder() {
+    // @@ts-ignore
     dispath( updateOrder(ingredient) )
     navigate(-1)
   }
 
+
+
+
+
+  const getIngredientValue = (name: string) => {
+  // function getIngredientValue(name: string) {
+    // @ts-ignore
+    return ingredient[name]
+  }
 
   return (
     <>
@@ -53,7 +88,9 @@ function IngredientDetails({ingredient})
           <div key={key}>
             <div className={cm.tname}>{title}</div>
             <div className={cm.tsum}>
-              <span className={cm.tval}>{ingredient[name]}</span>
+              
+              {/* <span className={cm.tval}>{ingredient[name]}</span> */}
+              <span className={cm.tval}>{getIngredientValue(name)}</span>
               <span className={cm.text}>{ext}</span>
             </div>
           </div>
@@ -66,7 +103,7 @@ function IngredientDetails({ingredient})
         <div className={cm.add}>
           { ingredient.type != 'bun' && orderBuns.length == 0
               ? <div>Сначала выберите Булки</div>
-              : <Button htmlType="button" type="primary" size="medium" onClick={handleupdateOrder}>Добавить в заказ</Button>
+              : <Button htmlType="button" type="primary" size="medium" onClick={handleUpdateOrder}>Добавить в заказ</Button>
           }
         </div>
         )
