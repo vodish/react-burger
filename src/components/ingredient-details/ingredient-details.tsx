@@ -27,7 +27,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) :JSX.Elem
   // @ts-ignore
   const orderBuns = useSelector(state => state.order.buns)
   
-  
+
   function handleUpdateOrder() {
     dispath( updateOrder(ingredient) )
     navigate(-1)
