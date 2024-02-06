@@ -14,21 +14,21 @@ const appSlice = createSliceWhitThunks({
     ingredients: {
         list: [],
         types: [],
-        error: null
+        error: ""
     },
     order: {
         buns: [],
         adds: [],
         total: 0,
         number: null,
-        error: null,
+        error: "",
     },
     user: {
         checkAuth: false,
         email: null,
         name: null,
     },
-    apiError: null,
+    apiError: "",
   },
   reducers: create => ({
       
@@ -142,7 +142,7 @@ const appSlice = createSliceWhitThunks({
     }),
 
     closeOrderError: create.reducer( state => {
-        state.order.error = null
+        state.order.error = ""
     }),
     
     sendOrderThunk: create.asyncThunk(
@@ -177,7 +177,7 @@ const appSlice = createSliceWhitThunks({
     // регистрация, токены, пользователь
     
     removeApiError: create.reducer(state => {
-        state.apiError = null
+        state.apiError = ""
     }),
 
     sendRegisterThunk: create.asyncThunk(
@@ -226,7 +226,7 @@ const appSlice = createSliceWhitThunks({
                 state.user.checkAuth    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
-                state.apiError      =   null
+                state.apiError      =   ""
                 setToken(payload)
             },
             rejected: (state, action) => {
@@ -251,7 +251,7 @@ const appSlice = createSliceWhitThunks({
             fulfilled: state => {
                 state.user.name     =   null
                 state.user.email    =   null
-                state.apiError      =   null
+                state.apiError      =   ""
                 removeToken()
             },
             rejected: (_, action) => {
@@ -279,7 +279,7 @@ const appSlice = createSliceWhitThunks({
             fulfilled: (state, {payload}) => {
                 // console.log(payload)
                 state.user.checkAuth    =   true
-                state.apiError          =   null
+                state.apiError          =   ""
 
                 if ( payload == 'tokenUnknown' )    return;
                 state.user.name     =   payload.user.name
@@ -307,7 +307,7 @@ const appSlice = createSliceWhitThunks({
             fulfilled: (state, {payload}) => {
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
-                state.apiError      =   null
+                state.apiError      =   ""
             },
             rejected: (_, action) => {
                 console.log(action)
