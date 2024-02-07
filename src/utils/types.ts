@@ -1,3 +1,4 @@
+
 export type TIngredient = {
     _id:            string
     name:           string
@@ -11,4 +12,10 @@ export type TIngredient = {
     image_mobile:   string
     image_large:    string
     __v?:           number
-  }
+}
+
+export type Ttth = {
+  name:   'calories' | 'proteins' | 'fat' | 'carbohydrates'
+  title:  string
+  ext:    string
+}

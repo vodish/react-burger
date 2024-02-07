@@ -72,29 +72,12 @@ export default function BurgerIngredients()
           <div key={type} className={cm.type} id={type} >
             <h2>{name}</h2>
             {
-            entries.map( i =>
-              <IngredientTile
-                key={i}
-                item={list[i]}
-                // productModalOpen={setIngredientModal}
-              />
-            )
+            entries.map( i => <IngredientTile  key={i}  item={list[i]} /> )
             }
           </div>
         )
         }
       </div>
-      
-
-      {/* {
-      ingredientModal  && 
-        <Modal handleClose={modalClose}>
-          <IngredientDetails
-            ingredient={ingredientModal}
-            handleClose={modalClose}
-          />
-        </Modal>
-      } */}
       
     </>
   )

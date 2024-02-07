@@ -3,14 +3,10 @@ import cm from './ingredient-details.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
-import { TIngredient } from '../../utils/types'
+import { TIngredient, Ttth } from '../../utils/types'
 
 
-type Ttth = {
-  name:   'calories' | 'proteins' | 'fat' | 'carbohydrates'
-  title:  string
-  ext:    string
-}
+
 const TTH: Array<Ttth> = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
   {name: "proteins",      title: "Белки",     ext: "г"    },
@@ -46,7 +42,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
       <h3 className={cm.name}>{ingredient.name}</h3>
 
       <div className={cm.tth}>
-        {TTH.map( ({name, title, ext}: Ttth, key: number) => (
+        { TTH.map( ({name, title, ext}: Ttth, key: number) => (
           <div key={key}>
             <div className={cm.tname}>{title}</div>
             <div className={cm.tsum}>
@@ -67,7 +63,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
           }
         </div>
         )
-       }
+      }
     </>
   )
 }
