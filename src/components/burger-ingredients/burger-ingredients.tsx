@@ -1,27 +1,24 @@
 import { useState, useRef } from "react";
-
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
-// import Modal from '../modal/modal';
-// import IngredientDetails from "../ingredient-details/ingredient-details";
-
 import cm from './burger-ingredients.module.css'
 import { useSelector } from "react-redux";
+import { TType } from "../../utils/types";
 
 
 
 
 export default function BurgerIngredients()
 {
+  // @ts-ignore
   const { list, types }   =   useSelector(state => state.ingredients)
 
-  const refList   =   useRef();
+  const refList   =   useRef <HTMLDivElement> (null);
   const [ tabActive, setTabActive ] =   useState( types[0].type )
-  // const [ ingredientModal, setIngredientModal ] =   useState(null);
-
+  
 
   
-  function listScroll(e) {
+  function listScroll(e: React.BaseSyntheticEvent) {
     let tab  = ''
     let value = Infinity
 
@@ -50,7 +47,7 @@ export default function BurgerIngredients()
       
       <div className={cm.tabs}>
         {
-        types.map( ({type, name}) => 
+        types.map( ({type, name} : TType) => 
           <Tab
             key={type}
             value={type}
@@ -68,7 +65,7 @@ export default function BurgerIngredients()
         onScroll={listScroll}
         >
         {
-        types.map( ({type, name, entries}) =>
+        types.map( ({type, name, entries}: TType) =>
           <div key={type} className={cm.type} id={type} >
             <h2>{name}</h2>
             {
@@ -87,17 +84,20 @@ export default function BurgerIngredients()
 
 
 
+let scroll1: NodeJS.Timer;
 
-
-
-export function tabClickScroll(id)
+export function tabClickScroll(id: string)
 {
-   let section    =  document.getElementById(id)
-   let area       =  section.parentNode;
-   
+  let section =  document.getElementById(id)
+  if ( !section )   return;
+
+  let area    =  section.parentNode as HTMLElement;
+  if ( !area )   return;
+
+
    // прокрутка до точки
-   let pointTop   =   0;
-   while( section = section.previousSibling ) pointTop += section.scrollHeight;
+   let pointTop  =   0;
+   while( section = section.previousSibling as HTMLElement ) pointTop += section.scrollHeight;
    
    // смещение, // шаг, // duration
    const offset   =  pointTop - area.scrollTop;
@@ -105,9 +105,11 @@ export function tabClickScroll(id)
    const duration =  4;
 
    //анимация
-   if ( window.loop1 ) clearInterval(window.loop)
+   if ( scroll1 ) {
+    clearInterval(scroll1)
+   }
 
-   window.loop1 = setInterval(function(){
+   scroll1 = setInterval(function(){
 
       area.scrollTop += step;
       
@@ -118,7 +120,7 @@ export function tabClickScroll(id)
          area.scrollTop = pointTop
          // console.log(`pointTop = ${pointTop}`)
          // console.log(`area.scrollTop = ${area.scrollTop}`)
-         return clearInterval(window.loop1)
+         return clearInterval(scroll1)
       }
       
    }, duration);

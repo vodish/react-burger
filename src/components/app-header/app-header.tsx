@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 export default function AppHeader()
 {
+  // @ts-ignore
   const userName = useSelector( state => state.user.name )
   
 

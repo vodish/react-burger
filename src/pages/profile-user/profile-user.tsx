@@ -3,7 +3,6 @@ import cm from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux"
 import { updateProfileThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
-import { TUser } from '../../utils/types'
 
 
 

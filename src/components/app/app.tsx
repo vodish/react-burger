@@ -30,7 +30,9 @@ export default function App()
 
 
   useEffect(()=>{
+    // @ts-ignore
     dispatch( getProfileThunk() )
+    // @ts-ignore
     dispatch( getIngredientsThunk() )
   }, [])
 

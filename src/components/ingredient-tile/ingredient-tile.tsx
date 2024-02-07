@@ -2,17 +2,12 @@ import cm from "./ingredient-tile.module.css"
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { Link, useLocation } from "react-router-dom"
-import propTypes from 'prop-types';
-import { ingredientListObject } from "../../utils/data";
 import { useDrag } from "react-dnd";
+import { TIngredient } from "../../utils/types";
 
 
-ProductTile.propTypes = {
-  item:   ingredientListObject.isRequired,
-}
 
-
-function ProductTile({item})
+function IngredientTile({item}: any )
 {
   const location = useLocation()
 
@@ -40,7 +35,7 @@ function ProductTile({item})
         <img className={cm.img} src={item.image} alt={item.name} ref={dragPrev} />
         <div className={cm.cost}>
           <div className={cm.price}>{item.price}</div>
-          <CurrencyIcon />
+          <CurrencyIcon type="primary" />
         </div>
         <div className={cm.name}>{item.name}</div>
 
@@ -49,4 +44,4 @@ function ProductTile({item})
 }
 
 
-export default ProductTile;
+export default IngredientTile;

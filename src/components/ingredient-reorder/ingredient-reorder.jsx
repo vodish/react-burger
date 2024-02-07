@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types'
-import { ingredientListObject } from '../../utils/data'
+import { ingredientListObject } from '../../utils/trash_data'
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'

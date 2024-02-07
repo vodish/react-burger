@@ -14,6 +14,13 @@ export type TIngredient = {
     __v?:           number
 }
 
+
+export type TType = {
+  type:     string
+  name:     string
+  entries:  Array<number>
+}
+
 export type Ttth = {
   name:   'calories' | 'proteins' | 'fat' | 'carbohydrates'
   title:  string
