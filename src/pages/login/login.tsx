@@ -8,6 +8,7 @@ import { useForm } from '../../hooks/useForm'
 export default function Login()
 {
   const location  =   useLocation()
+  // @ts-ignore
   const apiError  =   useSelector( state => state.apiError )
   const dispatch  =   useDispatch()
 
@@ -23,8 +24,9 @@ export default function Login()
   }, [])
 
   
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    // @ts-ignore
     dispatch( sendLoginThunk(values) );
   }
 

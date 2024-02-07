@@ -5,6 +5,7 @@ export function useForm <T> (initValues: T) {
 
     const [values, setValues] = useState(initValues);
 
+
     const handleChange = (e: React.BaseSyntheticEvent) => {
         
         const {value, name} = e.target;
@@ -12,5 +13,6 @@ export function useForm <T> (initValues: T) {
         setValues({...values, [name]: value});
     };
 
+    
     return {values, handleChange, setValues};
 }

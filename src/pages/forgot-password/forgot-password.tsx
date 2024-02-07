@@ -26,7 +26,7 @@ export default function Register()
   const {values, handleChange} = useForm({email: ''})
 
   
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     
     let res = await fetchRequest('/api/password-reset', {
@@ -36,7 +36,7 @@ export default function Register()
     })
 
     if ( res.success ) {
-      sessionStorage.setItem('forgot-password', 1);
+      sessionStorage.setItem('forgot-password', "1");
       navigate('/reset-password')
     }
     else {

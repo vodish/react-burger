@@ -13,13 +13,16 @@ import bun_insert from '../../bun_insert.svg'
 export default function Constructor()
 {
   const dispatch        =   useDispatch()
+  // @ts-ignore
   const { list, error } =   useSelector(state => state.ingredients )
+  // @ts-ignore
   const order           =   useSelector(state => state.order )
 
   
   const [ , dropIngredients ] = useDrop({
     accept: 'reorder',
     drop(item) {
+      // @ts-ignore
       dispatch( deleteFromOrder(item.index) )
     }
   })
@@ -27,6 +30,7 @@ export default function Constructor()
   const [ , dropConstructor ] = useDrop({
     accept: 'updateOrder',
     drop(item) {
+      // @ts-ignore
       dispatch( updateOrder(item.item) )
     }
   })
@@ -48,7 +52,7 @@ export default function Constructor()
         }
       </div>
       
-      <div className={cm.constructor} ref={dropConstructor}>
+      <div className={cm.constructor1} ref={dropConstructor}>
         {order.total > 0
           ?
           <BurgerConstructor />

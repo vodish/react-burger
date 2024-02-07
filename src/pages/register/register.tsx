@@ -16,6 +16,7 @@ import { useForm } from '../../hooks/useForm'
 
 export default function Register()
 {
+  // @ts-ignore
   const apiError  = useSelector( state => state.apiError )
   const dispatch  = useDispatch()
 
@@ -26,8 +27,9 @@ export default function Register()
     password: '',
   })
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    // @ts-ignore
     dispatch(sendRegisterThunk(values))
   }
 
