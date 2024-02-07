@@ -4,21 +4,21 @@ import IngredientDetails from "../../components/ingredient-details/ingredient-de
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import Modal from "../../components/modal/modal"
-
+import { TIngredient } from "../../utils/types"
 
 export default function IngredientsId()
 {
   const { id }    = useParams()
   const location  = useLocation()
   const navigate  = useNavigate()
+  // @ts-ignore
   const ingredientList  = useSelector(state => state.ingredients.list)
-  const [ ingredient, setIngredient ]  = useState(null)
-
+  const [ ingredient, setIngredient ]  = useState <TIngredient | null> (null)
 
   
   useMemo(
     ()=>{
-      const sel = ingredientList.filter(it => it._id == id)
+      const sel: Array<TIngredient> = ingredientList.filter( (it: TIngredient): boolean => it._id == id)
       if ( !sel[0] )  return;
 
       setIngredient(sel[0])

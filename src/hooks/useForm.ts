@@ -1,11 +1,14 @@
 import { useState } from "react";
 
 
-export function useForm(initValues={}) {
+export function useForm <T> (initValues: T) {
+
     const [values, setValues] = useState(initValues);
 
-    const handleChange = (event) => {
-        const {value, name} = event.target;
+    const handleChange = (e: React.BaseSyntheticEvent) => {
+        
+        const {value, name} = e.target;
+
         setValues({...values, [name]: value});
     };
 

@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient } from "../utils/types"
+import { TIngredient, Ttoken } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
@@ -238,7 +238,7 @@ const appSlice = createSliceWhitThunks({
     ),
     
     sendLogoutThunk: create.asyncThunk(
-        async (userData) => {
+        async (userData: Ttoken) => {
             return await fetchRequest('/api/auth/logout', {
                 method: "POST",
                 headers: {
@@ -256,7 +256,8 @@ const appSlice = createSliceWhitThunks({
             },
             rejected: (_, action) => {
                 console.log(action)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                // @ts-ignore
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),

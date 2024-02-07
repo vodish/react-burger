@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import cm from './profile.module.css'
 import { NavLink, Outlet } from 'react-router-dom'
 import { sendLogoutThunk } from '../../services/appSlice'
+import { Ttoken } from '../../utils/types'
 
 
 export default function Profile()
@@ -10,7 +11,9 @@ export default function Profile()
 
 
   function handleLogout() {
-    dispatch( sendLogoutThunk({token: localStorage.getItem('refreshToken')}) )
+    const token: Ttoken = { token: localStorage.getItem('refreshToken') }
+    // @ts-ignore
+    dispatch( sendLogoutThunk(token) )
   }
 
 

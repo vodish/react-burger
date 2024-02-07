@@ -19,3 +19,14 @@ export type Ttth = {
   title:  string
   ext:    string
 }
+
+export type Ttoken = {
+  token:  string | null
+}
+
+export type TUser = {
+  name:     string
+  email:    string
+  password: string
+}
+

@@ -3,13 +3,16 @@ import cm from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux"
 import { updateProfileThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
+import { TUser } from '../../utils/types'
+
 
 
 export default function ProfileUser()
 {
-  const dispatch    = useDispatch()  
+  const dispatch    = useDispatch()
+  // @ts-ignore
   const user        = useSelector( state => state.user )
-  
+
   const {values, handleChange} = useForm({
     name:     user.name,
     email:    user.email,
@@ -17,9 +20,9 @@ export default function ProfileUser()
   })
   
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
+    // @ts-ignore
     dispatch( updateProfileThunk(values) )
   }
 
