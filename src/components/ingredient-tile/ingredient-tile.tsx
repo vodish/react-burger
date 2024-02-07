@@ -7,7 +7,7 @@ import { TIngredient } from "../../utils/types";
 
 
 
-function IngredientTile({item}: any )
+function IngredientTile( {item}: {item: TIngredient} )
 {
   const location = useLocation()
 

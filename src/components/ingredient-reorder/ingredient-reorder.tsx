@@ -1,20 +1,14 @@
 import { useDispatch } from "react-redux";
-import PropTypes from 'prop-types'
-import { ingredientListObject } from '../../utils/trash_data'
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
 import { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
+import { TIngredient } from "../../utils/types";
 
 
-IngredientReorder.propTypes = {
-  item:   ingredientListObject.isRequired,
-  index:  PropTypes.number.isRequired,
-}
 
-
-export default function IngredientReorder({item, index})
+export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
 {
   const dispatch  =   useDispatch()
   const ref       =   useRef(null)
@@ -29,7 +23,7 @@ export default function IngredientReorder({item, index})
     },
     hover(item, monitor) {
       if (!ref.current)   return;
-
+      
       const dragIndex = item.index
       const hoverIndex = index
       

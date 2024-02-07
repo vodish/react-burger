@@ -31,15 +31,10 @@ export default function BurgerIngredients()
       value = offset
     }
 
-    // console.log({tab, value})
     setTabActive(tab)
   };
 
   
-  // function modalClose() {
-  //   setIngredientModal(null)
-  // }
-
   
   return(
     <>
@@ -83,10 +78,10 @@ export default function BurgerIngredients()
 
 
 
-
 let scroll1: NodeJS.Timer;
 
-export function tabClickScroll(id: string)
+
+function tabClickScroll(id: string)
 {
   let section =  document.getElementById(id)
   if ( !section )   return;
@@ -95,35 +90,33 @@ export function tabClickScroll(id: string)
   if ( !area )   return;
 
 
-   // прокрутка до точки
-   let pointTop  =   0;
-   while( section = section.previousSibling as HTMLElement ) pointTop += section.scrollHeight;
-   
-   // смещение, // шаг, // duration
-   const offset   =  pointTop - area.scrollTop;
-   const step     =  area.scrollTop < offset ?  15 : -15;
-   const duration =  4;
+  // прокрутка до точки
+  let pointTop  =   0;
+  while( section = section.previousSibling as HTMLElement ) pointTop += section.scrollHeight;
 
-   //анимация
-   if ( scroll1 ) {
+  // смещение, // шаг, // duration
+  const offset   =  pointTop - area.scrollTop;
+  const step     =  area.scrollTop < offset ?  15 : -15;
+  const duration =  4;
+
+  //анимация
+  if ( scroll1 ) {
     clearInterval(scroll1)
-   }
+  }
 
-   scroll1 = setInterval(function(){
+  scroll1 = setInterval(function(){
 
-      area.scrollTop += step;
-      
-      if (  (step > 0 && area.scrollTop >= pointTop)
-         || (step < 0 && area.scrollTop <= pointTop)
-      )
-      {
-         area.scrollTop = pointTop
-         // console.log(`pointTop = ${pointTop}`)
-         // console.log(`area.scrollTop = ${area.scrollTop}`)
-         return clearInterval(scroll1)
-      }
-      
-   }, duration);
+    area.scrollTop += step;
+    
+    if (  (step > 0 && area.scrollTop >= pointTop)  || (step < 0 && area.scrollTop <= pointTop)  )
+    {
+        area.scrollTop = pointTop
+        // console.log(`pointTop = ${pointTop}`)
+        // console.log(`area.scrollTop = ${area.scrollTop}`)
+        return clearInterval(scroll1)
+    }
+    
+  }, duration);
 
 }
 

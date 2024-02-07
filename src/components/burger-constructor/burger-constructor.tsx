@@ -7,18 +7,22 @@ import { useDispatch, useSelector } from "react-redux";
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
+import { TIngredient } from "../../utils/types";
 
 
 
-function BurgerConstructor()
+export default function BurgerConstructor()
 {
   const dispatch      =   useDispatch()
   const navigate      =   useNavigate()
+  // @ts-ignore
   const userName      =   useSelector(state => state.user.name )
+  // @ts-ignore
   const order         =   useSelector(state => state.order)
+  // @ts-ignore
   const [ top, bot ]  =   useSelector(state => state.order.buns)
 
-  const [ maxHeight,  setMaxHeight  ]   =   useState(null)
+  const [ maxHeight,  setMaxHeight  ]   =   useState(true)
 
 
 
@@ -29,6 +33,7 @@ function BurgerConstructor()
     }
 
     const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
+    // @ts-ignore
     dispatch( sendOrderThunk(ingredients) )
   }
 
@@ -45,9 +50,9 @@ function BurgerConstructor()
           thumbnail={top.image_mobile}
         />
       </div>
-      <div className={cm.middle} style={{maxHeight}}>
+      <div className={`${cm.middle} ${!maxHeight && cm.midMH}`}>
         {
-        order.adds.map( (item, index) => 
+        order.adds.map( (item: TIngredient, index: number) => 
           <IngredientReorder
             key={item.uuid}
             item={item}
@@ -70,8 +75,8 @@ function BurgerConstructor()
       
       <div className={cm.summary}>
         {order.adds.length > 3 &&
-          <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
-            {maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
+          <div className={cm.collapse} onClick={ ()=> setMaxHeight(!maxHeight) }>
+            {!maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
           </div>
         }
 
@@ -98,5 +103,3 @@ function BurgerConstructor()
   )
 }
 
-
-export default BurgerConstructor;
