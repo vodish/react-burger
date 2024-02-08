@@ -1,4 +1,4 @@
-import { TFetchOption } from "./types";
+import { TFetchOptions } from "./types";
 
 
 const BURGER_API_URL = "https://norma.nomoreparties.space";
@@ -6,8 +6,8 @@ const BURGER_API_URL = "https://norma.nomoreparties.space";
 
 
 
-export async function fetchRequest(endPoint: string, options: TFetchOption) {
-  
+export async function fetchRequest<T>(endPoint: string, options: TFetchOptions): Promise<never | any>
+{  
   let res   = await fetch(`${BURGER_API_URL}${endPoint}`, options)
   if ( !res ) {
     return Promise.reject(`Server error...`)
@@ -31,7 +31,7 @@ export async function fetchRequest(endPoint: string, options: TFetchOption) {
 
 
 
-async function checkTokenRefresh(options: TFetchOption, err: Error)
+async function checkTokenRefresh(options: TFetchOptions, err: Error)
 {
   if (   err.message !== "jwt expired"          )   return options;
   if ( ! localStorage.getItem("refreshToken")   )   return options;
@@ -48,7 +48,7 @@ async function checkTokenRefresh(options: TFetchOption, err: Error)
       body: JSON.stringify({
         token: localStorage.getItem("refreshToken"),
       }),
-    } as TFetchOption
+    } as TFetchOptions
   );
   
   

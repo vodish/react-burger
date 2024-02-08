@@ -1,7 +1,6 @@
 
 
-
-export type TFetchOption = RequestInit & {
+export type TFetchOptions = RequestInit & {
   checkRefresh?: boolean,
   headers?: HeadersInit & {
     'authorization'?: string

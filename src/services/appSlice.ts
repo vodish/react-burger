@@ -38,6 +38,7 @@ const appSlice = createSliceWhitThunks({
         async () => fetchRequest('/api/ingredients'),
         {
             fulfilled:  (state, {payload}) => {
+                // @ts-ignore
                 if ( payload.data ) {
 
                     const typeNname :{[n: string]: string} = {
@@ -54,7 +55,7 @@ const appSlice = createSliceWhitThunks({
                         name: string
                         type: string
                     }
-
+                    // @ts-ignore
                     const types :Tacc  = payload.data.reduce((acc: Tacc, el: Tel, index: number) => {
                         
                         acc[ el.type ]  =   acc[ el.type ]  ||  {
@@ -67,13 +68,16 @@ const appSlice = createSliceWhitThunks({
                         return acc
                     }, {})
                     
-
+                    // @ts-ignore
                     payload.types = Object.values(types)
                 }
 
+                // @ts-ignore
                 state.ingredients.list  =   payload.data    ||  []
+                // @ts-ignore
                 state.ingredients.types =   payload.types   ||  []
-                state.ingredients.error =   payload.error   ||  null
+                // @ts-ignore
+                state.ingredients.error =   payload.error   ||  ""
                 
             },
             rejected: (state, action) => {
@@ -267,7 +271,7 @@ const appSlice = createSliceWhitThunks({
             if ( ! localStorage.getItem('accessToken') ) {
                 return Promise.resolve("tokenUnknown");
             }
-            
+
             return await fetchRequest('/api/auth/user', {
                 // @ts-ignore
                 headers: {

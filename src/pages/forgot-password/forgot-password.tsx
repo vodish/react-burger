@@ -35,12 +35,14 @@ export default function Register()
       body: JSON.stringify({...values}),
     })
 
+    // @ts-ignore
     if ( res.success ) {
       sessionStorage.setItem('forgot-password', "1");
       navigate('/reset-password')
     }
     else {
       console.log(res)
+      // @ts-ignore
       setApiError(res)
     }
   }
