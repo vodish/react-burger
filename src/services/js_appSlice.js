@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, Ttoken } from "../utils/types"
+
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
@@ -14,50 +14,37 @@ const appSlice = createSliceWhitThunks({
     ingredients: {
         list: [],
         types: [],
-        error: ""
+        error: null
     },
     order: {
         buns: [],
         adds: [],
         total: 0,
         number: null,
-        error: "",
+        error: null,
     },
     user: {
         checkAuth: false,
-        email: "",
-        name: "",
+        email: null,
+        name: null,
     },
-    apiError: "",
+    apiError: null,
   },
   reducers: create => ({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
-        // @ts-ignore
-        async () => fetchRequest<{data: Array<TIngredient>, success: boolean}>('/api/ingredients'),
+        async () => fetchRequest('/api/ingredients'),
         {
             fulfilled:  (state, {payload}) => {
-                // @ts-ignore
                 if ( payload.data ) {
-
-                    const typeNname :{[n: string]: string} = {
+                    const typeNname = {
                         bun: "Булки",
                         main: "Начинки",
                         sauce: "Соусы",
                     }
                     
-                    type Tacc = {
-                        [n: string]: Tel
-                    }
-                    type Tel = {
-                        entries: Array<number>
-                        name: string
-                        type: string
-                    }
-                    // @ts-ignore
-                    const types :Tacc  = payload.data.reduce((acc: Tacc, el: Tel, index: number) => {
-                        
+                    const types = payload.data.reduce((acc, el, index)=>{
                         acc[ el.type ]  =   acc[ el.type ]  ||  {
                             type:   el.type,
                             name:   typeNname[el.type] || el.type,
@@ -67,17 +54,13 @@ const appSlice = createSliceWhitThunks({
                 
                         return acc
                     }, {})
-                    
-                    // @ts-ignore
+
                     payload.types = Object.values(types)
                 }
 
-                // @ts-ignore
                 state.ingredients.list  =   payload.data    ||  []
-                // @ts-ignore
                 state.ingredients.types =   payload.types   ||  []
-                // @ts-ignore
-                state.ingredients.error =   payload.error   ||  ""
+                state.ingredients.error =   payload.error   ||  null
                 
             },
             rejected: (state, action) => {
@@ -90,20 +73,17 @@ const appSlice = createSliceWhitThunks({
     
 
     // заказ
-    updateOrder: create.reducer( (state, {payload} :{payload: TIngredient} ) => {
+    updateOrder: create.reducer( (state, {payload}) => {
 
         const product = {...payload, uuid: Date.now()}
 
         if ( payload.type === 'bun' ) {
             state.order.buns = [
-                // @ts-ignore
                 {...product, name: `${payload.name} (верх)` },
-                // @ts-ignore
                 {...product, name: `${payload.name} (низ)` },
             ]
         }
         else {
-            // @ts-ignore
             state.order.adds.push(product)
         }
         
@@ -118,7 +98,6 @@ const appSlice = createSliceWhitThunks({
     }),
 
     deleteFromOrder: create.reducer( (state, {payload}) => {
-        // @ts-ignore
         state.order.adds.splice( payload, 1 )
         
         const newState      =   stateCalculation(state)
@@ -127,11 +106,8 @@ const appSlice = createSliceWhitThunks({
     }),
 
     resortOrder: create.reducer( (state, {payload}) => {
-        // @ts-ignore
         const drag  =   state.order.adds[payload.dragIndex]
-        // @ts-ignore
         state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
-        // @ts-ignore
         state.order.adds[payload.hoverIndex]    =   drag
     }),
     
@@ -145,7 +121,7 @@ const appSlice = createSliceWhitThunks({
     }),
 
     closeOrderError: create.reducer( state => {
-        state.order.error = ""
+        state.order.error = null
     }),
     
     sendOrderThunk: create.asyncThunk(
@@ -160,21 +136,16 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: (state, {payload})=>{
-                // @ts-ignore
                 state.order.number  =   payload.order ? payload.order.number : null
-                // @ts-ignore
                 state.order.error   =   payload.error || null
 
-                // @ts-ignore
                 if ( payload.error ) {
-                    // @ts-ignore
                     alert(payload.error)
                     console.log(payload)
                     return;
                 }
             },
             rejected: (state, action) => {
-                // @ts-ignore
                 state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
             },
         }
@@ -184,7 +155,7 @@ const appSlice = createSliceWhitThunks({
     // регистрация, токены, пользователь
     
     removeApiError: create.reducer(state => {
-        state.apiError = ""
+        state.apiError = null
     }),
 
     sendRegisterThunk: create.asyncThunk(
@@ -200,21 +171,16 @@ const appSlice = createSliceWhitThunks({
       {
         fulfilled: (state, {payload})=>{
           console.log(payload)
-          // @ts-ignore
           state.user.name   =   payload.user.name
-          // @ts-ignore
           state.user.email  =   payload.user.email
-          // @ts-ignore
           setToken(payload)
         },
         rejected: (state, action) => {
           console.log(action)
 
           if ( action.error && action.error.message && action.error.message == "User already exists" ) {
-            // @ts-ignore
             state.apiError = action.error.message
           } else {
-            // @ts-ignore
             state.apiError = `${action.type}...\nServer message: ${action.error.message}` 
           }
         },
@@ -234,24 +200,20 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 state.user.checkAuth    =   true
-                // @ts-ignore
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
-                state.apiError      =   ""
-                // @ts-ignore
+                state.apiError      =   null
                 setToken(payload)
             },
             rejected: (state, action) => {
                 console.log(action)
-                // @ts-ignore
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
     
     sendLogoutThunk: create.asyncThunk(
-        async (userData: Ttoken) => {
+        async (userData) => {
             return await fetchRequest('/api/auth/logout', {
                 method: "POST",
                 headers: {
@@ -262,15 +224,14 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: state => {
-                state.user.name     =   ""
-                state.user.email    =   ""
-                state.apiError      =   ""
+                state.user.name     =   null
+                state.user.email    =   null
+                state.apiError      =   null
                 removeToken()
             },
             rejected: (_, action) => {
                 console.log(action)
-                // @ts-ignore
-                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
@@ -283,7 +244,6 @@ const appSlice = createSliceWhitThunks({
             }
 
             return await fetchRequest('/api/auth/user', {
-                // @ts-ignore
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
                   'Content-Type': 'application/json;charset=utf-8',
@@ -294,12 +254,10 @@ const appSlice = createSliceWhitThunks({
             fulfilled: (state, {payload}) => {
                 // console.log(payload)
                 state.user.checkAuth    =   true
-                state.apiError          =   ""
+                state.apiError          =   null
 
                 if ( payload == 'tokenUnknown' )    return;
-                // @ts-ignore
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
             },
             rejected: (state, {payload}) => {
@@ -313,21 +271,18 @@ const appSlice = createSliceWhitThunks({
         async (userData) => {
             return await fetchRequest('/api/auth/user', {
                 method: "PATCH",
-                // @ts-ignore
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
                   'Content-Type': 'application/json;charset=utf-8',
-                } as HeadersInit,
+                },
                 body: JSON.stringify(userData),
             })
         },
         {
             fulfilled: (state, {payload}) => {
-                // @ts-ignore
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
-                state.apiError      =   ""
+                state.apiError      =   null
             },
             rejected: (_, action) => {
                 console.log(action)
@@ -344,9 +299,11 @@ const appSlice = createSliceWhitThunks({
 
 export const {
     getIngredientsThunk,
+    ingredientsSetup,
     updateOrder,
     deleteFromOrder,
     resortOrder,
+    orderSubmit,
     resetOrder,
     closeOrderError,
     sendOrderThunk,
@@ -364,7 +321,7 @@ export default appSlice.reducer
 
 
 
-// @ts-ignore
+
 function stateCalculation(state) {
     state = JSON.parse( JSON.stringify(state) )
 
@@ -372,20 +329,14 @@ function stateCalculation(state) {
     let counts = {};
 
     [...state.order.buns, ...state.order.adds ].map( item => {
-        // @ts-ignore
         counts[item._id]    =   counts[item._id] ? ++counts[item._id]:  1;
         state.order.total   +=  item.price;
     })
     
-    // @ts-ignore
     state.ingredients.list  =   state.ingredients.list.map( item => {
-        // @ts-ignore
         return {...item, count: counts[item._id] || 0}
     })
 
 
     return state;
 }
-
-
-

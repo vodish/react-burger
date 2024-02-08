@@ -1,7 +1,7 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
-import { sendRegisterThunk } from "../../services/appSlice"
+import { sendRegisterThunk } from "../../services/js_appSlice"
 import { useForm } from '../../hooks/useForm'
 
 /*

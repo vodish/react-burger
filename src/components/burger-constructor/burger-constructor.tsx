@@ -5,7 +5,7 @@ import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } 
 import { useDispatch, useSelector } from "react-redux";
 
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
+import { sendOrderThunk, closeOrderError } from "../../services/js_appSlice";
 import Modal from "../modal/modal";
 import { TIngredient } from "../../utils/types";
 

@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateOrder } from '../../services/appSlice';
+import { updateOrder } from '../../services/js_appSlice';
 import { TIngredient, Ttth } from '../../utils/types'
 
 
@@ -27,6 +27,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
   
 
   function handleUpdateOrder() {
+    // @ts-ignore
     dispath( updateOrder(ingredient) )
     navigate(-1)
   }

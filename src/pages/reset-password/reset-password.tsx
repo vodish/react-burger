@@ -56,6 +56,7 @@ export default function Register()
       setApiError(err.message)
     })
     
+    // @ts-ignore
     if ( res && res.success ) {
       sessionStorage.removeItem('forgot-password');
       navigate('/login', {replace:true, state: {redirect: "Пароль изменён. Войдите с новым паролем"}})

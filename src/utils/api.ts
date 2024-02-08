@@ -6,16 +6,23 @@ const BURGER_API_URL = "https://norma.nomoreparties.space";
 
 
 
-export async function fetchRequest<T>(endPoint: string, options: TFetchOptions): Promise<never | any>
+export async function fetchRequest<T>(endPoint: string, options: TFetchOptions): Promise<never | T>
 {  
   let res   = await fetch(`${BURGER_API_URL}${endPoint}`, options)
   if ( !res ) {
     return Promise.reject(`Server error...`)
   }
   
+  console.log(res)
+
   const json  = await res.json()
+  console.log(json)
+  console.log(options)
+  
   options     = await checkTokenRefresh(options, json)
   
+  console.log(options)
+
   if ( options.checkRefresh ) {
     return fetchRequest(endPoint, options)
   }
@@ -24,7 +31,7 @@ export async function fetchRequest<T>(endPoint: string, options: TFetchOptions):
     return Promise.reject(json)
   }
 
-
+  
   return json;
 }
 
