@@ -34,8 +34,7 @@ const appSlice = createSliceWhitThunks({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
-        //// @ts-ignore
-        async () => fetchRequest('/api/ingredients', {}),
+        async () => fetchRequest('/api/ingredients'),
         {
             fulfilled:  (state, {payload}) => {
                 // @ts-ignore
