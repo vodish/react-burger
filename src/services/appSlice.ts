@@ -25,8 +25,8 @@ const appSlice = createSliceWhitThunks({
     },
     user: {
         checkAuth: false,
-        email: null,
-        name: null,
+        email: "",
+        name: "",
     },
     apiError: "",
   },
@@ -34,12 +34,12 @@ const appSlice = createSliceWhitThunks({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
+        // @ts-ignore
         async () => fetchRequest('/api/ingredients'),
         {
             fulfilled:  (state, {payload}) => {
                 if ( payload.data ) {
 
-                    
                     const typeNname :{[n: string]: string} = {
                         bun: "Булки",
                         main: "Начинки",
@@ -78,7 +78,6 @@ const appSlice = createSliceWhitThunks({
             },
             rejected: (state, action) => {
                 console.log(action)
-                // @ts-ignore
                 state.ingredients.error = `${action.type}... ${action.error.message}`
 
             }
@@ -249,8 +248,8 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: state => {
-                state.user.name     =   null
-                state.user.email    =   null
+                state.user.name     =   ""
+                state.user.email    =   ""
                 state.apiError      =   ""
                 removeToken()
             },
@@ -270,6 +269,7 @@ const appSlice = createSliceWhitThunks({
             }
 
             return await fetchRequest('/api/auth/user', {
+                // @ts-ignore
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
                   'Content-Type': 'application/json;charset=utf-8',
@@ -297,10 +297,11 @@ const appSlice = createSliceWhitThunks({
         async (userData) => {
             return await fetchRequest('/api/auth/user', {
                 method: "PATCH",
+                // @ts-ignore
                 headers: {
                   'authorization': localStorage.getItem('accessToken'),
                   'Content-Type': 'application/json;charset=utf-8',
-                },
+                } as HeadersInit,
                 body: JSON.stringify(userData),
             })
         },

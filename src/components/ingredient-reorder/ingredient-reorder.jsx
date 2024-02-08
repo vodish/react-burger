@@ -2,13 +2,14 @@ import { useDispatch } from "react-redux";
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { TIngredient } from "../../utils/types";
 
 
 
-export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
+// export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
+export default function IngredientReorder({item, index})
 {
   const dispatch  =   useDispatch()
   const ref       =   useRef(null)
@@ -23,7 +24,7 @@ export default function IngredientReorder({item, index}: {item: TIngredient, ind
     },
     hover(item, monitor) {
       if (!ref.current)   return;
-      
+
       const dragIndex = item.index
       const hoverIndex = index
       
