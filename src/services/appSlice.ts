@@ -267,7 +267,7 @@ const appSlice = createSliceWhitThunks({
             if ( ! localStorage.getItem('accessToken') ) {
                 return Promise.resolve("tokenUnknown");
             }
-
+            
             return await fetchRequest('/api/auth/user', {
                 // @ts-ignore
                 headers: {

@@ -1,17 +1,17 @@
-// import { TFetchOption } from "./types";
-// import { setToken } from "./storage";
+import { TFetchOption } from "./types";
+
 
 const BURGER_API_URL = "https://norma.nomoreparties.space";
 
 
 
-export async function fetchRequest (endPoint: string, options: TOption) {
 
+export async function fetchRequest(endPoint: string, options: TFetchOption) {
+  
   let res   = await fetch(`${BURGER_API_URL}${endPoint}`, options)
   if ( !res ) {
     return Promise.reject(`Server error...`)
   }
-
   
   const json  = await res.json()
   options     = await checkTokenRefresh(options, json)
@@ -29,16 +29,9 @@ export async function fetchRequest (endPoint: string, options: TOption) {
 }
 
 
-interface TOption extends RequestInit {
-  checkRefresh?: boolean
-  headers?: HeadersInit & {
-    [name: string]: string
-  }
-}
 
 
-
-async function checkTokenRefresh(options: TOption, err: Error)
+async function checkTokenRefresh(options: TFetchOption, err: Error)
 {
   if (   err.message !== "jwt expired"          )   return options;
   if ( ! localStorage.getItem("refreshToken")   )   return options;
@@ -49,18 +42,13 @@ async function checkTokenRefresh(options: TOption, err: Error)
   
   const res = await fetch(`${BURGER_API_URL}/api/auth/token`, {
       method: "POST",
-      // headers: {
-      //   "Content-Type": "application/json;charset=utf-8",
-      // },
       headers: {
-        'authorization': localStorage.getItem('accessToken'),
-        'Content-Type': 'application/json;charset=utf-8',
-        'sdvsdv': "",
+        "Content-Type": "application/json;charset=utf-8",
       },
       body: JSON.stringify({
         token: localStorage.getItem("refreshToken"),
       }),
-    }
+    } as TFetchOption
   );
   
   
@@ -86,6 +74,45 @@ async function checkTokenRefresh(options: TOption, err: Error)
   return options;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+/*
+// попытки типизации
+
+async function foo<T>(endPoint: string, options: TOption = {}) {
+  
+  const res = await fetch(endPoint, {
+    checkRefresh: false,
+    headers: {
+      'authorization': 'str',
+      'Content-Type': 'application/json;charset=utf-8',
+      "test1": "test1",
+    },
+  } as TOption)
+
+
+  return res
+}
+
+foo<{test: string}>("test", {
+  checkRefresh: false,
+  headers: {
+    'authorization': 'str',
+    'Content-Type': 'application/json;charset=utf-8',
+    "test1": "test1",
+  },
+})
+
+*/
 
 
 

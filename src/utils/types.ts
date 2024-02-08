@@ -1,4 +1,14 @@
 
+
+
+export type TFetchOption = RequestInit & {
+  checkRefresh?: boolean,
+  headers?: HeadersInit & {
+    'authorization'?: string
+  }
+}
+
+
 export type TIngredient = {
     _id:            string
     name:           string
