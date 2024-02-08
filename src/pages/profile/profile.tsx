@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import cm from './profile.module.css'
 import { NavLink, Outlet } from 'react-router-dom'
-import { sendLogoutThunk } from '../../services/js_appSlice'
+import { sendLogoutThunk } from '../../services/appSlice'
 import { Ttoken } from '../../utils/types'
 
 

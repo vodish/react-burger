@@ -4,7 +4,7 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFromOrder, updateOrder, resetOrder } from "../../services/js_appSlice";
+import { deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
 

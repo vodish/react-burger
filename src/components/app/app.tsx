@@ -17,7 +17,7 @@ import Page404 from '../../pages/page404/page404';
 
 import AppHeader from '../app-header/app-header';
 import { useDispatch } from 'react-redux';
-import { getIngredientsThunk, getProfileThunk } from '../../services/js_appSlice';
+import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
 import { IsAuth, NoAuth } from '../protected-route/protected-route';
 
 

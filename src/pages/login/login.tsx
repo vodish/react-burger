@@ -2,7 +2,7 @@ import { Link, Navigate, useLocation } from 'react-router-dom'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { removeApiError, sendLoginThunk } from '../../services/js_appSlice'
+import { removeApiError, sendLoginThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
 
 export default function Login()

@@ -1,7 +1,7 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import cm from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux"
-import { updateProfileThunk } from '../../services/js_appSlice'
+import { updateProfileThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
 
 

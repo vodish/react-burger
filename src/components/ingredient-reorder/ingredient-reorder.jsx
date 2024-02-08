@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { resortOrder, deleteFromOrder } from "../../services/js_appSlice";
+import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
 import React, { useRef } from "react";
