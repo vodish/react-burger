@@ -1,26 +1,27 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, Ttoken } from "../utils/types"
+import { TIngredient, TType, Ttoken } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
 })
 
 
+
 const appSlice = createSliceWhitThunks({
   name: 'app',
   initialState: {
     ingredients: {
-        list: [],
-        types: [],
-        error: ""
+        list:   [] as TIngredient[],
+        types:  [] as TType[],
+        error:  ""
     },
     order: {
-        buns: [],
-        adds: [],
+        buns: [] as TIngredient[],
+        adds: [] as TIngredient[],
         total: 0,
-        number: null,
+        number: 0,
         error: "",
     },
     user: {
@@ -34,10 +35,10 @@ const appSlice = createSliceWhitThunks({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
-        async () => fetchRequest('/api/ingredients'),
+        async () => fetchRequest<{data: TIngredient[], success: boolean, error?: string, types?: TType[]}>('/api/ingredients'),
         {
             fulfilled:  (state, {payload}) => {
-                // @ts-ignore
+                
                 if ( payload.data ) {
 
                     const typeNname :{[n: string]: string} = {
@@ -47,15 +48,10 @@ const appSlice = createSliceWhitThunks({
                     }
                     
                     type Tacc = {
-                        [n: string]: Tel
+                        [n: keyof typeof typeNname]: TType
                     }
-                    type Tel = {
-                        entries: Array<number>
-                        name: string
-                        type: string
-                    }
-                    // @ts-ignore
-                    const types :Tacc  = payload.data.reduce((acc: Tacc, el: Tel, index: number) => {
+                    
+                    const types :Tacc  = payload.data.reduce((acc: Tacc, el: TIngredient, index: number) => {
                         
                         acc[ el.type ]  =   acc[ el.type ]  ||  {
                             type:   el.type,
@@ -67,15 +63,12 @@ const appSlice = createSliceWhitThunks({
                         return acc
                     }, {})
                     
-                    // @ts-ignore
                     payload.types = Object.values(types)
                 }
 
-                // @ts-ignore
+                
                 state.ingredients.list  =   payload.data    ||  []
-                // @ts-ignore
                 state.ingredients.types =   payload.types   ||  []
-                // @ts-ignore
                 state.ingredients.error =   payload.error   ||  ""
                 
             },
@@ -135,7 +128,7 @@ const appSlice = createSliceWhitThunks({
     }),
     
     resetOrder: create.reducer( state => {
-        state.order.number  =   null
+        state.order.number  =   0
         state.order.buns    =   []
         state.order.adds    =   []
         const newState      =   stateCalculation(state)

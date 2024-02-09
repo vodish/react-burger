@@ -64,7 +64,7 @@ export default function Constructor()
         }
       </div>
       
-      {order.number  &&
+      {order.number > 0  &&
         <Modal handleClose={handleOrderReset}>
           <OrderDetails />
         </Modal>
