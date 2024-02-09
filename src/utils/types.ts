@@ -1,3 +1,9 @@
+import store from "../services/redux"
+
+
+
+export type TStore = ReturnType<typeof store.getState>
+
 
 
 export type TFetchOptions = RequestInit & {

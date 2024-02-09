@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
 import { sendRegisterThunk } from "../../services/appSlice"
 import { useForm } from '../../hooks/useForm'
+import { TStore } from '../../utils/types'
 
 /*
 @kruglovand
@@ -16,8 +17,7 @@ import { useForm } from '../../hooks/useForm'
 
 export default function Register()
 {
-  // @ts-ignore
-  const apiError  = useSelector( state => state.apiError )
+  const apiError  = useSelector( (state: TStore) => state.apiError )
   const dispatch  = useDispatch()
 
   

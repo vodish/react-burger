@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
-import { TIngredient } from "../../utils/types";
+import { TIngredient, TStore } from "../../utils/types";
 
 
 
@@ -15,12 +15,10 @@ export default function BurgerConstructor()
 {
   const dispatch      =   useDispatch()
   const navigate      =   useNavigate()
-  // @ts-ignore
-  const userName      =   useSelector(state => state.user.name )
-  // @ts-ignore
-  const order         =   useSelector(state => state.order)
-  // @ts-ignore
-  const [ top, bot ]  =   useSelector(state => state.order.buns)
+  
+  const userName      =   useSelector( (state: TStore) => state.user.name )
+  const order         =   useSelector( (state: TStore) => state.order)
+  const [ top, bot ]  =   useSelector( (state: TStore) => state.order.buns)
 
   const [ maxHeight,  setMaxHeight  ]   =   useState(true)
 
@@ -32,7 +30,7 @@ export default function BurgerConstructor()
       return;
     }
 
-    const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
+    const ingredients =   [...order.buns, ...order.adds].map( (item: TIngredient) => item._id)
     // @ts-ignore
     dispatch( sendOrderThunk(ingredients) )
   }
@@ -45,8 +43,11 @@ export default function BurgerConstructor()
           type="top"
           extraClass={cm.elemClose}
           isLocked={true}
+          // @ts-ignore
           text={top.name}
+          // @ts-ignore
           price={top.price}
+          // @ts-ignore
           thumbnail={top.image_mobile}
         />
       </div>
@@ -66,8 +67,11 @@ export default function BurgerConstructor()
           type="bottom"
           extraClass={cm.elemClose}
           isLocked={true}
+          // @ts-ignore
           text={bot.name}
+          // @ts-ignore
           price={bot.price}
+          // @ts-ignore
           thumbnail={bot.image_mobile}
         />
       </div>

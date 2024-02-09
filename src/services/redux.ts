@@ -5,6 +5,5 @@ const store = configureStore({
     reducer: appSlice
 })
 
-export type TStore = ReturnType<typeof store.getState>
 
 export default store

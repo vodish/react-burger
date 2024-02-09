@@ -4,12 +4,12 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeApiError, sendLoginThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
+import { TStore } from '../../utils/types'
 
 export default function Login()
 {
   const location  =   useLocation()
-  // @ts-ignore
-  const apiError  =   useSelector( state => state.apiError )
+  const apiError  =   useSelector( (state: TStore) => state.apiError )
   const dispatch  =   useDispatch()
 
   const { values, handleChange } = useForm({

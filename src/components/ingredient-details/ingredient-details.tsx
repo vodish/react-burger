@@ -3,7 +3,7 @@ import cm from './ingredient-details.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
-import { TIngredient, Ttth } from '../../utils/types'
+import { TIngredient, TStore, Ttth } from '../../utils/types'
 
 
 
@@ -22,8 +22,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
   const location  = useLocation();
   const isModal   = location.state && location.state.background
   const dispath   = useDispatch()
-  // @ts-ignore
-  const orderBuns = useSelector(state => state.order.buns)
+  const orderBuns = useSelector( (state: TStore) => state.order.buns)
   
 
   function handleUpdateOrder() {

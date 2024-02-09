@@ -3,14 +3,14 @@ import cm from './profile.module.css'
 import { useDispatch, useSelector } from "react-redux"
 import { updateProfileThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
+import { TStore } from '../../utils/types'
 
 
 
 export default function ProfileUser()
 {
   const dispatch    = useDispatch()
-  // @ts-ignore
-  const user        = useSelector( state => state.user )
+  const user        = useSelector( (state: TStore) => state.user )
 
   const {values, handleChange} = useForm({
     name:     user.name,

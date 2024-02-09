@@ -4,15 +4,15 @@ import IngredientDetails from "../../components/ingredient-details/ingredient-de
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import Modal from "../../components/modal/modal"
-import { TIngredient } from "../../utils/types"
+import { TIngredient, TStore } from "../../utils/types"
 
 export default function IngredientsId()
 {
   const { id }    = useParams()
   const location  = useLocation()
   const navigate  = useNavigate()
-  // @ts-ignore
-  const ingredientList  = useSelector(state => state.ingredients.list)
+  
+  const ingredientList  = useSelector((state: TStore) => state.ingredients.list)
   const [ ingredient, setIngredient ]  = useState <TIngredient | null> (null)
 
   

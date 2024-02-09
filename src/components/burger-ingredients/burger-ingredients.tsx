@@ -3,17 +3,17 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
 import cm from './burger-ingredients.module.css'
 import { useSelector } from "react-redux";
-import { TType } from "../../utils/types";
+import { TStore, TType } from "../../utils/types";
 
 
 
 
 export default function BurgerIngredients()
 {
-  // @ts-ignore
-  const { list, types }   =   useSelector(state => state.ingredients)
-
+  
+  const { list, types }   =   useSelector( (state: TStore) => state.ingredients)
   const refList   =   useRef <HTMLDivElement> (null);
+  // @ts-ignore
   const [ tabActive, setTabActive ] =   useState( types[0].type )
   
 
@@ -27,6 +27,7 @@ export default function BurgerIngredients()
       
       if ( offset > value ) continue;
 
+      // @ts-ignore
       tab   = types[i].type
       value = offset
     }

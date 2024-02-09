@@ -7,16 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
-
+import { TStore } from "../../utils/types";
 
 
 export default function Constructor()
 {
   const dispatch        =   useDispatch()
-  // @ts-ignore
-  const { list, error } =   useSelector(state => state.ingredients )
-  // @ts-ignore
-  const order           =   useSelector(state => state.order )
+  
+  const { list, error } =   useSelector( (state: TStore) => state.ingredients )
+  const order           =   useSelector( (state: TStore) => state.order )
 
   
   const [ , dropIngredients ] = useDrop({
