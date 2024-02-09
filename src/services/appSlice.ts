@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TType, Ttoken } from "../utils/types"
+import { TIngredient, TStore, TType, Ttoken } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
@@ -88,14 +88,11 @@ const appSlice = createSliceWhitThunks({
 
         if ( payload.type === 'bun' ) {
             state.order.buns = [
-                // @ts-ignore
                 {...product, name: `${payload.name} (верх)` },
-                // @ts-ignore
                 {...product, name: `${payload.name} (низ)` },
             ]
         }
         else {
-            // @ts-ignore
             state.order.adds.push(product)
         }
         
@@ -109,8 +106,10 @@ const appSlice = createSliceWhitThunks({
         state.ingredients   =   newState.ingredients;
     }),
 
-    deleteFromOrder: create.reducer( (state, {payload}) => {
-        // @ts-ignore
+
+
+    deleteFromOrder: create.reducer( (state, {payload}: {payload: number}) => {
+        
         state.order.adds.splice( payload, 1 )
         
         const newState      =   stateCalculation(state)
@@ -118,13 +117,13 @@ const appSlice = createSliceWhitThunks({
         state.order.total   =   newState.order.total;
     }),
 
-    resortOrder: create.reducer( (state, {payload}) => {
-        // @ts-ignore
-        const drag  =   state.order.adds[payload.dragIndex]
-        // @ts-ignore
-        state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
-        // @ts-ignore
-        state.order.adds[payload.hoverIndex]    =   drag
+    resortOrder: create.reducer( (state, {payload}: {payload: number[]}) => {
+
+        const [ dragIndex, hoverIndex ] =   payload
+        const drag                      =   state.order.adds[dragIndex]
+
+        state.order.adds[dragIndex]     =   state.order.adds[hoverIndex]
+        state.order.adds[hoverIndex]    =   drag
     }),
     
     resetOrder: create.reducer( state => {
@@ -356,22 +355,22 @@ export default appSlice.reducer
 
 
 
-// @ts-ignore
-function stateCalculation(state) {
+function stateCalculation(state: TStore) {
+
     state = JSON.parse( JSON.stringify(state) )
 
     state.order.total = 0;
-    let counts = {};
+    let counts: {[n: string]: number} = {};
 
-    [...state.order.buns, ...state.order.adds ].map( item => {
-        // @ts-ignore
+    [...state.order.buns, ...state.order.adds ].map( (item: TIngredient) => {
+        
         counts[item._id]    =   counts[item._id] ? ++counts[item._id]:  1;
         state.order.total   +=  item.price;
     })
     
-    // @ts-ignore
-    state.ingredients.list  =   state.ingredients.list.map( item => {
-        // @ts-ignore
+
+    state.ingredients.list  =   state.ingredients.list.map( (item: TIngredient) => {
+        
         return {...item, count: counts[item._id] || 0}
     })
 

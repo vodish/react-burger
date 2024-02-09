@@ -52,7 +52,7 @@ export default function IngredientReorder({item, index})
       }
       // Time to actually perform the action
       // moveCard(dragIndex, hoverIndex)
-      dispatch( resortOrder({dragIndex, hoverIndex}) )
+      dispatch( resortOrder([dragIndex, hoverIndex]) )
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
