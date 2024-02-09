@@ -35,8 +35,14 @@ const appSlice = createSliceWhitThunks({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
-        async () => fetchRequest<{data: TIngredient[], success: boolean, error?: string, types?: TType[]}>('/api/ingredients'),
-        {
+        async () => fetchRequest<{
+                data: TIngredient[],
+                success: boolean,
+                error?: string,
+                types?: TType[]
+            }>
+            ('/api/ingredients')
+        ,{
             fulfilled:  (state, {payload}) => {
                 
                 if ( payload.data ) {
@@ -107,7 +113,6 @@ const appSlice = createSliceWhitThunks({
     }),
 
 
-
     deleteFromOrder: create.reducer( (state, {payload}: {payload: number}) => {
         
         state.order.adds.splice( payload, 1 )
@@ -139,33 +144,43 @@ const appSlice = createSliceWhitThunks({
         state.order.error = ""
     }),
     
+
+
     sendOrderThunk: create.asyncThunk(
         async (ingredients) => {
-            return fetchRequest('/api/orders', {
-                method: "POST",
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ingredients}),
-            })
-        },
-        {
+            return (
+                fetchRequest<{
+                    name: string,
+                    order: {
+                        number: number
+                    },
+                    susses: boolean,
+                    error?: string
+                }> (
+                    '/api/orders'
+                    , {
+                        method: "POST",
+                        headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ingredients}),
+                    }
+                )
+            )
+        }
+        ,{
             fulfilled: (state, {payload})=>{
-                // @ts-ignore
-                state.order.number  =   payload.order ? payload.order.number : null
-                // @ts-ignore
-                state.order.error   =   payload.error || null
+                
+                state.order.number  =   payload.order ? payload.order.number : 0
+                state.order.error   =   payload.error || ''
 
-                // @ts-ignore
-                if ( payload.error ) {
-                    // @ts-ignore
+                if ( payload.error  ) {
                     alert(payload.error)
                     console.log(payload)
                     return;
                 }
             },
             rejected: (state, action) => {
-                // @ts-ignore
                 state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
             },
         }
@@ -214,7 +229,16 @@ const appSlice = createSliceWhitThunks({
 
     sendLoginThunk: create.asyncThunk(
         async (userData) => {
-            return await fetchRequest('/api/auth/login', {
+            return await fetchRequest<{
+                success: boolean
+                accessToken: string
+                refreshToken:string
+                user:{
+                    email:string
+                    name: string
+                }
+            }>
+            ('/api/auth/login', {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
@@ -225,17 +249,13 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 state.user.checkAuth    =   true
-                // @ts-ignore
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
                 state.apiError      =   ""
-                // @ts-ignore
                 setToken(payload)
             },
             rejected: (state, action) => {
                 console.log(action)
-                // @ts-ignore
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
@@ -258,9 +278,8 @@ const appSlice = createSliceWhitThunks({
                 state.apiError      =   ""
                 removeToken()
             },
-            rejected: (_, action) => {
+            rejected: (state, action) => {
                 console.log(action)
-                // @ts-ignore
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
@@ -352,6 +371,11 @@ export const {
 } = appSlice.actions
 
 export default appSlice.reducer
+
+
+
+
+
 
 
 
