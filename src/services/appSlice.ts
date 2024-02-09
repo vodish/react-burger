@@ -1,11 +1,12 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TStore, TType, Ttoken } from "../utils/types"
+import { TFetchOptions, TIngredient, TStore, TType, Ttoken } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
 })
+
 
 
 
@@ -289,59 +290,67 @@ const appSlice = createSliceWhitThunks({
     getProfileThunk: create.asyncThunk(
         async () => {
             if ( ! localStorage.getItem('accessToken') ) {
-                return Promise.resolve("tokenUnknown");
+                return Promise.reject("tokenUnknown");
             }
 
-            return await fetchRequest('/api/auth/user', {
-                // @ts-ignore
+            return await fetchRequest<{
+                susses: boolean
+                user: {
+                    email: string
+                    name: string
+                }
+            }>(
+                '/api/auth/user', {
                 headers: {
-                  'authorization': localStorage.getItem('accessToken'),
+                  'authorization': localStorage.getItem('accessToken') as string,
                   'Content-Type': 'application/json;charset=utf-8',
                 }
             })
         },
         {
             fulfilled: (state, {payload}) => {
-                // console.log(payload)
                 state.user.checkAuth    =   true
                 state.apiError          =   ""
-
-                if ( payload == 'tokenUnknown' )    return;
-                // @ts-ignore
+                
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
             },
-            rejected: (state, {payload}) => {
-                console.log(payload)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            rejected: (state, action) => {
+                console.log(action)
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             },
         }
     ),
     
     updateProfileThunk: create.asyncThunk(
         async (userData) => {
-            return await fetchRequest('/api/auth/user', {
-                method: "PATCH",
-                // @ts-ignore
-                headers: {
-                  'authorization': localStorage.getItem('accessToken'),
-                  'Content-Type': 'application/json;charset=utf-8',
-                } as HeadersInit,
-                body: JSON.stringify(userData),
-            })
-        },
-        {
+            return await fetchRequest<{
+                susses: boolean
+                user: {
+                    email: string
+                    name: string
+                }
+            }>(
+                '/api/auth/user'
+                ,{ 
+                    method: "PATCH",
+                    headers: {
+                        'authorization': localStorage.getItem('accessToken') as string,
+                        'Content-Type': 'application/json;charset=utf-8',
+                    },
+                    body: JSON.stringify(userData),
+                }
+            )
+        }
+        ,{
             fulfilled: (state, {payload}) => {
-                // @ts-ignore
                 state.user.name     =   payload.user.name
-                // @ts-ignore
                 state.user.email    =   payload.user.email
                 state.apiError      =   ""
             },
-            rejected: (_, action) => {
+            rejected: (state, action) => {
                 console.log(action)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
