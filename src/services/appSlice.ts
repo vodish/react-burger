@@ -1,12 +1,22 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TFetchOptions, TIngredient, TStore, TType, Ttoken } from "../utils/types"
+import { TIngredient, TStore, TType, Ttoken } from "../utils/types"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
 })
 
+
+type TUserResponse = {
+    success: boolean
+    accessToken: string
+    refreshToken:string
+    user:{
+        email:string
+        name: string
+    }
+}
 
 
 
@@ -196,7 +206,7 @@ const appSlice = createSliceWhitThunks({
 
     sendRegisterThunk: create.asyncThunk(
       async (userData) => {
-        return await fetchRequest('/api/auth/register', {
+        return await fetchRequest<TUserResponse>('/api/auth/register', {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -207,21 +217,16 @@ const appSlice = createSliceWhitThunks({
       {
         fulfilled: (state, {payload})=>{
           console.log(payload)
-          // @ts-ignore
           state.user.name   =   payload.user.name
-          // @ts-ignore
           state.user.email  =   payload.user.email
-          // @ts-ignore
           setToken(payload)
         },
         rejected: (state, action) => {
           console.log(action)
 
           if ( action.error && action.error.message && action.error.message == "User already exists" ) {
-            // @ts-ignore
             state.apiError = action.error.message
           } else {
-            // @ts-ignore
             state.apiError = `${action.type}...\nServer message: ${action.error.message}` 
           }
         },
@@ -230,15 +235,7 @@ const appSlice = createSliceWhitThunks({
 
     sendLoginThunk: create.asyncThunk(
         async (userData) => {
-            return await fetchRequest<{
-                success: boolean
-                accessToken: string
-                refreshToken:string
-                user:{
-                    email:string
-                    name: string
-                }
-            }>
+            return await fetchRequest<TUserResponse>
             ('/api/auth/login', {
                 method: "POST",
                 headers: {
