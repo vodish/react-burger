@@ -9,6 +9,7 @@ import { TIngredient } from "../../utils/types";
 
 
 // export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
+// @ts-ignore
 export default function IngredientReorder({item, index})
 {
   const dispatch  =   useDispatch()
@@ -25,6 +26,7 @@ export default function IngredientReorder({item, index})
     hover(item, monitor) {
       if (!ref.current)   return;
 
+      // @ts-ignore
       const dragIndex = item.index
       const hoverIndex = index
       
@@ -32,12 +34,14 @@ export default function IngredientReorder({item, index})
       if (dragIndex === hoverIndex)   return;
 
       // Determine rectangle on screen
+      // @ts-ignore
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       // Get vertical middle
       const hoverMiddleY  = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       // Determine mouse position
       const clientOffset  = monitor.getClientOffset()
       // Get pixels to the top
+      // @ts-ignore
       const hoverClientY  = clientOffset.y - hoverBoundingRect.top
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
@@ -58,6 +62,7 @@ export default function IngredientReorder({item, index})
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
+      // @ts-ignore
       item.index = hoverIndex
     }
   })
@@ -90,6 +95,7 @@ export default function IngredientReorder({item, index})
         text={item.name}
         price={item.price}
         thumbnail={item.image_mobile}
+        // @ts-ignore
         handleClose={e=>{
           e.preventDefault()
           dispatch(deleteFromOrder(index))

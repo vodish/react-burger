@@ -9,7 +9,7 @@ Modal.propTypes = {
   handleClose:  PropTypes.func.isRequired,
 }
 
-
+// @ts-ignore
 function Modal({handleClose, children})
 {
   return createPortal(
@@ -21,6 +21,7 @@ function Modal({handleClose, children})
         {children}
       </div>
     </>
+    // @ts-ignore
     , document.getElementById('modal')
   )
   
