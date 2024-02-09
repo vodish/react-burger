@@ -13,23 +13,23 @@ const appSlice = createSliceWhitThunks({
   name: 'app',
   initialState: {
     ingredients: {
-        list:   [] as TIngredient[],
-        types:  [] as TType[],
-        error:  ""
+        list:       [] as TIngredient[],
+        types:      [] as TType[],
+        error:      ""
     },
     order: {
-        buns: [] as TIngredient[],
-        adds: [] as TIngredient[],
-        total: 0,
-        number: 0,
-        error: "",
+        buns:       [] as TIngredient[],
+        adds:       [] as TIngredient[],
+        total:      0,
+        number:     0,
+        error:      "",
     },
     user: {
-        checkAuth: false,
-        email: "",
-        name: "",
+        checkAuth:  false,
+        email:      "",
+        name:       "",
     },
-    apiError: "",
+    apiError:   "",
   },
   reducers: create => ({
       
