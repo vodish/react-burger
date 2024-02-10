@@ -2,7 +2,10 @@ import store from "../services/redux"
 
 
 
-export type TStore = ReturnType<typeof store.getState>
+export type TDispatch   = typeof store.dispatch
+export type TStore      = ReturnType<typeof store.getState>
+
+
 
 
 

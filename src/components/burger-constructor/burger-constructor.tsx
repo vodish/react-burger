@@ -20,6 +20,7 @@ export default function BurgerConstructor()
   const order         =   useSelector( (state: TStore) => state.order)
   const [ top, bot ]  =   useSelector( (state: TStore) => state.order.buns)
 
+
   const [ maxHeight,  setMaxHeight  ]   =   useState(true)
 
 
@@ -43,11 +44,8 @@ export default function BurgerConstructor()
           type="top"
           extraClass={cm.elemClose}
           isLocked={true}
-          // @ts-ignore
           text={top.name}
-          // @ts-ignore
           price={top.price}
-          // @ts-ignore
           thumbnail={top.image_mobile}
         />
       </div>
@@ -67,11 +65,8 @@ export default function BurgerConstructor()
           type="bottom"
           extraClass={cm.elemClose}
           isLocked={true}
-          // @ts-ignore
           text={bot.name}
-          // @ts-ignore
           price={bot.price}
-          // @ts-ignore
           thumbnail={bot.image_mobile}
         />
       </div>
