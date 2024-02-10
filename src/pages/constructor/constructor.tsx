@@ -7,8 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
-import { TStore } from "../../utils/types";
+import { TIngredient, TStore } from "../../utils/types";
 
+type TDrop = {
+  index: number
+  item: TIngredient
+}
 
 export default function Constructor()
 {
@@ -18,18 +22,16 @@ export default function Constructor()
   const order           =   useSelector( (state: TStore) => state.order )
 
   
-  const [ , dropIngredients ] = useDrop({
+  const [ , dropIngredients ] = useDrop<TDrop>({
     accept: 'reorder',
     drop(item) {
-      // @ts-ignore
       dispatch( deleteFromOrder(item.index) )
     }
   })
-
-  const [ , dropConstructor ] = useDrop({
+  
+  const [ , dropConstructor ] = useDrop<TDrop>({
     accept: 'updateOrder',
     drop(item) {
-      // @ts-ignore
       dispatch( updateOrder(item.item) )
     }
   })

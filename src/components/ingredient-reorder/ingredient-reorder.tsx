@@ -2,19 +2,21 @@ import { useDispatch } from "react-redux";
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { TIngredient } from "../../utils/types";
+import { Identifier, XYCoord } from "dnd-core";
+
 
 
 
 export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
 {
   const dispatch  =   useDispatch()
-  const ref       =   useRef(null)
+  const ref       =   useRef<HTMLDivElement | null>(null)
 
-  
-  const [{ handlerId }, drop] = useDrop({
+
+  const [{ handlerId }, drop] = useDrop<{index: number}, unknown, {handlerId: Identifier | null}>({
     accept: 'reorder',
     collect(monitor) {
       return {
@@ -24,8 +26,6 @@ export default function IngredientReorder({item, index}: {item: TIngredient, ind
     hover(item, monitor) {
       if (!ref.current)   return;
 
-      
-      // @ts-ignore
       const dragIndex = item.index
       const hoverIndex = index
       
@@ -33,14 +33,13 @@ export default function IngredientReorder({item, index}: {item: TIngredient, ind
       if (dragIndex === hoverIndex)   return;
 
       // Determine rectangle on screen
-      // @ts-ignore
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       // Get vertical middle
       const hoverMiddleY  = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       // Determine mouse position
-      const clientOffset  = monitor.getClientOffset()
+      const clientOffset  = monitor.getClientOffset() as XYCoord
       // Get pixels to the top
-      // @ts-ignore
+      
       const hoverClientY  = clientOffset.y - hoverBoundingRect.top
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
@@ -61,7 +60,6 @@ export default function IngredientReorder({item, index}: {item: TIngredient, ind
       // Generally it's better to avoid mutations,
       // but it's good here for the sake of performance
       // to avoid expensive index searches.
-      // @ts-ignore
       item.index = hoverIndex
     }
   })
@@ -83,7 +81,6 @@ export default function IngredientReorder({item, index}: {item: TIngredient, ind
   return(
     <div
       ref={ref}
-      
       className={cm.item}
       data-handler-id={handlerId}
       > 
