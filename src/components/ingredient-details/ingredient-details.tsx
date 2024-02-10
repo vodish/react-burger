@@ -7,7 +7,7 @@ import { TIngredient, TStore, Ttth } from '../../utils/types'
 
 
 
-const TTH: Array<Ttth> = [
+const TTH: Ttth[] = [
   {name: "calories",      title: "Калории",   ext: "ккал" },
   {name: "proteins",      title: "Белки",     ext: "г"    },
   {name: "fat",           title: "Жиры",      ext: "г"    },
@@ -26,7 +26,6 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
   
 
   function handleUpdateOrder() {
-    // @ts-ignore
     dispath( updateOrder(ingredient) )
     navigate(-1)
   }
