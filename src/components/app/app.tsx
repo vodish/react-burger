@@ -27,8 +27,7 @@ export default function App()
   const location = useLocation();
   const background = location.state && location.state.background;
   
-
-
+  
   useEffect(()=>{
     // @ts-ignore
     dispatch( getProfileThunk() )
