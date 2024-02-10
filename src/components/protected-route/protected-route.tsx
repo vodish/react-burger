@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { TStore } from "../../utils/types";
 
 
 type TProtected = {
@@ -11,10 +12,9 @@ const Protected = ({ NoAuth = false, component }: TProtected) => {
   // checkAuth это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
-  // @ts-ignore
-  const checkAuth = useSelector( store => store.user.checkAuth );
-  // @ts-ignore
-  const user      = useSelector( store => store.user.name );
+  
+  const checkAuth = useSelector( (store: TStore) => store.user.checkAuth );
+  const user      = useSelector( (store: TStore) => store.user.name );
   const location  = useLocation();
 
   if ( ! checkAuth ) {
