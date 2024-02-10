@@ -13,7 +13,6 @@ export default function BurgerIngredients()
   
   const { list, types }   =   useSelector( (state: TStore) => state.ingredients)
   const refList   =   useRef <HTMLDivElement> (null);
-  // @ts-ignore
   const [ tabActive, setTabActive ] =   useState( types[0].type )
   
 
@@ -27,7 +26,6 @@ export default function BurgerIngredients()
       
       if ( offset > value ) continue;
 
-      // @ts-ignore
       tab   = types[i].type
       value = offset
     }
