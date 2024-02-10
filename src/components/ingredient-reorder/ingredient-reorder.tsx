@@ -8,9 +8,7 @@ import { TIngredient } from "../../utils/types";
 
 
 
-// export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
-// @ts-ignore
-export default function IngredientReorder({item, index})
+export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
 {
   const dispatch  =   useDispatch()
   const ref       =   useRef(null)
@@ -26,6 +24,7 @@ export default function IngredientReorder({item, index})
     hover(item, monitor) {
       if (!ref.current)   return;
 
+      
       // @ts-ignore
       const dragIndex = item.index
       const hoverIndex = index
@@ -95,11 +94,7 @@ export default function IngredientReorder({item, index})
         text={item.name}
         price={item.price}
         thumbnail={item.image_mobile}
-        // @ts-ignore
-        handleClose={e=>{
-          e.preventDefault()
-          dispatch(deleteFromOrder(index))
-        }}
+        handleClose={ () => dispatch(deleteFromOrder(index)) }
       />
     </div>
   )
