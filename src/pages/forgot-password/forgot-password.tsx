@@ -22,28 +22,27 @@ import { useForm } from '../../hooks/useForm'
 export default function Register()
 {
   const navigate = useNavigate()
-  const [ apiError, setApiError ] = useState(null)
+  const [ apiError, setApiError ] = useState<string|undefined>("")
   const {values, handleChange} = useForm({email: ''})
 
   
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     
-    let res = await fetchRequest('/api/password-reset', {
+    let res = await fetchRequest<{success: boolean, error?: {message?: string}}>('/api/password-reset', {
       method: "POST",
       headers: {'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({...values}),
     })
 
-    // @ts-ignore
+    
     if ( res.success ) {
       sessionStorage.setItem('forgot-password', "1");
       navigate('/reset-password')
     }
-    else {
+    else{
       console.log(res)
-      // @ts-ignore
-      setApiError(res)
+      setApiError(res.error?.message)
     }
   }
 
@@ -53,9 +52,8 @@ export default function Register()
 
       <h1>Восстановление пароля</h1>
       
-      {apiError 
-        ? <pre className="error apiError">{apiError}</pre>
-        : null
+      {apiError != "" &&
+        <pre className="error apiError">{apiError}</pre>
       }
 
       <div className="row">

@@ -47,7 +47,7 @@ export default function Register()
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     
-    const res = await fetchRequest('/api/password-reset/reset', {
+    const res = await fetchRequest<{success: boolean}>('/api/password-reset/reset', {
       method: "POST",
       headers: {'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({...values}),
@@ -56,7 +56,7 @@ export default function Register()
       setApiError(err.message)
     })
     
-    // @ts-ignore
+    
     if ( res && res.success ) {
       sessionStorage.removeItem('forgot-password');
       navigate('/login', {replace:true, state: {redirect: "Пароль изменён. Войдите с новым паролем"}})
