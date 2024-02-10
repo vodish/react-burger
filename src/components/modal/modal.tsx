@@ -9,8 +9,8 @@ Modal.propTypes = {
   handleClose:  PropTypes.func.isRequired,
 }
 
-// @ts-ignore
-function Modal({handleClose, children})
+
+function Modal({handleClose, children}: {handleClose:()=>void, children: JSX.Element})
 {
   return createPortal(
     <>
@@ -21,8 +21,8 @@ function Modal({handleClose, children})
         {children}
       </div>
     </>
-    // @ts-ignore
-    , document.getElementById('modal')
+    
+    , document.getElementById('modal') as Element
   )
   
 }
