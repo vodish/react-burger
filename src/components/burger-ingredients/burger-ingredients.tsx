@@ -45,7 +45,7 @@ export default function BurgerIngredients()
           <Tab
             key={type}
             value={type}
-            active={tabActive == type}
+            active={tabActive === type}
             onClick={()=>tabClickScroll(type)}
             >{name}</Tab>
         )

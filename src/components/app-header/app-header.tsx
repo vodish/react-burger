@@ -30,7 +30,7 @@ export default function AppHeader()
         <NavLink to="/"  className={cm.logo}><Logo /></NavLink>
         <div className={cm.user}>
 
-          {userName == ""
+          {userName === ""
             ? <NavLink to="/login" className={cm.link}>
                 { it => it.isActive
                   ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>

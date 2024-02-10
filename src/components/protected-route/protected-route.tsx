@@ -21,6 +21,7 @@ const Protected = ({ NoAuth = false, component }: TProtected) => {
     // Запрос еще выполняется
     // Выводим прелоадер в ПР
     // Здесь возвращается просто null для экономии времени
+    // console.log('Здесь возвращается просто null для экономии времени')
     return null;
   }
 

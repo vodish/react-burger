@@ -56,7 +56,7 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
       
       { isModal && (
         <div className={cm.add}>
-          { ingredient.type != 'bun' && orderBuns.length == 0
+          { ingredient.type !== 'bun' && orderBuns.length === 0
               ? <div>Сначала выберите Булки</div>
               : <Button htmlType="button" type="primary" size="medium" onClick={handleUpdateOrder}>Добавить в заказ</Button>
           }

@@ -18,7 +18,7 @@ export default function IngredientsId()
   
   useMemo(
     ()=>{
-      const sel: Array<TIngredient> = ingredientList.filter( (it: TIngredient): boolean => it._id == id)
+      const sel: Array<TIngredient> = ingredientList.filter( (it: TIngredient): boolean => it._id === id)
       if ( !sel[0] )  return;
 
       setIngredient(sel[0])

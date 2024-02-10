@@ -224,7 +224,7 @@ const appSlice = createSliceWhitThunks({
         rejected: (state, action) => {
           console.log(action)
 
-          if ( action.error && action.error.message && action.error.message == "User already exists" ) {
+          if ( action.error && action.error.message && action.error.message === "User already exists" ) {
             state.apiError = action.error.message
           } else {
             state.apiError = `${action.type}...\nServer message: ${action.error.message}` 
@@ -287,7 +287,7 @@ const appSlice = createSliceWhitThunks({
     getProfileThunk: create.asyncThunk(
         async () => {
             if ( ! localStorage.getItem('accessToken') ) {
-                return Promise.reject("tokenUnknown");
+                return Promise.reject("tokenUnknown 1");
             }
 
             return await fetchRequest<{
@@ -313,6 +313,7 @@ const appSlice = createSliceWhitThunks({
                 state.user.email    =   payload.user.email
             },
             rejected: (state, action) => {
+                state.user.checkAuth    =   true
                 console.log(action)
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             },

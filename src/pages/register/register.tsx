@@ -38,7 +38,7 @@ export default function Register()
     <form className="form center" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
 
-      {apiError == "User already exists"
+      {apiError === "User already exists"
         ? <div className="apiError">
             Сервер узнал вас, но почему-то хочет чтобы вы обязательно прошли форму входа...
             <p className="link"><Link to="/login">Войти</Link></p>

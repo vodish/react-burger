@@ -52,7 +52,7 @@ export default function Register()
 
       <h1>Восстановление пароля</h1>
       
-      {apiError != "" &&
+      {apiError !== "" &&
         <pre className="error apiError">{apiError}</pre>
       }
 

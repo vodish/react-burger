@@ -8,7 +8,7 @@ function ModalOverlay({handleClose}: {handleClose: ()=>void})
   useEffect(()=>{
     
     function closeByKey(e: KeyboardEvent) {
-      if (e.key != "Escape")  return;
+      if (e.key !== "Escape")  return;
       handleClose()
     }
     
