@@ -1,9 +1,8 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
 import { sendRegisterThunk } from "../../services/appSlice"
 import { useForm } from '../../hooks/useForm'
-import { TStore } from '../../utils/types'
+import { useDispatch2, useSelector2 } from '../../services/redux'
 
 /*
 @kruglovand
@@ -17,8 +16,8 @@ import { TStore } from '../../utils/types'
 
 export default function Register()
 {
-  const apiError  = useSelector( (state: TStore) => state.apiError )
-  const dispatch  = useDispatch()
+  const apiError  = useSelector2( state => state.apiError )
+  const dispatch  = useDispatch2()
 
   
   const { values, handleChange } = useForm({
@@ -29,7 +28,6 @@ export default function Register()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // @ts-ignore
     dispatch(sendRegisterThunk(values))
   }
 

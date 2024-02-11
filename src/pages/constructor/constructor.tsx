@@ -3,11 +3,11 @@ import BurgerIngredients from "../../components/burger-ingredients/burger-ingred
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import Modal from "../../components/modal/modal";
 import OrderDetails from "../../components/order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
 import { deleteFromOrder, updateOrder, resetOrder } from "../../services/appSlice";
 import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
-import { TIngredient, TStore } from "../../utils/types";
+import { TIngredient } from "../../utils/types";
+import { useDispatch2, useSelector2 } from "../../services/redux";
 
 type TDrop = {
   index: number
@@ -16,10 +16,9 @@ type TDrop = {
 
 export default function Constructor()
 {
-  const dispatch        =   useDispatch()
-  
-  const { list, error } =   useSelector( (state: TStore) => state.ingredients )
-  const order           =   useSelector( (state: TStore) => state.order )
+  const dispatch        =   useDispatch2()
+  const { list, error } =   useSelector2( state => state.ingredients )
+  const order           =   useSelector2( state => state.order )
 
   
   const [ , dropIngredients ] = useDrop<TDrop>({

@@ -1,7 +1,8 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TStore, TType, Ttoken } from "../utils/types"
+import { TIngredient, TType, Ttoken } from "../utils/types"
+import { TStore } from "./redux"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
@@ -287,7 +288,7 @@ const appSlice = createSliceWhitThunks({
     getProfileThunk: create.asyncThunk(
         async () => {
             if ( ! localStorage.getItem('accessToken') ) {
-                return Promise.reject("tokenUnknown 1");
+                return Promise.reject("tokenUnknown-1");
             }
 
             return await fetchRequest<{
@@ -314,7 +315,7 @@ const appSlice = createSliceWhitThunks({
             },
             rejected: (state, action) => {
                 state.user.checkAuth    =   true
-                console.log(action)
+                console.log(action.error.message)
                 state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             },
         }

@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import cm from './ingredient-details.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
 import { updateOrder } from '../../services/appSlice';
-import { TIngredient, TStore, Ttth } from '../../utils/types'
+import { TIngredient, Ttth } from '../../utils/types'
+import { useDispatch2, useSelector2 } from '../../services/redux';
 
 
 
@@ -21,8 +21,8 @@ function IngredientDetails ( {ingredient} :{ingredient: TIngredient} ) : JSX.Ele
   const navigate  = useNavigate();
   const location  = useLocation();
   const isModal   = location.state && location.state.background
-  const dispath   = useDispatch()
-  const orderBuns = useSelector( (state: TStore) => state.order.buns)
+  const dispath   = useDispatch2()
+  const orderBuns = useSelector2( state => state.order.buns)
   
 
   function handleUpdateOrder() {

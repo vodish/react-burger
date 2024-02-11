@@ -1,10 +1,10 @@
 import { useMemo } from "react"
-import { useSelector } from "react-redux"
 import IngredientDetails from "../../components/ingredient-details/ingredient-details"
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import Modal from "../../components/modal/modal"
-import { TIngredient, TStore } from "../../utils/types"
+import { TIngredient } from "../../utils/types"
+import { useSelector2 } from "../../services/redux"
 
 export default function IngredientsId()
 {
@@ -12,7 +12,7 @@ export default function IngredientsId()
   const location  = useLocation()
   const navigate  = useNavigate()
   
-  const ingredientList  = useSelector((state: TStore) => state.ingredients.list)
+  const ingredientList  = useSelector2( state => state.ingredients.list)
   const [ ingredient, setIngredient ]  = useState <TIngredient | null> (null)
 
   

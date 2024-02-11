@@ -1,8 +1,7 @@
-import { useSelector } from "react-redux"
 import MyImageSvg  from "../../utils/status1.svg"
 import cm from "./order-details.module.css"
 import PropTypes from 'prop-types'
-import { TStore } from "../../utils/types"
+import { useSelector2 } from "../../services/redux"
 
 OrderDetails.propTypes = {
   handleClose:  PropTypes.func,
@@ -10,7 +9,7 @@ OrderDetails.propTypes = {
 
 function OrderDetails()
 {
-  const number = useSelector( (state: TStore) => state.order.number)
+  const number = useSelector2( state => state.order.number)
   
   
   return(

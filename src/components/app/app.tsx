@@ -16,23 +16,22 @@ import Feed from '../../pages/feed/feed';
 import Page404 from '../../pages/page404/page404';
 
 import AppHeader from '../app-header/app-header';
-import { useDispatch } from 'react-redux';
+import { useDispatch2 } from '../../services/redux';
 import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
 import { IsAuth, NoAuth } from '../protected-route/protected-route';
 
 
+
 export default function App()
 {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch2()
   const location = useLocation();
   const background = location.state && location.state.background;
   
   
   useEffect(()=>{
-    // @ts-ignore
-    dispatch( getProfileThunk() )
-    // @ts-ignore
-    dispatch( getIngredientsThunk() )
+    dispatch( getProfileThunk(null) )
+    dispatch( getIngredientsThunk(null) )
   }, [])
 
 

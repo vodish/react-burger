@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
-import { TStore } from "../../utils/types";
+import { useSelector2 } from "../../services/redux";
 
 
 type TProtected = {
@@ -13,8 +12,8 @@ const Protected = ({ NoAuth = false, component }: TProtected) => {
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
   
-  const checkAuth = useSelector( (store: TStore) => store.user.checkAuth );
-  const user      = useSelector( (store: TStore) => store.user.name );
+  const checkAuth = useSelector2( store => store.user.checkAuth );
+  const user      = useSelector2( store => store.user.name );
   const location  = useLocation();
 
   if ( ! checkAuth ) {

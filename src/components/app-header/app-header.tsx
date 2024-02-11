@@ -1,13 +1,12 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './app-header.module.css'
 import { NavLink } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import { TStore } from '../../utils/types';
+import { useSelector2 } from '../../services/redux';
 
 
 export default function AppHeader()
 {
-  const userName = useSelector( (state: TStore) => state.user.name )
+  const userName = useSelector2( state => state.user.name )
   
 
   return (

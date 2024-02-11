@@ -7,18 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
-import { TIngredient, TStore } from "../../utils/types";
+import { TIngredient } from "../../utils/types";
+import { useDispatch2, useSelector2 } from "../../services/redux";
 
 
 
 export default function BurgerConstructor()
 {
-  const dispatch      =   useDispatch()
+  const dispatch      =   useDispatch2()
   const navigate      =   useNavigate()
   
-  const userName      =   useSelector( (state: TStore) => state.user.name )
-  const order         =   useSelector( (state: TStore) => state.order)
-  const [ top, bot ]  =   useSelector( (state: TStore) => state.order.buns)
+  const userName      =   useSelector2( state => state.user.name )
+  const order         =   useSelector2( state => state.order)
+  const [ top, bot ]  =   useSelector2( state => state.order.buns)
 
 
   const [ maxHeight,  setMaxHeight  ]   =   useState(true)
@@ -32,7 +33,7 @@ export default function BurgerConstructor()
     }
 
     const ingredients =   [...order.buns, ...order.adds].map( (item: TIngredient) => item._id)
-    // @ts-ignore
+    
     dispatch( sendOrderThunk(ingredients) )
   }
 

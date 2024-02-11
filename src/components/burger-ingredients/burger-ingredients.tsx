@@ -2,8 +2,8 @@ import { useState, useRef } from "react";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientTile from "../ingredient-tile/ingredient-tile";
 import cm from './burger-ingredients.module.css'
-import { useSelector } from "react-redux";
-import { TStore, TType } from "../../utils/types";
+import { TType } from "../../utils/types";
+import { useSelector2 } from "../../services/redux";
 
 
 
@@ -11,7 +11,7 @@ import { TStore, TType } from "../../utils/types";
 export default function BurgerIngredients()
 {
   
-  const { list, types }   =   useSelector( (state: TStore) => state.ingredients)
+  const { list, types }   =   useSelector2( state => state.ingredients)
   const refList   =   useRef <HTMLDivElement> (null);
   const [ tabActive, setTabActive ] =   useState( types[0].type )
   
