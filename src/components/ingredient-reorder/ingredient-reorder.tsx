@@ -1,4 +1,3 @@
-import { useDispatch } from "react-redux";
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
@@ -6,13 +5,14 @@ import { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
 import { TIngredient } from "../../utils/types";
 import { Identifier, XYCoord } from "dnd-core";
+import { useDispatch2 } from "../../services/redux";
 
 
 
 
 export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
 {
-  const dispatch  =   useDispatch()
+  const dispatch  =   useDispatch2()
   const ref       =   useRef<HTMLDivElement | null>(null)
 
 

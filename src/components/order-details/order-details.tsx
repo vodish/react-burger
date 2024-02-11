@@ -17,7 +17,7 @@ function OrderDetails()
       <div className={cm.number}>{number}</div>
       <div className={cm.descr}>идентификатор заказа</div>
 
-      <img className={cm.status} src={MyImageSvg} />
+      <img className={cm.status} src={MyImageSvg} alt="Ok" />
 
       <div className={cm.info}>
         <div className={cm.bold}>Ваш заказ начали готовить</div>

@@ -2,8 +2,6 @@ import { useState} from "react"
 import { useNavigate } from "react-router-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from "react-redux";
-
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
