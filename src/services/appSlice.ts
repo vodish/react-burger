@@ -13,7 +13,7 @@ type TUserResponse = {
     success: boolean
     accessToken: string
     refreshToken:string
-    user:{
+    user: {
         email:string
         name: string
     }
