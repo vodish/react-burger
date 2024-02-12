@@ -1,12 +1,12 @@
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './app-header.module.css'
 import { NavLink } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector2 } from '../../services/redux';
 
 
 export default function AppHeader()
 {
-  const userName = useSelector( state => state.user.name )
+  const userName = useSelector2( state => state.user.name )
   
 
   return (
@@ -29,7 +29,7 @@ export default function AppHeader()
         <NavLink to="/"  className={cm.logo}><Logo /></NavLink>
         <div className={cm.user}>
 
-          {userName === null
+          {userName === ""
             ? <NavLink to="/login" className={cm.link}>
                 { it => it.isActive
                   ? <><ProfileIcon type="secondary" /><span className={cm.active1}>Личный кабинет</span></>

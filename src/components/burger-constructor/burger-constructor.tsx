@@ -2,23 +2,25 @@ import { useState} from "react"
 import { useNavigate } from "react-router-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from "react-redux";
-
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
 import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
 import Modal from "../modal/modal";
+import { TIngredient } from "../../utils/types";
+import { useDispatch2, useSelector2 } from "../../services/redux";
 
 
 
-function BurgerConstructor()
+export default function BurgerConstructor()
 {
-  const dispatch      =   useDispatch()
+  const dispatch      =   useDispatch2()
   const navigate      =   useNavigate()
-  const userName      =   useSelector(state => state.user.name )
-  const order         =   useSelector(state => state.order)
-  const [ top, bot ]  =   useSelector(state => state.order.buns)
+  
+  const userName      =   useSelector2( state => state.user.name )
+  const order         =   useSelector2( state => state.order)
+  const [ top, bot ]  =   useSelector2( state => state.order.buns)
 
-  const [ maxHeight,  setMaxHeight  ]   =   useState(null)
+
+  const [ maxHeight,  setMaxHeight  ]   =   useState(true)
 
 
 
@@ -28,7 +30,8 @@ function BurgerConstructor()
       return;
     }
 
-    const ingredients =   [...order.buns, ...order.adds].map( item => item._id)
+    const ingredients =   [...order.buns, ...order.adds].map( (item: TIngredient) => item._id)
+    
     dispatch( sendOrderThunk(ingredients) )
   }
 
@@ -45,9 +48,9 @@ function BurgerConstructor()
           thumbnail={top.image_mobile}
         />
       </div>
-      <div className={cm.middle} style={{maxHeight}}>
+      <div className={`${cm.middle} ${!maxHeight && cm.midMH}`}>
         {
-        order.adds.map( (item, index) => 
+        order.adds.map( (item: TIngredient, index: number) => 
           <IngredientReorder
             key={item.uuid}
             item={item}
@@ -70,8 +73,8 @@ function BurgerConstructor()
       
       <div className={cm.summary}>
         {order.adds.length > 3 &&
-          <div className={cm.collapse} onClick={ ()=> setMaxHeight(maxHeight? null:'none') }>
-            {maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
+          <div className={cm.collapse} onClick={ ()=> setMaxHeight(!maxHeight) }>
+            {!maxHeight ?  <ArrowUpIcon type="secondary" /> : <ArrowDownIcon type="success" />}
           </div>
         }
 
@@ -98,5 +101,3 @@ function BurgerConstructor()
   )
 }
 
-
-export default BurgerConstructor;

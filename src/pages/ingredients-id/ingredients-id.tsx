@@ -1,24 +1,24 @@
 import { useMemo } from "react"
-import { useSelector } from "react-redux"
 import IngredientDetails from "../../components/ingredient-details/ingredient-details"
 import { useParams, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import Modal from "../../components/modal/modal"
-
+import { TIngredient } from "../../utils/types"
+import { useSelector2 } from "../../services/redux"
 
 export default function IngredientsId()
 {
   const { id }    = useParams()
   const location  = useLocation()
   const navigate  = useNavigate()
-  const ingredientList  = useSelector(state => state.ingredients.list)
-  const [ ingredient, setIngredient ]  = useState(null)
-
+  
+  const ingredientList  = useSelector2( state => state.ingredients.list)
+  const [ ingredient, setIngredient ]  = useState <TIngredient | null> (null)
 
   
   useMemo(
     ()=>{
-      const sel = ingredientList.filter(it => it._id == id)
+      const sel: Array<TIngredient> = ingredientList.filter( (it: TIngredient): boolean => it._id === id)
       if ( !sel[0] )  return;
 
       setIngredient(sel[0])

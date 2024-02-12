@@ -1,15 +1,16 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import cm from './profile.module.css'
-import { useDispatch, useSelector } from "react-redux"
 import { updateProfileThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
+import { useDispatch2, useSelector2 } from '../../services/redux'
+
 
 
 export default function ProfileUser()
 {
-  const dispatch    = useDispatch()  
-  const user        = useSelector( state => state.user )
-  
+  const dispatch    = useDispatch2()
+  const user        = useSelector2( state => state.user )
+
   const {values, handleChange} = useForm({
     name:     user.name,
     email:    user.email,
@@ -17,9 +18,8 @@ export default function ProfileUser()
   })
   
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-
     dispatch( updateProfileThunk(values) )
   }
 

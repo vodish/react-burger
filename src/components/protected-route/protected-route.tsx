@@ -1,18 +1,26 @@
-import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector2 } from "../../services/redux";
 
-const Protected = ({ NoAuth = false, component }) => {
+
+type TProtected = {
+  NoAuth?: boolean
+  component: JSX.Element
+}
+
+const Protected = ({ NoAuth = false, component }: TProtected) => {
   // checkAuth это флаг, показывающий что проверка токена произведена
   // при этом результат этой проверки не имеет значения, важно только,
   // что сам факт проверки имел место.
-  const checkAuth = useSelector( store => store.user.checkAuth );
-  const user      = useSelector( store => store.user.name );
+  
+  const checkAuth = useSelector2( store => store.user.checkAuth );
+  const user      = useSelector2( store => store.user.name );
   const location  = useLocation();
 
   if ( ! checkAuth ) {
     // Запрос еще выполняется
     // Выводим прелоадер в ПР
     // Здесь возвращается просто null для экономии времени
+    // console.log('Здесь возвращается просто null для экономии времени')
     return null;
   }
 
@@ -33,6 +41,6 @@ const Protected = ({ NoAuth = false, component }) => {
 };
 
 export const IsAuth = Protected;
-export const NoAuth = ({ component }) => (
+export const NoAuth = ({ component }: TProtected) => (
   <Protected NoAuth={true} component={component} />
 );

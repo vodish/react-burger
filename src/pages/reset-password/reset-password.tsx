@@ -32,7 +32,7 @@ export default function Register()
 {
   const navigate  = useNavigate()
 
-  const [ apiError, setApiError ] =   useState(null)
+  const [ apiError, setApiError ] =   useState("")
   const {values, handleChange}    =   useForm({
     password: '',
     token:    '',
@@ -44,17 +44,18 @@ export default function Register()
   }
   
   
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     
-    const res = await fetchRequest('/api/password-reset/reset', {
+    const res = await fetchRequest<{success: boolean}>('/api/password-reset/reset', {
       method: "POST",
       headers: {'Content-Type': 'application/json;charset=utf-8' },
       body: JSON.stringify({...values}),
-    }).catch( err => {
+    }).catch( (err: Error) => {
       console.log(err)
       setApiError(err.message)
     })
+    
     
     if ( res && res.success ) {
       sessionStorage.removeItem('forgot-password');
@@ -67,9 +68,8 @@ export default function Register()
 
       <h1>Замена пароля</h1>
       
-      {apiError 
-        ? <pre className="error apiError">{apiError}</pre>
-        : null
+      { apiError &&
+        <pre className="error apiError">{apiError}</pre>
       }
 
       <div className="row">

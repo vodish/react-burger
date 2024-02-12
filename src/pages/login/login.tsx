@@ -1,15 +1,16 @@
-import { Link, Navigate, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { removeApiError, sendLoginThunk } from '../../services/appSlice'
 import { useForm } from '../../hooks/useForm'
+import { useDispatch2, useSelector2 } from '../../services/redux'
+
 
 export default function Login()
 {
   const location  =   useLocation()
-  const apiError  =   useSelector( state => state.apiError )
-  const dispatch  =   useDispatch()
+  const apiError  =   useSelector2( state => state.apiError )
+  const dispatch  =   useDispatch2()
 
   const { values, handleChange } = useForm({
     email:    '',
@@ -23,7 +24,7 @@ export default function Login()
   }, [])
 
   
-  function handleSubmit(e) {
+  function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     dispatch( sendLoginThunk(values) );
   }

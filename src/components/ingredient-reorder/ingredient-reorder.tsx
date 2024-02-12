@@ -1,26 +1,22 @@
-import { useDispatch } from "react-redux";
-import PropTypes from 'prop-types'
-import { ingredientListObject } from '../../utils/data'
 import { resortOrder, deleteFromOrder } from "../../services/appSlice";
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from '../burger-constructor/burger-constructor.module.css'
 import { useRef } from "react";
 import { useDrag, useDrop } from 'react-dnd'
+import { TIngredient } from "../../utils/types";
+import { Identifier, XYCoord } from "dnd-core";
+import { useDispatch2 } from "../../services/redux";
 
 
-IngredientReorder.propTypes = {
-  item:   ingredientListObject.isRequired,
-  index:  PropTypes.number.isRequired,
-}
 
 
-export default function IngredientReorder({item, index})
+export default function IngredientReorder({item, index}: {item: TIngredient, index: number})
 {
-  const dispatch  =   useDispatch()
-  const ref       =   useRef(null)
+  const dispatch  =   useDispatch2()
+  const ref       =   useRef<HTMLDivElement | null>(null)
 
-  
-  const [{ handlerId }, drop] = useDrop({
+
+  const [{ handlerId }, drop] = useDrop<{index: number}, unknown, {handlerId: Identifier | null}>({
     accept: 'reorder',
     collect(monitor) {
       return {
@@ -41,8 +37,9 @@ export default function IngredientReorder({item, index})
       // Get vertical middle
       const hoverMiddleY  = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       // Determine mouse position
-      const clientOffset  = monitor.getClientOffset()
+      const clientOffset  = monitor.getClientOffset() as XYCoord
       // Get pixels to the top
+      
       const hoverClientY  = clientOffset.y - hoverBoundingRect.top
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
@@ -57,7 +54,7 @@ export default function IngredientReorder({item, index})
       }
       // Time to actually perform the action
       // moveCard(dragIndex, hoverIndex)
-      dispatch( resortOrder({dragIndex, hoverIndex}) )
+      dispatch( resortOrder([dragIndex, hoverIndex]) )
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -84,7 +81,6 @@ export default function IngredientReorder({item, index})
   return(
     <div
       ref={ref}
-      
       className={cm.item}
       data-handler-id={handlerId}
       > 
@@ -95,10 +91,7 @@ export default function IngredientReorder({item, index})
         text={item.name}
         price={item.price}
         thumbnail={item.image_mobile}
-        handleClose={e=>{
-          e.preventDefault()
-          dispatch(deleteFromOrder(index))
-        }}
+        handleClose={ () => dispatch(deleteFromOrder(index)) }
       />
     </div>
   )

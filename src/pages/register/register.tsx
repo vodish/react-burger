@@ -1,8 +1,8 @@
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useDispatch, useSelector } from "react-redux"
 import { Link } from 'react-router-dom'
 import { sendRegisterThunk } from "../../services/appSlice"
 import { useForm } from '../../hooks/useForm'
+import { useDispatch2, useSelector2 } from '../../services/redux'
 
 /*
 @kruglovand
@@ -16,8 +16,8 @@ import { useForm } from '../../hooks/useForm'
 
 export default function Register()
 {
-  const apiError  = useSelector( state => state.apiError )
-  const dispatch  = useDispatch()
+  const apiError  = useSelector2( state => state.apiError )
+  const dispatch  = useDispatch2()
 
   
   const { values, handleChange } = useForm({
@@ -26,7 +26,7 @@ export default function Register()
     password: '',
   })
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     dispatch(sendRegisterThunk(values))
   }
@@ -36,7 +36,7 @@ export default function Register()
     <form className="form center" onSubmit={handleSubmit}>
       <h1>Регистрация</h1>
 
-      {apiError == "User already exists"
+      {apiError === "User already exists"
         ? <div className="apiError">
             Сервер узнал вас, но почему-то хочет чтобы вы обязательно прошли форму входа...
             <p className="link"><Link to="/login">Войти</Link></p>

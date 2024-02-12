@@ -1,22 +1,17 @@
 import { useEffect } from 'react';
 import cm from './modal-overlay.module.css'
-import PropTypes from "prop-types"
-
-
-ModalOverlay.propTypes = {
-  handleClose:   PropTypes.func,
-}
 
 
 
-function ModalOverlay({handleClose})
+function ModalOverlay({handleClose}: {handleClose: ()=>void})
 {
   useEffect(()=>{
     
-    function closeByKey(e) {
-      if (e.key != "Escape")  return;
+    function closeByKey(e: KeyboardEvent) {
+      if (e.key !== "Escape")  return;
       handleClose()
     }
+    
     
     document.body.addEventListener('keydown', closeByKey)
 

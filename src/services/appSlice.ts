@@ -1,50 +1,76 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-
+import { TIngredient, TType, Ttoken } from "../utils/types"
+import { TStore } from "./redux"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
 })
 
 
+type TUserResponse = {
+    success: boolean
+    accessToken: string
+    refreshToken:string
+    user: {
+        email:string
+        name: string
+    }
+}
+
+
+
 const appSlice = createSliceWhitThunks({
   name: 'app',
   initialState: {
     ingredients: {
-        list: [],
-        types: [],
-        error: null
+        list:       [] as TIngredient[],
+        types:      [] as TType[],
+        error:      ""
     },
     order: {
-        buns: [],
-        adds: [],
-        total: 0,
-        number: null,
-        error: null,
+        buns:       [] as TIngredient[],
+        adds:       [] as TIngredient[],
+        total:      0,
+        number:     0,
+        error:      "",
     },
     user: {
-        checkAuth: false,
-        email: null,
-        name: null,
+        checkAuth:  false,
+        email:      "",
+        name:       "",
     },
-    apiError: null,
+    apiError:   "",
   },
   reducers: create => ({
       
     // каталог
     getIngredientsThunk: create.asyncThunk(
-        async () => fetchRequest('/api/ingredients'),
-        {
+        async () => fetchRequest<{
+                data: TIngredient[],
+                success: boolean,
+                error?: string,
+                types?: TType[]
+            }>
+            ('/api/ingredients')
+        ,{
             fulfilled:  (state, {payload}) => {
+                
                 if ( payload.data ) {
-                    const typeNname = {
+
+                    const typeNname :{[n: string]: string} = {
                         bun: "Булки",
                         main: "Начинки",
                         sauce: "Соусы",
                     }
                     
-                    const types = payload.data.reduce((acc, el, index)=>{
+                    type Tacc = {
+                        [n: keyof typeof typeNname]: TType
+                    }
+                    
+                    const types :Tacc  = payload.data.reduce((acc: Tacc, el: TIngredient, index: number) => {
+                        
                         acc[ el.type ]  =   acc[ el.type ]  ||  {
                             type:   el.type,
                             name:   typeNname[el.type] || el.type,
@@ -54,13 +80,14 @@ const appSlice = createSliceWhitThunks({
                 
                         return acc
                     }, {})
-
+                    
                     payload.types = Object.values(types)
                 }
 
+                
                 state.ingredients.list  =   payload.data    ||  []
                 state.ingredients.types =   payload.types   ||  []
-                state.ingredients.error =   payload.error   ||  null
+                state.ingredients.error =   payload.error   ||  ""
                 
             },
             rejected: (state, action) => {
@@ -73,7 +100,7 @@ const appSlice = createSliceWhitThunks({
     
 
     // заказ
-    updateOrder: create.reducer( (state, {payload}) => {
+    updateOrder: create.reducer( (state, {payload} :{payload: TIngredient} ) => {
 
         const product = {...payload, uuid: Date.now()}
 
@@ -97,7 +124,9 @@ const appSlice = createSliceWhitThunks({
         state.ingredients   =   newState.ingredients;
     }),
 
-    deleteFromOrder: create.reducer( (state, {payload}) => {
+
+    deleteFromOrder: create.reducer( (state, {payload}: {payload: number}) => {
+        
         state.order.adds.splice( payload, 1 )
         
         const newState      =   stateCalculation(state)
@@ -105,14 +134,17 @@ const appSlice = createSliceWhitThunks({
         state.order.total   =   newState.order.total;
     }),
 
-    resortOrder: create.reducer( (state, {payload}) => {
-        const drag  =   state.order.adds[payload.dragIndex]
-        state.order.adds[payload.dragIndex]     =   state.order.adds[payload.hoverIndex]
-        state.order.adds[payload.hoverIndex]    =   drag
+    resortOrder: create.reducer( (state, {payload}: {payload: number[]}) => {
+
+        const [ dragIndex, hoverIndex ] =   payload
+        const drag                      =   state.order.adds[dragIndex]
+
+        state.order.adds[dragIndex]     =   state.order.adds[hoverIndex]
+        state.order.adds[hoverIndex]    =   drag
     }),
     
     resetOrder: create.reducer( state => {
-        state.order.number  =   null
+        state.order.number  =   0
         state.order.buns    =   []
         state.order.adds    =   []
         const newState      =   stateCalculation(state)
@@ -121,25 +153,40 @@ const appSlice = createSliceWhitThunks({
     }),
 
     closeOrderError: create.reducer( state => {
-        state.order.error = null
+        state.order.error = ""
     }),
     
+
+
     sendOrderThunk: create.asyncThunk(
         async (ingredients) => {
-            return fetchRequest('/api/orders', {
-                method: "POST",
-                headers: {
-                  'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify({ingredients}),
-            })
-        },
-        {
+            return (
+                fetchRequest<{
+                    name: string,
+                    order: {
+                        number: number
+                    },
+                    susses: boolean,
+                    error?: string
+                }> (
+                    '/api/orders'
+                    , {
+                        method: "POST",
+                        headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify({ingredients}),
+                    }
+                )
+            )
+        }
+        ,{
             fulfilled: (state, {payload})=>{
-                state.order.number  =   payload.order ? payload.order.number : null
-                state.order.error   =   payload.error || null
+                
+                state.order.number  =   payload.order ? payload.order.number : 0
+                state.order.error   =   payload.error || ''
 
-                if ( payload.error ) {
+                if ( payload.error  ) {
                     alert(payload.error)
                     console.log(payload)
                     return;
@@ -155,12 +202,12 @@ const appSlice = createSliceWhitThunks({
     // регистрация, токены, пользователь
     
     removeApiError: create.reducer(state => {
-        state.apiError = null
+        state.apiError = ""
     }),
 
     sendRegisterThunk: create.asyncThunk(
       async (userData) => {
-        return await fetchRequest('/api/auth/register', {
+        return await fetchRequest<TUserResponse>('/api/auth/register', {
             method: "POST",
             headers: {
               'Content-Type': 'application/json;charset=utf-8'
@@ -178,7 +225,7 @@ const appSlice = createSliceWhitThunks({
         rejected: (state, action) => {
           console.log(action)
 
-          if ( action.error && action.error.message && action.error.message == "User already exists" ) {
+          if ( action.error && action.error.message && action.error.message === "User already exists" ) {
             state.apiError = action.error.message
           } else {
             state.apiError = `${action.type}...\nServer message: ${action.error.message}` 
@@ -189,7 +236,8 @@ const appSlice = createSliceWhitThunks({
 
     sendLoginThunk: create.asyncThunk(
         async (userData) => {
-            return await fetchRequest('/api/auth/login', {
+            return await fetchRequest<TUserResponse>
+            ('/api/auth/login', {
                 method: "POST",
                 headers: {
                   'Content-Type': 'application/json;charset=utf-8'
@@ -202,7 +250,7 @@ const appSlice = createSliceWhitThunks({
                 state.user.checkAuth    =   true
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
-                state.apiError      =   null
+                state.apiError      =   ""
                 setToken(payload)
             },
             rejected: (state, action) => {
@@ -213,7 +261,7 @@ const appSlice = createSliceWhitThunks({
     ),
     
     sendLogoutThunk: create.asyncThunk(
-        async (userData) => {
+        async (userData: Ttoken) => {
             return await fetchRequest('/api/auth/logout', {
                 method: "POST",
                 headers: {
@@ -224,14 +272,14 @@ const appSlice = createSliceWhitThunks({
         },
         {
             fulfilled: state => {
-                state.user.name     =   null
-                state.user.email    =   null
-                state.apiError      =   null
+                state.user.name     =   ""
+                state.user.email    =   ""
+                state.apiError      =   ""
                 removeToken()
             },
-            rejected: (_, action) => {
+            rejected: (state, action) => {
                 console.log(action)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
@@ -240,53 +288,68 @@ const appSlice = createSliceWhitThunks({
     getProfileThunk: create.asyncThunk(
         async () => {
             if ( ! localStorage.getItem('accessToken') ) {
-                return Promise.resolve("tokenUnknown");
+                return Promise.reject("tokenUnknown-1");
             }
 
-            return await fetchRequest('/api/auth/user', {
+            return await fetchRequest<{
+                susses: boolean
+                user: {
+                    email: string
+                    name: string
+                }
+            }>(
+                '/api/auth/user', {
                 headers: {
-                  'authorization': localStorage.getItem('accessToken'),
+                  'authorization': localStorage.getItem('accessToken') as string,
                   'Content-Type': 'application/json;charset=utf-8',
                 }
             })
         },
         {
             fulfilled: (state, {payload}) => {
-                // console.log(payload)
                 state.user.checkAuth    =   true
-                state.apiError          =   null
-
-                if ( payload == 'tokenUnknown' )    return;
+                state.apiError          =   ""
+                
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
             },
-            rejected: (state, {payload}) => {
-                console.log(payload)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+            rejected: (state, action) => {
+                state.user.checkAuth    =   true
+                console.log(action.error.message)
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             },
         }
     ),
     
     updateProfileThunk: create.asyncThunk(
         async (userData) => {
-            return await fetchRequest('/api/auth/user', {
-                method: "PATCH",
-                headers: {
-                  'authorization': localStorage.getItem('accessToken'),
-                  'Content-Type': 'application/json;charset=utf-8',
-                },
-                body: JSON.stringify(userData),
-            })
-        },
-        {
+            return await fetchRequest<{
+                susses: boolean
+                user: {
+                    email: string
+                    name: string
+                }
+            }>(
+                '/api/auth/user'
+                ,{ 
+                    method: "PATCH",
+                    headers: {
+                        'authorization': localStorage.getItem('accessToken') as string,
+                        'Content-Type': 'application/json;charset=utf-8',
+                    },
+                    body: JSON.stringify(userData),
+                }
+            )
+        }
+        ,{
             fulfilled: (state, {payload}) => {
                 state.user.name     =   payload.user.name
                 state.user.email    =   payload.user.email
-                state.apiError      =   null
+                state.apiError      =   ""
             },
-            rejected: (_, action) => {
+            rejected: (state, action) => {
                 console.log(action)
-                // state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
@@ -299,11 +362,9 @@ const appSlice = createSliceWhitThunks({
 
 export const {
     getIngredientsThunk,
-    ingredientsSetup,
     updateOrder,
     deleteFromOrder,
     resortOrder,
-    orderSubmit,
     resetOrder,
     closeOrderError,
     sendOrderThunk,
@@ -322,18 +383,26 @@ export default appSlice.reducer
 
 
 
-function stateCalculation(state) {
+
+
+
+
+function stateCalculation(state: TStore) {
+
     state = JSON.parse( JSON.stringify(state) )
 
     state.order.total = 0;
-    let counts = {};
+    let counts: {[n: string]: number} = {};
 
-    [...state.order.buns, ...state.order.adds ].map( item => {
+    [...state.order.buns, ...state.order.adds ].map( (item: TIngredient) => {
+        
         counts[item._id]    =   counts[item._id] ? ++counts[item._id]:  1;
         state.order.total   +=  item.price;
     })
     
-    state.ingredients.list  =   state.ingredients.list.map( item => {
+
+    state.ingredients.list  =   state.ingredients.list.map( (item: TIngredient) => {
+        
         return {...item, count: counts[item._id] || 0}
     })
 
