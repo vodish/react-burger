@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-export function useForm <T> (initValues: T) {
+export function useForm <T extends {[n: string]: string}> (initValues: T) {
 
     const [values, setValues] = useState(initValues);
 
