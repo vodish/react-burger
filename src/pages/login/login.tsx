@@ -24,7 +24,7 @@ export default function Login()
   }, [])
 
   
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault()
     dispatch( sendLoginThunk(values) );
   }

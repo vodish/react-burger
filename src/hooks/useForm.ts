@@ -6,7 +6,7 @@ export function useForm <T> (initValues: T) {
     const [values, setValues] = useState(initValues);
 
 
-    const handleChange = (e: React.BaseSyntheticEvent) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         
         const {value, name} = e.target;
 
