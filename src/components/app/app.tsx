@@ -21,7 +21,6 @@ import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
 import { IsAuth, NoAuth } from '../protected-route/protected-route';
 
 
-
 export default function App()
 {
   const dispatch = useDispatch2()
