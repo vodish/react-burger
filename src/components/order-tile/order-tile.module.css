@@ -13,7 +13,7 @@
 .status { margin-top: 8px; }
 
 .descr    { margin-top: 24px; display: flex; justify-content: space-between; align-items: center; }
-.descr .sum     { display: flex; gap: 1ch; }
+.descr .sum     { display: flex; align-items: center; gap: 1ch; margin-top: -10px; }
 .descr .sum .price  { font-size: 28px; font-family: var(--fontNumber); }
 
 
@@ -35,6 +35,7 @@
     border: solid 2px transparent;
     border-image-source: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%);
     background: linear-gradient(63.18deg, #801AB3 0%, #4C4CFF 100%), linear-gradient(0deg, #131316, #131316);
+
 }
 .border::before {
     content: '';

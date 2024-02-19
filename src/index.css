@@ -32,7 +32,7 @@ a:hover { transition: all .15s ease-in; }
 
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 .app .header        { background-color: #1C1C21; }
-.app .main          { flex-grow: 1; width: 1240px; margin: 40px auto 0 auto; display: flex; gap: 80px; flex-wrap: wrap; }
+.app .main          { flex-grow: 1; width: 1240px; margin: 40px auto 0 auto; display: flex; gap: 80px; }
 .app .main .center  { margin: auto; position: relative; top: -8vh; }
 .app .main .double  { margin-top: 20px; }
 

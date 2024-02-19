@@ -2,4 +2,15 @@
 
 .list   { flex-basis: 50%; }
 
-.tablo  { flex-grow: 1; }
+.tablo  { flex-grow: 1; font-size: 24px; }
+
+.monitor { display: flex; flex-wrap: wrap; gap: 36px; margin-bottom: 120px; }
+.monitor > div { flex-basis: 45%; }
+.monitor > div .monitorName { margin-bottom: 24px; }
+.monitor > div .monitorList { display: flex; flex-direction: column; flex-wrap: wrap; max-height: 220px; gap: 8px; }
+.monitor > div .monitorList > div { font-family: var(--fontNumber); font-size: 28px; margin-top: 8px; }
+
+.monitor > div .monitorListDone > div {  margin-top: 10px; color: #00CCCC;  }
+
+.tablo .count  { margin-top: 60px; }
+.tablo .count  > div:nth-child(2)   { color: var(--color1); text-shadow: #4c4cff 0 0 20px; font-family: var(--fontNumber); font-size: 144px; }
