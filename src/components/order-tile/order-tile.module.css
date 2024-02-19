@@ -48,12 +48,11 @@
 }
 .border > img {
     display: block;
-    height: 68px;
-    margin-top: -64px;
-    margin-left: -27px;
-    position: relative;
+    height: 60px;
+    margin-top: -59px;
+    margin-left: -28px;
+    position: absolute;
     z-index: 1;
-    /* background-color: red; */
 }
 .border > span {
     display: block;
@@ -66,7 +65,7 @@
     align-items: center;
     line-height: 0;
     background-color: rgba(0,0,0,0.5);
-    position: relative;
+    position: absolute;
     z-index: 2;
 }
 

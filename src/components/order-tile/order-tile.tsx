@@ -15,14 +15,13 @@ export default function OrderTile() {
         </div>
         
         <div className={cm.name}>Название наме наме наме наме наме наме</div>
-
         <div className={cm.descr}>
-            <ul className={cm.list}>
-                <li className={cm.border}><img src="https://code.s3.yandex.net/react/code/bun-02-mobile.png" alt="" /><span>+3</span></li>
+            <div className={cm.list}>
+                <div className={cm.border}><img src="https://code.s3.yandex.net/react/code/bun-02-mobile.png" alt="" /><span>+3</span></div>
                 {list.map(
-                    () => <li className={cm.border}><img src="https://code.s3.yandex.net/react/code/bun-02-mobile.png" alt="" /></li>
+                    () => <div className={cm.border}><img src="https://code.s3.yandex.net/react/code/bun-02-mobile.png" alt="" /></div>
                 )}
-            </ul>
+            </div>
             <div className={cm.sum}>
                 <div className={cm.price}>345</div>
                 <CurrencyIcon type="primary" />
