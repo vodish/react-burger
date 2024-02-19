@@ -1,0 +1,5 @@
+.title  { font-size: 36px; height: 50px; flex-basis: 100%; }
+
+.list   { flex-basis: 50%; }
+
+.tablo  { flex-grow: 1; }

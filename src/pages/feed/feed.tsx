@@ -1,22 +1,22 @@
+import cm from "./feed.module.css"
+import OrderTile from "../../components/order-tile/order-tile"
 
 export default function Feed()
 {
   
   return <>
+    <div className={`double ${cm.list}`}>
+      <h1 className={cm.title}>Лента заказов</h1>
 
-    <div className="list double">
-      <h1>Лента заказов</h1>
-      <ul>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-      </ul>
+      <div className="tiles">
+        <OrderTile />
+        <OrderTile />
+      </div>
+
     </div>
 
-    <div className="tablo double">
-
+    
+    <div className={`double ${cm.tablo}`}>
       <div className="state">
       <div>
           Готовы:
@@ -35,7 +35,6 @@ export default function Feed()
         Выполнено за все время:
         <div className="score">138</div>
       </div>
-      
     </div>
 
   </>
