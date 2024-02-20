@@ -1,14 +1,15 @@
 .title  { font-size: 36px; height: 50px; flex-basis: 100%; }
 
 .list   { flex-basis: 50%; }
+.list .tiles    { max-height: 75vh; overflow: auto; }
 
 .tablo  { flex-grow: 1; font-size: 24px; }
 
 .monitor { display: flex; flex-wrap: wrap; gap: 36px; margin-bottom: 120px; }
 .monitor > div { flex-basis: 45%; }
 .monitor > div .monitorName { margin-bottom: 24px; }
-.monitor > div .monitorList { display: flex; flex-direction: column; flex-wrap: wrap; max-height: 220px; gap: 8px; }
-.monitor > div .monitorList > div { font-family: var(--fontNumber); font-size: 28px; margin-top: 8px; }
+.monitor > div .monitorList { display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; max-height: 230px; overflow: auto; }
+.monitor > div .monitorList > div { font-family: var(--fontNumber); font-size: 28px; margin-top: 8px; margin-right: 8px; }
 
 .monitor > div .monitorListDone > div {  margin-top: 10px; color: #00CCCC;  }
 

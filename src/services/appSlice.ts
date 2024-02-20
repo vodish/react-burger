@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TType, Ttoken } from "../utils/types"
+import { TIngredient, TType, Ttoken, TUserResponse, TFeedOrder, TConnect, TFeedData, TOrderStatus, TFeedStatuses } from "../utils/types"
 import { TStore } from "./redux"
 
 const createSliceWhitThunks = buildCreateSlice({
@@ -9,40 +9,38 @@ const createSliceWhitThunks = buildCreateSlice({
 })
 
 
-type TUserResponse = {
-    success: boolean
-    accessToken: string
-    refreshToken:string
-    user: {
-        email:string
-        name: string
-    }
-}
 
 
 
 const appSlice = createSliceWhitThunks({
-  name: 'app',
-  initialState: {
-    ingredients: {
-        list:       [] as TIngredient[],
-        types:      [] as TType[],
-        error:      ""
-    },
-    order: {
-        buns:       [] as TIngredient[],
-        adds:       [] as TIngredient[],
-        total:      0,
-        number:     0,
-        error:      "",
-    },
-    user: {
-        checkAuth:  false,
-        email:      "",
-        name:       "",
-    },
-    apiError:   "",
+    name: 'app',
+    initialState: {
+        apiError:   "",
+        ingredients: {
+            list:       []  as TIngredient[],
+            types:      []  as TType[],
+            error:      ""
+        },
+        order: {
+            buns:       []  as TIngredient[],
+            adds:       []  as TIngredient[],
+            total:      0,
+            number:     0,
+            error:      "",
+        },
+        user: {
+            checkAuth:  false,
+            email:      "",
+            name:       "",
+        },
+        feed: {
+            connect:      null      as TConnect,
+            orders:       []        as TFeedOrder[],
+            total:        null      as null | number,
+            totalToday:   null      as null | number,
+        },
   },
+
   reducers: create => ({
       
     // каталог
@@ -354,7 +352,13 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
-
+    
+    updateFeedOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
+        // console.log(payload)
+        state.feed.orders       =   payload.orders
+        state.feed.total        =   payload.total
+        state.feed.totalToday   =   payload.totalToday
+    } ),
     
   })
 })
@@ -375,6 +379,8 @@ export const {
     sendLogoutThunk,
     getProfileThunk,
     updateProfileThunk,
+
+    updateFeedOrders,
 
 } = appSlice.actions
 
