@@ -1,5 +1,5 @@
-import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
 import cm from "./order-tile.module.css"
+import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
 import { TFeedOrder } from "../../utils/types"
 
 //: JSX.Element
