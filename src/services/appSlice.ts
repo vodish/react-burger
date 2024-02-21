@@ -33,11 +33,14 @@ const appSlice = createSliceWhitThunks({
             name:       "",
         },
         feed: {
-            connect:      null      as TConnect,
+            ws:           null      as null | WebSocket,
             orders:       []        as TFeedOrder[],
             total:        null      as null | number,
             totalToday:   null      as null | number,
         },
+        hystory: {
+            orders:       []        as TFeedOrder[],
+        }
   },
 
   reducers: create => ({
@@ -353,12 +356,16 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
-    
     updateFeedOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
         // console.log(payload)
         state.feed.orders       =   payload.orders
         state.feed.total        =   payload.total
         state.feed.totalToday   =   payload.totalToday
+    } ),
+
+    updateHystoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
+        // console.log(payload)
+        state.hystory.orders       =   payload.orders
     } ),
     
   })
@@ -382,6 +389,7 @@ export const {
     updateProfileThunk,
 
     updateFeedOrders,
+    updateHystoryOrders,
 
 } = appSlice.actions
 

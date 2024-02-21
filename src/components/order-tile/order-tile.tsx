@@ -1,6 +1,6 @@
 import cm from "./order-tile.module.css"
 import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components"
-import { TFeedOrder, TIngredient } from "../../utils/types"
+import { TFeedOrder, TIngredient, TOrderStatus } from "../../utils/types"
 import { useSelector2 } from "../../services/redux"
 import { useEffect, useState } from "react"
 
@@ -14,7 +14,7 @@ type TList1 = {
 }
 
 
-export default function OrderTile({order}: {order: TFeedOrder}) {
+export default function OrderTile({order, status}: {order: TFeedOrder, status?: boolean | undefined}) {
 
     const ingredients   =   useSelector2( state => state.ingredients.list )
     const indexes       =   useSelector2( state => state.ingredients.indexes )
@@ -45,7 +45,15 @@ export default function OrderTile({order}: {order: TFeedOrder}) {
     }, [] )
     
 
-
+    function printStatus(status: TOrderStatus) {
+        const statuses = {
+            'created': 'Создан',
+            'pending': 'Готовится',
+            'done': 'Готов',
+        }
+        return statuses[status] || status;
+    }
+    
 
     return <div className={cm.box}>
 
@@ -56,6 +64,11 @@ export default function OrderTile({order}: {order: TFeedOrder}) {
         </div>
         
         <div className={cm.name}>{order.name}</div>
+        
+        {status === true &&
+            <div className={cm.status}>{printStatus(order.status)}</div>
+        }
+
         <div className={cm.descr}>
             <div className={cm.list}>
 

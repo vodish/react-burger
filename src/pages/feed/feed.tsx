@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import { TFeedData, TFeedOrder, TIndex } from "../../utils/types"
 
 
-const WS_FEED_ORDERS  =   "wss://norma.nomoreparties.space/orders/all"
 
 
 export default function Feed()
@@ -19,12 +18,12 @@ export default function Feed()
   const [ statuses, setStatuses ] = useState<TIndex>({})
 
 
+
   useEffect( () => {
-    const ws      = new WebSocket(WS_FEED_ORDERS)
-    // ws.onopen     = () => console.log('ws открыт')
-    // ws.onclose    = () => console.log('ws закрыт')
+    const ws      = new WebSocket("wss://norma.nomoreparties.space/orders/all")
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
+        console.log(data.orders)
         dispatch( updateFeedOrders(data) )
 
         setStatuses(
