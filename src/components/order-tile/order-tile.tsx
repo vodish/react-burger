@@ -47,27 +47,30 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
 
     function printStatus(status: TOrderStatus) {
         const statuses = {
-            'created': 'Создан',
-            'pending': 'Готовится',
-            'done': 'Готов',
+            'created':  { class: 'createdColor', name: 'Создан'},
+            'pending':  { class: 'pendingColor', name: 'Готовится'},
+            'done':     { class: 'doneColor', name: 'Готов'},
         }
-        return statuses[status] || status;
+
+        return(
+            <div className={`${cm.status} ${statuses[status].class}`}>
+                {statuses[status].name || status}
+            </div>
+        );
     }
     
 
     return <div className={cm.box}>
-
         
         <div className={cm.head}>
             <div className={cm.number}>#{order.number}</div>
+            {status === true && printStatus(order.status)}
             <FormattedDate className={cm.time} date={new Date(order.createdAt)} />
         </div>
         
         <div className={cm.name}>{order.name}</div>
         
-        {status === true &&
-            <div className={cm.status}>{printStatus(order.status)}</div>
-        }
+        
 
         <div className={cm.descr}>
             <div className={cm.list}>
