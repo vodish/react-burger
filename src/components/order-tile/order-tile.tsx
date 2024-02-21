@@ -42,7 +42,7 @@ export default function OrderTile({order}: {order: TFeedOrder}) {
         // console.log( order.ingredients );
         // console.log( list );
 
-    }, [order.ingredients, ingredients] )
+    }, [] )
     
 
 
