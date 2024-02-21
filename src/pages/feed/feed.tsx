@@ -3,7 +3,7 @@ import OrderTile from "../../components/order-tile/order-tile"
 import { useDispatch2, useSelector2 } from "../../services/redux"
 import { updateFeedOrders } from "../../services/appSlice"
 import { useEffect, useState } from "react"
-import { TFeedData, TFeedOrder, TFeedStatuses } from "../../utils/types"
+import { TFeedData, TFeedOrder, TIndex } from "../../utils/types"
 
 
 const WS_FEED_ORDERS  =   "wss://norma.nomoreparties.space/orders/all"
@@ -16,19 +16,19 @@ export default function Feed()
   const total       = useSelector2( state => state.feed.total)
   const totalToday  = useSelector2( state => state.feed.totalToday)
 
-  const [ statuses, setStatuses ] = useState<TFeedStatuses>({})
+  const [ statuses, setStatuses ] = useState<TIndex>({})
 
 
   useEffect( () => {
     const ws      = new WebSocket(WS_FEED_ORDERS)
-    ws.onopen     = () => console.log('ws открыт')
-    ws.onclose    = () => console.log('ws закрыт')
+    // ws.onopen     = () => console.log('ws открыт')
+    // ws.onclose    = () => console.log('ws закрыт')
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
         dispatch( updateFeedOrders(data) )
 
         setStatuses(
-          data.orders.reduce( (acc:TFeedStatuses, {status}: TFeedOrder) => {
+          data.orders.reduce( (acc:TIndex, {status}: TFeedOrder) => {
               acc[ status ] = acc[ status ] ?  acc[ status ]+1 :  1;
               return acc;
           }, {})

@@ -1,14 +1,12 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TType, Ttoken, TUserResponse, TFeedOrder, TConnect, TFeedData, TOrderStatus, TFeedStatuses } from "../utils/types"
+import { TIngredient, TType, Ttoken, TUserResponse, TFeedOrder, TConnect, TFeedData, TOrderStatus, TIndex } from "../utils/types"
 import { TStore } from "./redux"
 
 const createSliceWhitThunks = buildCreateSlice({
   creators: {asyncThunk: asyncThunkCreator }
 })
-
-
 
 
 
@@ -19,7 +17,8 @@ const appSlice = createSliceWhitThunks({
         ingredients: {
             list:       []  as TIngredient[],
             types:      []  as TType[],
-            error:      ""
+            error:      "",
+            indexes:    {}  as TIndex
         },
         order: {
             buns:       []  as TIngredient[],
@@ -56,7 +55,7 @@ const appSlice = createSliceWhitThunks({
             fulfilled:  (state, {payload}) => {
                 
                 if ( payload.data ) {
-
+                    
                     const typeNname :{[n: string]: string} = {
                         bun: "Булки",
                         main: "Начинки",
@@ -75,7 +74,9 @@ const appSlice = createSliceWhitThunks({
                             entries: [],
                         }
                         acc[ el.type ].entries.push(index);
-                
+                        
+                        state.ingredients.indexes[ el._id ]   =   index
+
                         return acc
                     }, {})
                     

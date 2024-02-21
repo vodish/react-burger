@@ -72,9 +72,9 @@ export type TFeedData = {
 
 export type TOrderStatus = 'created' | 'pending' | 'done'
 
-export type TFeedStatuses = {
-  [n: string]: number
-}
+
+export type TIndex = {[n: string]: number}
+
 
 export type TFeedOrder = {
   createdAt:    string,
