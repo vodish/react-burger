@@ -19,6 +19,7 @@ import AppHeader from '../app-header/app-header';
 import { useDispatch2 } from '../../services/redux';
 import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
 import { IsAuth, NoAuth } from '../protected-route/protected-route';
+import OrderId from '../../pages/order-id/order-id';
 
 
 export default function App()
@@ -49,7 +50,7 @@ export default function App()
           <Route path="/reset-password"   element={ <NoAuth component={<ResetPassword/>}/> } />
 
           <Route path="/feed"             element={<Feed/>} />
-          <Route path="/feed/:id"         element={<Feed/>} />
+          <Route path="/order/:id"        element={<OrderId/>} />
           
           <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
             <Route  path=""               element={<ProfileUser/>} />
@@ -62,6 +63,7 @@ export default function App()
         {background && (
           <Routes>
             <Route path='/ingredients/:id' element={<IngredientsId/>}  />
+            <Route path="/order/:id"       element={<OrderId/>} />
           </Routes>
         )}
       </main>

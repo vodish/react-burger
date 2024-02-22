@@ -3,6 +3,7 @@ import { CurrencyIcon, FormattedDate } from "@ya.praktikum/react-developer-burge
 import { TFeedOrder, TIngredient, TOrderStatus } from "../../utils/types"
 import { useSelector2 } from "../../services/redux"
 import { useEffect, useState } from "react"
+import { Link, useLocation } from "react-router-dom"
 
 //: JSX.Element
 
@@ -16,6 +17,7 @@ type TList1 = {
 
 export default function OrderTile({order, status}: {order: TFeedOrder, status?: boolean | undefined}) {
 
+    const location      =   useLocation()
     const ingredients   =   useSelector2( state => state.ingredients.list )
     const indexes       =   useSelector2( state => state.ingredients.indexes )
     
@@ -60,40 +62,46 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
     }
     
 
-    return <div className={cm.box}>
+    return (
+        <Link
+            to={`/order/${order._id}`}
+            state={{ background: location }}
+            className={cm.box}
+            >
         
-        <div className={cm.head}>
-            <div className={cm.number}>#{order.number}</div>
-            {status === true && printStatus(order.status)}
-            <FormattedDate className={cm.time} date={new Date(order.createdAt)} />
-        </div>
-        
-        <div className={cm.name}>{order.name}</div>
-        
-        
-
-        <div className={cm.descr}>
-            <div className={cm.list}>
-
-                { list.more.length > 0 &&
-                    <div className={cm.border}>
-                        <img src={list.more[0].image_mobile} alt={`+${list.more.length}`} />
-                        <span>{`+${list.more.length}`}</span>
-                    </div>
-                }
-                
-                {list.list.reverse().map( (ingredient, idx) =>
-                    <div key={`list${idx}`} className={cm.border}>
-                        <img src={ingredient.image_mobile} alt={ingredient.name} />
-                    </div>
-                )}
-
+            <div className={cm.head}>
+                <div className={cm.number}>#{order.number}</div>
+                {status === true && printStatus(order.status)}
+                <FormattedDate className={cm.time} date={new Date(order.createdAt)} />
             </div>
-            <div className={cm.sum}>
-                <div className={cm.price}>{sum}</div>
-                <CurrencyIcon type="primary" />
+            
+            <div className={cm.name}>{order.name}</div>
+            
+            
+
+            <div className={cm.descr}>
+                <div className={cm.list}>
+
+                    { list.more.length > 0 &&
+                        <div className={cm.border}>
+                            <img src={list.more[0].image_mobile} alt={`+${list.more.length}`} />
+                            <span>{`+${list.more.length}`}</span>
+                        </div>
+                    }
+                    
+                    {list.list.reverse().map( (ingredient, idx) =>
+                        <div key={`list${idx}`} className={cm.border}>
+                            <img src={ingredient.image_mobile} alt={ingredient.name} />
+                        </div>
+                    )}
+
+                </div>
+                <div className={cm.sum}>
+                    <div className={cm.price}>{sum}</div>
+                    <CurrencyIcon type="primary" />
+                </div>
             </div>
-        </div>
         
-    </div>
+        </Link>
+    )
 }

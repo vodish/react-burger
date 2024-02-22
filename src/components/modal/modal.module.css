@@ -10,6 +10,7 @@
     box-shadow: 0 0 200px #8585AD;
     border-radius: 2em;
     padding: 40px;
+    z-index: 100;
 }
 .modal .close {
     position: absolute;
