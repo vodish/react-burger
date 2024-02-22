@@ -50,11 +50,12 @@ export default function App()
           <Route path="/reset-password"   element={ <NoAuth component={<ResetPassword/>}/> } />
 
           <Route path="/feed"             element={<Feed/>} />
-          <Route path="/order/:id"        element={<OrderId/>} />
+          <Route path="/feed/:id"         element={<OrderId/>} />
           
           <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
             <Route  path=""               element={<ProfileUser/>} />
             <Route  path="orders"         element={<ProfileOrders/>} />
+            <Route  path="orders/:id"     element={<ProfileOrders/>} />
           </Route>
 
           <Route path="*"                 element={<Page404/>} />
@@ -62,8 +63,9 @@ export default function App()
         
         {background && (
           <Routes>
-            <Route path='/ingredients/:id' element={<IngredientsId/>}  />
-            <Route path="/order/:id"       element={<OrderId/>} />
+            <Route path='/ingredients/:id'    element={<IngredientsId/>}  />
+            <Route path="/feed/:id"           element={<OrderId/>} />
+            <Route path="/profile/orders/:id" element={<OrderId/>} />
           </Routes>
         )}
       </main>

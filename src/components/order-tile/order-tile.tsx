@@ -64,7 +64,7 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
 
     return (
         <Link
-            to={`/order/${order._id}`}
+            to={`./${order._id}`}
             state={{ background: location }}
             className={cm.box}
             >
