@@ -64,7 +64,7 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
 
     return (
         <Link
-            to={`./${order._id}`}
+            to={`./${order.number}`}
             state={{ background: location }}
             className={cm.box}
             >
@@ -89,7 +89,7 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
                         </div>
                     }
                     
-                    {list.list.reverse().map( (ingredient, idx) =>
+                    {list.list.map( (ingredient, idx) =>
                         <div key={`list${idx}`} className={cm.border}>
                             <img src={ingredient.image_mobile} alt={ingredient.name} />
                         </div>

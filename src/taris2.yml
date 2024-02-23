@@ -1,0 +1,60 @@
+---
+- name: index.tsx
+	file:	/index
+	import:
+  	- object: app
+      from: /components/app/app
+    - object: store
+      from: /services/redux
+    
+    
+- name: app
+  file: /components/app/app
+  import:
+    - object: Constructor
+      from: /pages/constructor/constructor
+    - object: IngredientsId
+      from: /pages/ingredients-id/ingredients-id
+    - object: Profile
+      from: /pages/profile/profile
+    - object: ProfileUser
+      from: /pages/profile-user/profile-user
+    - object: ProfileOrders
+      from: /pages/profile-orders/profile-orders
+    
+    - object: Login
+      from: /pages/login/login
+    - object: Register
+      from: /pages/register/register
+    - object: ForgotPassword
+      from: /pages/forgot-password/forgot-password
+    - object: ResetPassword
+      from: /pages/reset-password/reset-password
+    
+    - object: Feed
+      from: /pages/feed/feed
+    - object: Page404
+      from: /pages/page404/page404
+    
+    - object: AppHeader
+      from: /app-header/app-header
+    - object: OrderId
+      from: /pages/order-id/order-id
+    
+    
+- name: constructor.tsx
+	file:	/pages/constructor/constructor
+	import:
+  	- object: cm
+      from: ./constructor.module.css
+    - object: BurgerIngredients
+      from: ../../components/burger-ingredients/burger-ingredients
+    - object: BurgerConstructor
+      from: ../../components/burger-constructor/burger-constructor
+    - object: Modal
+      from: ../../components/modal/modal
+    - object: OrderDetails
+      from: ../../components/order-details/order-details
+    
+    
+    

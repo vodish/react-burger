@@ -22,6 +22,7 @@ export default function OrderId() {
             <div>
                 <div>Подробности заказа в модалочке</div>
                 <div>id: {id}</div>
+                https://norma.nomoreparties.space/api/orders/{id}
             </div>
         </Modal>
     )

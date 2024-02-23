@@ -16,10 +16,11 @@ import Feed from '../../pages/feed/feed';
 import Page404 from '../../pages/page404/page404';
 
 import AppHeader from '../app-header/app-header';
+import OrderId from '../../pages/order-id/order-id';
+
+import { IsAuth, NoAuth } from '../protected-route/protected-route';
 import { useDispatch2 } from '../../services/redux';
 import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
-import { IsAuth, NoAuth } from '../protected-route/protected-route';
-import OrderId from '../../pages/order-id/order-id';
 
 
 export default function App()
