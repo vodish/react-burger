@@ -1,8 +1,11 @@
+import cm from "./profile-orders.module.css"
 import { useEffect } from "react"
 import { useDispatch2, useSelector2 } from "../../services/redux"
 import { TFeedData } from "../../utils/types"
 import OrderTile from "../../components/order-tile/order-tile"
 import { updateHystoryOrders } from "../../services/appSlice"
+
+
 
 
 export default function ProfileOrders()
@@ -26,7 +29,7 @@ export default function ProfileOrders()
 
 
   return (
-    <div className="double">
+    <div className={cm.double}>
       
       {orders.map( order =>
         <OrderTile key={order._id} order={order} status={true} />
