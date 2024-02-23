@@ -4,6 +4,7 @@ import { TFeedOrder, TIngredient, TOrderStatus } from "../../utils/types"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import Modal from "../../components/modal/modal"
+import { fetchRequest } from "../../utils/api"
 
 
 
@@ -12,6 +13,19 @@ export default function OrderId() {
     const { id }    = useParams()
     const location  = useLocation()
     const navigate  = useNavigate()
+
+
+    useEffect(()=> {
+
+        fetchRequest(`/api/orders/${id}`)
+        .then( (res) => {
+            console.log(res)
+        } )
+        .catch( (err: Error) => {
+            console.log(err)
+        })
+
+    })
 
 
 
