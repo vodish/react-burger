@@ -56,17 +56,17 @@ export default function App()
           <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
             <Route  path=""               element={<ProfileUser/>} />
             <Route  path="orders"         element={<ProfileOrders/>} />
-            <Route  path="orders/:id"     element={<ProfileOrders/>} />
           </Route>
+          <Route  path="/profile/orders/:id"  element={<OrderId/>} />
 
           <Route path="*"                 element={<Page404/>} />
         </Routes>
         
         {background && (
           <Routes>
-            <Route path='/ingredients/:id'    element={<IngredientsId/>}  />
-            <Route path="/feed/:id"           element={<OrderId/>} />
-            <Route path="/profile/orders/:id" element={<OrderId/>} />
+            <Route path='/ingredients/:id'      element={<IngredientsId/>} />
+            <Route path="/feed/:id"             element={<OrderId/>} />
+            <Route path="/profile/orders/:id"   element={<OrderId/>} />
           </Routes>
         )}
       </main>
