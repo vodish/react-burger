@@ -1,0 +1,13 @@
+.empty      { width: 500px; height: 500px; }
+
+.number     { font-family: var(--fontNumber); font-size: 28px; text-align: center; }
+
+.name       { margin-top: 40px; font-size: 24px; }
+.status     { margin-top: 12px; font-size: 16px; }
+
+.list       { margin-top: 60px; }
+.list > div:first-child { flex-basis: 100%; font-size: 24px; }
+
+.sum        { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; gap: 1ch; }
+.sum  div:first-child   { color: var(--color2); margin-right: auto; }
+.sum  div:nth-child(2)  { font-family: var(--fontNumber); font-size: 28px; }

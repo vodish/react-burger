@@ -23,7 +23,7 @@ export default function Feed()
     const ws      = new WebSocket("wss://norma.nomoreparties.space/orders/all")
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
-        console.log(data.orders)
+        // console.log(data.orders)
         dispatch( updateFeedOrders(data) )
 
         setStatuses(

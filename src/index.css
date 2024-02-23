@@ -9,6 +9,9 @@
   --colorBg2: #a6a6a60d;
   --color1: #F2F2F3;
   --color2: #8585AD;
+  --colorCreate:  red;
+  --colorPending: #00CCCC;
+  --colorDone:    #F2F2F3;
 }
 
 
