@@ -12,7 +12,7 @@
 
 .head   { display: flex; justify-content: space-between; align-items: baseline; gap: 2em; }
 .head .number   { font-size: 28px; font-family: var(--fontNumber); }
-.head .status   { margin-right: auto; }
+.head .number + div   { margin-right: auto; font-size: 18px; font-weight: bold; }
 .head .time     { font-size: 16px; color: #8585AD; }
 
 .name   { font-size: 24px; margin-top: 24px; }

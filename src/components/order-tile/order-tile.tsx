@@ -4,15 +4,16 @@ import { TFeedOrder, TIngredient, TOrderStatus } from "../../utils/types"
 import { useSelector2 } from "../../services/redux"
 import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
+import OrderStatus from "../order-status/order-status"
 
-//: JSX.Element
-
-const list: number[] = [1,1,1,1]
 
 type TList1 = {
     'list': TIngredient[],
     'more': TIngredient[],
 }
+
+
+
 
 
 export default function OrderTile({order, status}: {order: TFeedOrder, status?: boolean | undefined}) {
@@ -47,19 +48,6 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
     }, [] )
     
 
-    function printStatus(status: TOrderStatus) {
-        const statuses = {
-            'created':  { class: 'createdColor', name: 'Создан'},
-            'pending':  { class: 'pendingColor', name: 'Готовится'},
-            'done':     { class: 'doneColor', name: 'Готов'},
-        }
-
-        return(
-            <div className={`${cm.status} ${statuses[status].class}`}>
-                {statuses[status].name || status}
-            </div>
-        );
-    }
     
 
     return (
@@ -71,7 +59,7 @@ export default function OrderTile({order, status}: {order: TFeedOrder, status?: 
         
             <div className={cm.head}>
                 <div className={cm.number}>#{order.number}</div>
-                {status === true && printStatus(order.status)}
+                <OrderStatus status={order.status} />
                 <FormattedDate className={cm.time} date={new Date(order.createdAt)} />
             </div>
             

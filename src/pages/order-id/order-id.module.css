@@ -1,13 +1,20 @@
-.empty      { width: 500px; height: 500px; }
+.page       { width: 500px; margin: 4em auto 0 auto; }
 
 .number     { font-family: var(--fontNumber); font-size: 28px; text-align: center; }
 
 .name       { margin-top: 40px; font-size: 24px; }
-.status     { margin-top: 12px; font-size: 16px; }
+.name + div { margin: 12px 0 60px 0; font-size: 16px; }
 
-.list       { margin-top: 60px; }
-.list > div:first-child { flex-basis: 100%; font-size: 24px; }
+.hlist      { font-size: 24px; margin-top: 60px; }
+.list       { margin-top: 24px; max-height: 310px; overflow: auto; padding-right: 16px; margin-right: -16px; }
+.list > div { display: flex; align-items: center; gap: 16px; }
+.list > div > div:nth-child(1)  { width: 80px; }
+.list > div > div:nth-child(1) > img { margin-left: -33px; }
+.list > div > div:nth-child(3)  { font-family: var(--fontNumber); font-size: 28px; margin-left: auto; white-space: nowrap; }
+.list > div > div:nth-child(4)  { margin-bottom: -4px; }
 
 .sum        { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; gap: 1ch; }
 .sum  div:first-child   { color: var(--color2); margin-right: auto; }
 .sum  div:nth-child(2)  { font-family: var(--fontNumber); font-size: 28px; }
+
+
