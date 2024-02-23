@@ -17,7 +17,7 @@ export default function ProfileOrders()
     const ws      = new WebSocket("wss://norma.nomoreparties.space/orders/all")
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
-        console.log(data)
+        // console.log(data)
         dispatch( updateHystoryOrders(data) )
         
     }

@@ -6,10 +6,10 @@
 .tablo  { flex-grow: 1; font-size: 24px; }
 
 .monitor { display: flex; flex-wrap: wrap; gap: 36px; margin-bottom: 50px; }
-.monitor > div { flex-basis: 45%; }
+.monitor > div { flex-basis: 200px; }
 .monitor > div .monitorName { margin-bottom: 24px; }
-.monitor > div .monitorList { display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px; max-height: 230px; overflow: auto; }
-.monitor > div .monitorList > div { font-family: var(--fontNumber); font-size: 28px; margin-top: 8px; margin-right: 56px; }
+.monitor > div .monitorList { display: flex; flex-direction: column; flex-wrap: wrap; gap: 8px 40px; max-height: 250px; overflow: auto; }
+.monitor > div .monitorList > div { font-family: var(--fontNumber); font-size: 28px; }
 
 .monitor > div .monitorListDone > div {  margin-top: 10px; color: #00CCCC;  }
 
