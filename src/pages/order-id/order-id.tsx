@@ -38,13 +38,13 @@ export default function OrderId() {
             let sum1    =   0;
             const list1 =   Object.keys(cnt).reduce<TIngredient[]>(
                 (acc, idx) => {
-                    if ( ingredients.indexes[ idx ] ) {
+                    if ( ingredients.indexes[ idx ] !== undefined ) {
                         ingr    =   {...ingredients.list[ ingredients.indexes[idx] ], count: cnt[idx]}
                         sum1    +=  (ingr.count || 0) * ingr.price
                         acc.push( ingr )
                     }
                     else {
-                        acc.push({...ingredients.list[0], name: "Какой-то ингредиент", price: 0})
+                        acc.push({...ingredients.list[0], name: `Id?: ${idx}`, price: 0})
                     }
                     return acc;
                 }
@@ -75,9 +75,9 @@ export default function OrderId() {
                 <div className={cm.hlist}>Состав:</div>
 
                 <div className={cm.list}>
-                    {list.map( el => (
-                        <div key={el.__v}>
-                            <div><img src={el.image_mobile} alt="" /></div>
+                    {list.map( (el, key) => (
+                        <div key={key}>
+                            <div>{el.price? <img src={el.image_mobile} alt={el.name} />: '...'}</div>
                             <div>{el.name}</div>
                             <div>{el.count} x {el.price}</div>
                             <div><CurrencyIcon type="primary" /></div>
@@ -103,17 +103,17 @@ export default function OrderId() {
     // карточка товара в модалке
     if ( location.state?.background ) {
         return (
-        <Modal handleClose={()=>{navigate(-1)}}>
-            {printCard(order)}
-        </Modal>
+            <Modal handleClose={()=>{navigate(-1)}}>
+                {printCard(order)}
+            </Modal>
         )
     }
 
 
     // карточка товара на отдельной странице
     return (
-    <div className={cm.page}>
-        {printCard(order)}
-    </div>
+        <div className={cm.page}>
+            {printCard(order)}
+        </div>
     )
 }

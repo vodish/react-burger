@@ -8,7 +8,7 @@
 .hlist      { font-size: 18px; margin-top: 60px; }
 .list       { margin-top: 24px; max-height: 310px; overflow: auto; padding-right: 16px; margin-right: -16px; }
 .list > div { display: flex; align-items: center; gap: 16px; }
-.list > div > div:nth-child(1)  { width: 80px; }
+.list > div > div:nth-child(1)  { width: 80px; overflow: hidden; text-align: center; border-radius: 50%; }
 .list > div > div:nth-child(1) > img { margin-left: -33px; }
 .list > div > div:nth-child(3)  { font-family: var(--fontNumber); font-size: 28px; margin-left: auto; white-space: nowrap; }
 .list > div > div:nth-child(4)  { margin-bottom: -4px; }
