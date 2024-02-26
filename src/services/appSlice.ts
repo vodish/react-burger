@@ -395,7 +395,7 @@ export const appSlice = createSliceWhitThunks({
     
     updateHistoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
         // console.log(payload)
-        state.history.orders       =   payload.orders
+        state.history.orders       =   payload.orders.reverse()
     } ),
     
   })
