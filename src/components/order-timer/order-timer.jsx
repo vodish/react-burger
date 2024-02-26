@@ -10,6 +10,6 @@ export default function OrderTimer() {
     }, [second])
 
 
-    return <div>{second}</div>
+    return <>{second}</>
 
 }

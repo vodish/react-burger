@@ -159,7 +159,8 @@ export const appSlice = createSliceWhitThunks({
     }),
 
     closeOrderError: create.reducer( state => {
-        state.order.error = ""
+        state.order.error   = ""
+        state.order.send    = false
     }),
     
 
@@ -196,11 +197,9 @@ export const appSlice = createSliceWhitThunks({
                 state.order.number  =   payload.order ? payload.order.number : 0
                 state.order.error   =   payload.error || ''
                 
-
                 if ( payload.error  ) {
                     alert(payload.error)
                     console.log(payload)
-                    return;
                 }
             },
             rejected: (state, action) => {
