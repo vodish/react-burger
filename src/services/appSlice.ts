@@ -42,8 +42,6 @@ export const appSlice = createSliceWhitThunks({
         history: {
             ws:           ""        as string,
             orders:       []        as TFeedOrder[],
-            total:        null      as null | number,
-            totalToday:   null      as null | number,
         }
   },
 

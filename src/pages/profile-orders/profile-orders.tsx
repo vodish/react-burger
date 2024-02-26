@@ -16,8 +16,8 @@ export default function ProfileOrders()
     
     const token   = localStorage.getItem('accessToken')?.substring(7)
 
-    // dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
-    dispatch( wsHistoryConnect("wss://norma.nomoreparties.space/orders/all") )
+    dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
+    // dispatch( wsHistoryConnect("wss://norma.nomoreparties.space/orders/all") )
 
 
   }, [])

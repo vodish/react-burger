@@ -1,6 +1,6 @@
 
 import { Middleware } from 'redux'
-import { updateFeedOrders, updateHistoryOrders, wsHistoryConnect } from './appSlice';
+import { updateHistoryOrders, wsHistoryConnect } from './appSlice';
 import { TFeedData } from '../utils/types';
 
  
@@ -12,9 +12,11 @@ const wsHistoryMiddleware: Middleware = store => next => action => {
     
     
     const ws = new WebSocket(action.payload)
+    console.log(action.payload)
     
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
+        console.log(data)
         store.dispatch( updateHistoryOrders(data) )
     }
     

@@ -12,9 +12,11 @@ const wsFeedMiddleware: Middleware = store => next => action => {
         
 
     const ws = new WebSocket(action.payload)
+    console.log(action.payload)
     
     ws.onmessage  = e => {
         const data: TFeedData = JSON.parse(e.data)
+        console.log(data)
         store.dispatch( updateFeedOrders(data) )
     }
     
