@@ -13,13 +13,8 @@ export default function ProfileOrders()
   const orders      = useSelector2( state => state.history.orders)
   
   useEffect( () => {
-    
     const token   = localStorage.getItem('accessToken')?.substring(7)
-
-    // для пользователя сервер возвращаетс пустой список заказов, почему-то....
     dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
-    
-
   }, [])
 
 
