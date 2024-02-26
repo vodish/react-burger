@@ -17,10 +17,8 @@ export default function ProfileOrders()
     const token   = localStorage.getItem('accessToken')?.substring(7)
 
     // для пользователя сервер возвращаетс пустой список заказов, почему-то....
-    // dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
-
-    // по этому я сюда подставил общую ленту заказов, чтобы можно было проверить работу
-    dispatch( wsHistoryConnect("wss://norma.nomoreparties.space/orders/all") )
+    dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
+    
 
   }, [])
 

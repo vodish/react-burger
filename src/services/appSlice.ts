@@ -177,7 +177,8 @@ export const appSlice = createSliceWhitThunks({
                     , {
                         method: "POST",
                         headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                            'authorization': localStorage.getItem('accessToken') as string,
+                            'Content-Type': 'application/json;charset=utf-8',
                         },
                         body: JSON.stringify({ingredients}),
                     }
