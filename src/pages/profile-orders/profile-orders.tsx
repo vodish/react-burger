@@ -2,7 +2,7 @@ import cm from "./profile-orders.module.css"
 import { useEffect } from "react"
 import { useDispatch2, useSelector2 } from "../../services/redux"
 import OrderTile from "../../components/order-tile/order-tile"
-import { updateHistoryOrders, wsHistoryConnect } from "../../services/appSlice"
+import { wsHistoryConnect } from "../../services/appSlice"
 
 
 
@@ -16,9 +16,11 @@ export default function ProfileOrders()
     
     const token   = localStorage.getItem('accessToken')?.substring(7)
 
-    dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
-    // dispatch( wsHistoryConnect("wss://norma.nomoreparties.space/orders/all") )
+    // для пользователя сервер возвращаетс пустой список заказов, почему-то....
+    // dispatch( wsHistoryConnect(`wss://norma.nomoreparties.space/orders?token=${token}`) )
 
+    // по этому я сюда подставил общую ленту заказов, чтобы можно было проверить работу
+    dispatch( wsHistoryConnect("wss://norma.nomoreparties.space/orders/all") )
 
   }, [])
 

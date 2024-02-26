@@ -252,14 +252,15 @@ export const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 state.user.checkAuth    =   true
-                state.user.name     =   payload.user.name
-                state.user.email    =   payload.user.email
-                state.apiError      =   ""
+                state.user.name         =   payload.user.name
+                state.user.email        =   payload.user.email
+                state.apiError          =   ""
                 setToken(payload)
             },
             rejected: (state, action) => {
                 console.log(action)
-                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                state.user.checkAuth    =   true
+                state.apiError          =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
