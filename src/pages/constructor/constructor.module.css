@@ -12,3 +12,43 @@
         opacity: .4;
     }
 }
+
+
+@keyframes blinker {
+    50% {
+        opacity: .4;
+    }
+}
+
+
+.timer {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    margin: 30px auto auto auto;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+
+    box-shadow: inset 0 0 0 920px black;
+
+    border-radius: 50%;
+    border: 8px solid transparent;
+    background: linear-gradient(15deg, #4c4cff, red) border-box;
+    animation: spin 3s linear infinite;
+}
+.timer > div:nth-child(2) { font-family: var(--fontNumber); font-size: 48px; }
+
+@-moz-keyframes spin {
+    100% { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform:rotate(360deg);
+    }
+}

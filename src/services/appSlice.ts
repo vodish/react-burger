@@ -26,6 +26,7 @@ export const appSlice = createSliceWhitThunks({
             total:      0,
             number:     0,
             error:      "",
+            send:       false,
         },
         user: {
             checkAuth:  false,
@@ -149,6 +150,7 @@ export const appSlice = createSliceWhitThunks({
     
     resetOrder: create.reducer( state => {
         state.order.number  =   0
+        state.order.send    =   false
         state.order.buns    =   []
         state.order.adds    =   []
         const newState      =   stateCalculation(state)
@@ -161,6 +163,9 @@ export const appSlice = createSliceWhitThunks({
     }),
     
 
+    sendOrderSend: create.reducer( state => {
+        state.order.send    =   true
+    } ),
 
     sendOrderThunk: create.asyncThunk(
         async (ingredients) => {
@@ -190,6 +195,7 @@ export const appSlice = createSliceWhitThunks({
                 
                 state.order.number  =   payload.order ? payload.order.number : 0
                 state.order.error   =   payload.error || ''
+                
 
                 if ( payload.error  ) {
                     alert(payload.error)
@@ -198,7 +204,8 @@ export const appSlice = createSliceWhitThunks({
                 }
             },
             rejected: (state, action) => {
-                state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
+                state.order.error   =   `${action.type}...<br />Server message: ${action.error.message}`
+                state.order.send    =   false
             },
         }
     ),
@@ -402,6 +409,7 @@ export const {
     resortOrder,
     resetOrder,
     closeOrderError,
+    sendOrderSend,
     sendOrderThunk,
 
     removeApiError,

@@ -1,9 +1,9 @@
-import { useState} from "react"
+import { useState,} from "react"
 import { useNavigate } from "react-router-dom"
 import cm from './burger-constructor.module.css'
 import { ConstructorElement, CurrencyIcon, Button, ArrowUpIcon, ArrowDownIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientReorder from "../ingredient-reorder/ingredient-reorder";
-import { sendOrderThunk, closeOrderError } from "../../services/appSlice";
+import { sendOrderThunk, closeOrderError, sendOrderSend } from "../../services/appSlice";
 import Modal from "../modal/modal";
 import { TIngredient } from "../../utils/types";
 import { useDispatch2, useSelector2 } from "../../services/redux";
@@ -24,6 +24,7 @@ export default function BurgerConstructor()
 
 
 
+
   async function handleOrderSubmit() {
     if ( ! userName ) {
       navigate('/login')
@@ -32,8 +33,12 @@ export default function BurgerConstructor()
 
     const ingredients =   [...order.buns, ...order.adds].map( (item: TIngredient) => item._id)
     
+    dispatch( sendOrderSend() )
     dispatch( sendOrderThunk(ingredients) )
+    
   }
+
+
 
 
   return(
