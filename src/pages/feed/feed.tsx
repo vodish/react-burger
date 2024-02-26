@@ -1,10 +1,8 @@
 import cm from "./feed.module.css"
 import OrderTile from "../../components/order-tile/order-tile"
 import { useDispatch2, useSelector2 } from "../../services/redux"
-import { updateFeedOrders } from "../../services/appSlice"
-import { useEffect, useState } from "react"
-import { TFeedData, TFeedOrder, TIndex } from "../../utils/types"
-
+import { wsFeedConnect } from "../../services/appSlice"
+import { useEffect } from "react"
 
 
 
@@ -14,25 +12,12 @@ export default function Feed()
   const orders      = useSelector2( state => state.feed.orders)
   const total       = useSelector2( state => state.feed.total)
   const totalToday  = useSelector2( state => state.feed.totalToday)
-
-  const [ statuses, setStatuses ] = useState<TIndex>({})
+  const statuses    = useSelector2( state => state.feed.statuses)
 
 
 
   useEffect( () => {
-    const ws      = new WebSocket("wss://norma.nomoreparties.space/orders/all")
-    ws.onmessage  = e => {
-        const data: TFeedData = JSON.parse(e.data)
-        // console.log(data.orders)
-        dispatch( updateFeedOrders(data) )
-
-        setStatuses(
-          data.orders.reduce( (acc:TIndex, {status}: TFeedOrder) => {
-              acc[ status ] = acc[ status ] ?  acc[ status ]+1 :  1;
-              return acc;
-          }, {})
-        )
-    }
+    dispatch( wsFeedConnect("wss://norma.nomoreparties.space/orders/all") )
   }, [])
 
 

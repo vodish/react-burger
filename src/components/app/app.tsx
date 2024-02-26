@@ -20,7 +20,7 @@ import OrderId from '../../pages/order-id/order-id';
 
 import { IsAuth, NoAuth } from '../protected-route/protected-route';
 import { useDispatch2 } from '../../services/redux';
-import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
+import { getIngredientsThunk, getProfileThunk, wsFeedConnect } from '../../services/appSlice';
 
 
 export default function App()

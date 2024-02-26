@@ -10,7 +10,7 @@ const createSliceWhitThunks = buildCreateSlice({
 
 
 
-const appSlice = createSliceWhitThunks({
+export const appSlice = createSliceWhitThunks({
     name: 'app',
     initialState: {
         apiError:   "",
@@ -33,13 +33,17 @@ const appSlice = createSliceWhitThunks({
             name:       "",
         },
         feed: {
-            ws:           null      as null | WebSocket,
+            ws:           ""        as string,
+            statuses:     {}        as TIndex,
             orders:       []        as TFeedOrder[],
             total:        null      as null | number,
             totalToday:   null      as null | number,
         },
-        hystory: {
+        history: {
+            ws:           ""        as string,
             orders:       []        as TFeedOrder[],
+            total:        null      as null | number,
+            totalToday:   null      as null | number,
         }
   },
 
@@ -356,16 +360,35 @@ const appSlice = createSliceWhitThunks({
         }
     ),
     
+
+
+    wsFeedConnect: create.reducer( (state, {payload}: {payload: string}) => {
+        state.feed.ws = payload
+    } ),
+    
     updateFeedOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
-        // console.log(payload)
+        
+        const statuses = payload.orders.reduce( (acc:TIndex, {status}: TFeedOrder) => {
+            acc[ status ] = acc[ status ] ?  acc[ status ]+1 :  1;
+            return acc;
+        }, {})
+
+        // console.log(statuses)
+
         state.feed.orders       =   payload.orders
         state.feed.total        =   payload.total
         state.feed.totalToday   =   payload.totalToday
+        state.feed.statuses     =   statuses
     } ),
 
-    updateHystoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
+
+    wsHistoryConnect: create.reducer( (state, {payload}: {payload: string}) => {
+        state.history.ws = payload
+    } ),
+    
+    updateHistoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
         // console.log(payload)
-        state.hystory.orders       =   payload.orders
+        state.history.orders       =   payload.orders
     } ),
     
   })
@@ -388,8 +411,10 @@ export const {
     getProfileThunk,
     updateProfileThunk,
 
+    wsFeedConnect,
     updateFeedOrders,
-    updateHystoryOrders,
+    wsHistoryConnect,
+    updateHistoryOrders,
 
 } = appSlice.actions
 
