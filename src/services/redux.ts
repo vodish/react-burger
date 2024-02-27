@@ -4,12 +4,13 @@ import type { TypedUseSelectorHook } from 'react-redux'
 import appSlice from "./appSlice";
 import wsFeedMiddleware from "./wsFeedMiddleware"; 
 import wsHistoryMiddleware from "./wsHistoryMiddleware";
+import wsMiddleware from "./wsMiddleware";
 
 
 const store = configureStore({
     reducer: appSlice,
     middleware: (getDefaultMiddleware) => {
-        return getDefaultMiddleware().concat([wsFeedMiddleware, wsHistoryMiddleware])
+        return getDefaultMiddleware().concat([wsMiddleware])
     },
 })
 
