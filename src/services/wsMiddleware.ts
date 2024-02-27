@@ -1,35 +1,50 @@
 
 import { Middleware } from 'redux'
 import { updateFeedOrders, updateHistoryOrders, wsFeedConnect, wsHistoryConnect } from './appSlice';
-import { TFeedData } from '../utils/types';
+import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 
  
-const wsMiddleware: Middleware = store => next => action => {
-    
-    if ( wsFeedConnect.match(action) && store.getState().feed.ws == '' ) {
 
-        const ws = new WebSocket(action.payload)
-        console.log(action.payload)
+export type TwsActionTypes = {
+    wsConnect:      typeof wsFeedConnect    | typeof wsHistoryConnect,
+    onMessage:      typeof updateFeedOrders | typeof updateHistoryOrders,
+    onError:        ActionCreatorWithPayload<string>,
 
-        ws.onmessage  = e => {
-            const data: TFeedData = JSON.parse(e.data)
-            store.dispatch( updateFeedOrders(data) )
-        }
-    }
-    
-    if ( wsHistoryConnect.match(action) && store.getState().history.ws == '' ) {
-    
-        const ws = new WebSocket(action.payload)
-        console.log(action.payload)
-        
-        ws.onmessage  = e => {
-            const data: TFeedData = JSON.parse(e.data)
-            store.dispatch( updateHistoryOrders(data) )
-        }
-    }
-
-
-    next(action)
+    wsDisconnect?:  ActionCreatorWithoutPayload,
+    wsConnecting?:  ActionCreatorWithoutPayload,
+    onOpen?:        ActionCreatorWithoutPayload,
+    onClose?:       ActionCreatorWithoutPayload,
 }
- 
-export default wsMiddleware;
+
+
+export const wsMiddleware = (wsActions: TwsActionTypes): Middleware => store => {
+
+    let socket: WebSocket | null = null;
+    const { wsConnect, onMessage, onError } = wsActions;
+    const { dispatch } = store;
+    
+
+    return next => action => {
+    
+        if ( socket == null && wsConnect.match(action) ) {
+            
+            console.log('connect ' + action.payload)
+            
+            socket = new WebSocket(action.payload);
+            dispatch( wsConnect(action.payload) );
+            
+
+            socket.onerror = () => {
+                dispatch( onError(`Не могу к ${action.payload}`) );
+            };
+
+            socket.onmessage = e => {
+                const data = JSON.parse(e.data);
+                dispatch( onMessage(data) );
+            };
+        }
+
+
+        next(action);
+    };
+};

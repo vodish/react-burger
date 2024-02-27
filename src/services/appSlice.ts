@@ -367,7 +367,10 @@ export const appSlice = createSliceWhitThunks({
     ),
     
 
-
+    wsError: create.reducer( (state, {payload}: {payload: string}) => {
+        state.apiError = payload
+    } ),
+    
     wsFeedConnect: create.reducer( (state, {payload}: {payload: string}) => {
         state.feed.ws = payload
     } ),
@@ -418,6 +421,7 @@ export const {
     getProfileThunk,
     updateProfileThunk,
 
+    wsError,
     wsFeedConnect,
     updateFeedOrders,
     wsHistoryConnect,
