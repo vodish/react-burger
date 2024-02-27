@@ -10,7 +10,7 @@ const wsMiddleware: Middleware = store => next => action => {
 
         const ws = new WebSocket(action.payload)
         console.log(action.payload)
-        
+
         ws.onmessage  = e => {
             const data: TFeedData = JSON.parse(e.data)
             store.dispatch( updateFeedOrders(data) )
@@ -29,7 +29,7 @@ const wsMiddleware: Middleware = store => next => action => {
     }
 
 
-    return next(action)
+    next(action)
 }
  
 export default wsMiddleware;

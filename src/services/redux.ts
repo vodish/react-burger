@@ -2,8 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
 import appSlice from "./appSlice";
-import wsFeedMiddleware from "./wsFeedMiddleware"; 
-import wsHistoryMiddleware from "./wsHistoryMiddleware";
+// import wsFeedMiddleware from "./wsFeedMiddleware"; 
+// import wsHistoryMiddleware from "./wsHistoryMiddleware";
 import wsMiddleware from "./wsMiddleware";
 
 
