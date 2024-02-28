@@ -13,8 +13,8 @@ export async function fetchRequest<T>(endPoint: string, options: TFetchOptions =
     return Promise.reject(`Server error...`)
   }
   
-  const json  = await res.json()
-  options     = await checkTokenRefresh(options, json)
+  const json    = await res.json()
+        options = await checkTokenRefresh(options, json)
   
   if ( options.checkRefresh ) {
     return fetchRequest(endPoint, options)
