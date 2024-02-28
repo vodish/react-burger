@@ -1,11 +1,7 @@
 import MyImageSvg  from "../../utils/status1.svg"
 import cm from "./order-details.module.css"
-import PropTypes from 'prop-types'
 import { useSelector2 } from "../../services/redux"
 
-OrderDetails.propTypes = {
-  handleClose:  PropTypes.func,
-}
 
 function OrderDetails()
 {

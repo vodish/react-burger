@@ -1,10 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from 'react-redux'
 import type { TypedUseSelectorHook } from 'react-redux'
-import appSlice from "./appSlice";
+import appSlice, { updateFeedOrders, updateHistoryOrders, wsError, wsFeedConnect, wsHistoryConnect } from "./appSlice";
+import { wsMiddleware } from "./wsMiddleware";
+
+
+
+const wsFeed = wsMiddleware({
+    wsConnect:  wsFeedConnect,
+    onMessage:  updateFeedOrders,
+    onError:    wsError,
+});
+
+const wsHistory = wsMiddleware({
+    wsConnect:  wsHistoryConnect,
+    onMessage:  updateHistoryOrders,
+    onError:    wsError,
+});
+
+
 
 const store = configureStore({
-    reducer: appSlice
+    reducer: appSlice,
+    middleware: (getDefaultMiddleware) => {
+        return getDefaultMiddleware().concat([wsFeed, wsHistory])
+    },
 })
 
 export type TDispatch   = typeof store.dispatch

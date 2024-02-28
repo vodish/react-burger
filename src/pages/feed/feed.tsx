@@ -1,41 +1,72 @@
+import cm from "./feed.module.css"
+import OrderTile from "../../components/order-tile/order-tile"
+import { useDispatch2, useSelector2 } from "../../services/redux"
+import { wsFeedConnect } from "../../services/appSlice"
+import { useEffect } from "react"
+
+
 
 export default function Feed()
 {
-  
-  return <>
+  const dispatch    = useDispatch2()
+  const orders      = useSelector2( state => state.feed.orders)
+  const total       = useSelector2( state => state.feed.total)
+  const totalToday  = useSelector2( state => state.feed.totalToday)
+  const statuses    = useSelector2( state => state.feed.statuses)
 
-    <div className="list double">
-      <h1>Лента заказов</h1>
-      <ul>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-        <li>#987213</li>
-      </ul>
+
+
+  useEffect( () => {
+    dispatch( wsFeedConnect("wss://norma.nomoreparties.space/orders/all") )
+  }, [])
+
+
+  
+
+  return <>
+    <div className={`double ${cm.list}`}>
+      <h1 className={cm.title}>Лента заказов</h1>
+
+      <div className={cm.tiles}> 
+        {orders.map( order => <OrderTile key={order._id} order={order} /> )}
+      </div>
+
     </div>
 
-    <div className="tablo double">
-
-      <div className="state">
+    
+    <div className={`double ${cm.tablo}`}>
+      <div className={cm.monitor}>
       <div>
-          Готовы:
+          <div className={cm.monitorName}>Готовы:</div> 
+          <div className={`${cm.monitorList} ${cm.monitorListDone}`} style={{height: statuses.done? (statuses.done/10)*230: 230}}>
+            {orders.map( order => {
+              if ( order.status !== 'done' )  return;
+              return <div key={order._id}>{order.number}</div>
+              })
+            }
+          </div>
         </div>
         <div>
-          В работе:
+          <div className={cm.monitorName}>В работе:</div>
+          <div className={cm.monitorList}>
+            {orders.map( order => {
+                if ( order.status !== 'pending' )  return;
+                return <div key={order._id}>{order.number}</div>
+              })
+            }
+          </div>
         </div>
       </div>
 
-      <div className="today">
-        Выполнено за сегодня:
-        <div className="score">28 752</div>
+      <div className={cm.count}>
+        <div>Выполнено за сегодня:</div>
+        <div>{totalToday}</div>
       </div>
       
-      <div className="allday">
-        Выполнено за все время:
-        <div className="score">138</div>
+      <div className={cm.count}>
+        <div>Выполнено за все время:</div>
+        <div>{total}</div>
       </div>
-      
     </div>
 
   </>

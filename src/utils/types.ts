@@ -49,3 +49,39 @@ export type TUser = {
 }
 
 
+export type TUserResponse = {
+  success: boolean
+  accessToken: string
+  refreshToken:string
+  user: {
+      email:string
+      name: string
+  }
+}
+
+
+export type TConnect = null | true | false;
+
+
+export type TFeedData = {
+  orders:       TFeedOrder[],
+  susses:       boolean,
+  total:        number,
+  totalToday:   number,
+}
+
+export type TOrderStatus = 'created' | 'pending' | 'done'
+
+
+export type TIndex = {[n: string]: number}
+
+
+export type TFeedOrder = {
+  createdAt:    string,
+  ingredients:  string[],
+  name:         string,
+  number:       number
+  status:       TOrderStatus,
+  updatedAt:    string,
+  _id:          string,
+}

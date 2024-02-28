@@ -16,17 +16,18 @@ import Feed from '../../pages/feed/feed';
 import Page404 from '../../pages/page404/page404';
 
 import AppHeader from '../app-header/app-header';
-import { useDispatch2 } from '../../services/redux';
-import { getIngredientsThunk, getProfileThunk } from '../../services/appSlice';
-import { IsAuth, NoAuth } from '../protected-route/protected-route';
+import OrderId from '../../pages/order-id/order-id';
 
+import { IsAuth, NoAuth } from '../protected-route/protected-route';
+import { useDispatch2 } from '../../services/redux';
+import { getIngredientsThunk, getProfileThunk, wsFeedConnect } from '../../services/appSlice';
 
 
 export default function App()
 {
-  const dispatch = useDispatch2()
-  const location = useLocation();
-  const background = location.state && location.state.background;
+  const dispatch    = useDispatch2()
+  const location    = useLocation();
+  const background  = location.state && location.state.background;
   
   
   useEffect(()=>{
@@ -41,28 +42,31 @@ export default function App()
 
       <main className="main">
         <Routes location={background || location}>
-          <Route path="/"                 element={<Constructor/>} />
-          <Route path="/ingredients/:id"  element={<IngredientsId />} />
+          <Route path="/"                 element={ <Constructor/>} />
+          <Route path="/ingredients/:id"  element={ <IngredientsId />} />
         
           <Route path="/login"            element={ <NoAuth component={<Login/>}/> } />
           <Route path="/register"         element={ <NoAuth component={<Register/>}/> } />
           <Route path="/forgot-password"  element={ <NoAuth component={<ForgotPassword/>}/> } />
           <Route path="/reset-password"   element={ <NoAuth component={<ResetPassword/>}/> } />
 
-          <Route path="/feed"             element={<Feed/>} />
-          <Route path="/feed/:id"         element={<Feed/>} />
+          <Route path="/feed"             element={ <Feed/>} />
+          <Route path="/feed/:id"         element={ <OrderId/>} />
           
-          <Route path="/profile"          element={ <IsAuth component={<Profile/>}/> }>
-            <Route  path=""               element={<ProfileUser/>} />
-            <Route  path="orders"         element={<ProfileOrders/>} />
+          <Route path="/profile"          element={ <IsAuth component={<Profile />}/> }>
+            <Route path=""                element={ <ProfileUser/>} />
+            <Route path="orders"          element={ <ProfileOrders/>} />
           </Route>
+          <Route path="/profile/orders/:id"   element={ <IsAuth component={<OrderId />}/> } />
 
           <Route path="*"                 element={<Page404/>} />
         </Routes>
         
         {background && (
           <Routes>
-            <Route path='/ingredients/:id' element={<IngredientsId/>}  />
+            <Route path='/ingredients/:id'      element={<IngredientsId/>} />
+            <Route path="/feed/:id"             element={<OrderId/>} />
+            <Route path="/profile/orders/:id"   element={<OrderId/>} />
           </Routes>
         )}
       </main>

@@ -1,0 +1,20 @@
+.page       { width: 640px; margin: 0 auto 0 auto; }
+
+.number     { font-family: var(--fontNumber); font-size: 36px; text-align: center; }
+
+.name       { margin-top: 40px; font-size: 24px; }
+.name + div { margin: 12px 0 60px 0; font-size: 16px; }
+
+.hlist      { font-size: 18px; margin-top: 60px; }
+.list       { margin-top: 24px; max-height: 310px; overflow: auto; padding-right: 16px; margin-right: -16px; }
+.list > div { display: flex; align-items: center; gap: 16px; }
+.list > div > div:nth-child(1)  { width: 80px; overflow: hidden; text-align: center; border-radius: 50%; }
+.list > div > div:nth-child(1) > img { margin-left: -33px; }
+.list > div > div:nth-child(3)  { font-family: var(--fontNumber); font-size: 28px; margin-left: auto; white-space: nowrap; }
+.list > div > div:nth-child(4)  { margin-bottom: -4px; }
+
+.sum        { margin-top: 40px; display: flex; justify-content: space-between; align-items: center; gap: 1ch; }
+.sum  div:first-child   { color: var(--color2); margin-right: auto; }
+.sum  div:nth-child(2)  { font-family: var(--fontNumber); font-size: 28px; }
+
+

@@ -2,12 +2,7 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import cm from './modal.module.css'
-import PropTypes from "prop-types"
 
-
-Modal.propTypes = {
-  handleClose:  PropTypes.func.isRequired,
-}
 
 
 function Modal({handleClose, children}: {handleClose:()=>void, children: JSX.Element})

@@ -8,19 +8,24 @@ import { useDrop } from "react-dnd";
 import bun_insert from '../../bun_insert.svg'
 import { TIngredient } from "../../utils/types";
 import { useDispatch2, useSelector2 } from "../../services/redux";
+import OrderTimer from '../../components/order-timer/order-timer';
+
 
 type TDrop = {
   index: number
   item: TIngredient
 }
 
+
+
 export default function Constructor()
 {
   const dispatch        =   useDispatch2()
   const { list, error } =   useSelector2( state => state.ingredients )
   const order           =   useSelector2( state => state.order )
-
   
+
+
   const [ , dropIngredients ] = useDrop<TDrop>({
     accept: 'reorder',
     drop(item) {
@@ -36,9 +41,11 @@ export default function Constructor()
   })
 
   
+  
   function handleOrderReset() {
     dispatch( resetOrder() )
   }
+
 
 
   return(
@@ -65,9 +72,16 @@ export default function Constructor()
         }
       </div>
       
-      {order.number > 0  &&
+
+      {order.send &&
         <Modal handleClose={handleOrderReset}>
-          <OrderDetails />
+          { order.number > 0 
+            ? <OrderDetails />
+            : <div className={cm.timer}>
+                <div>Готовим</div>
+                <div><OrderTimer /></div>
+              </div>
+          }
         </Modal>
       }
     </>

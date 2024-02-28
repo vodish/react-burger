@@ -1,7 +1,7 @@
 import { buildCreateSlice, asyncThunkCreator } from "@reduxjs/toolkit";
 import { fetchRequest } from "../utils/api";
 import { removeToken, setToken } from "../utils/storage";
-import { TIngredient, TType, Ttoken } from "../utils/types"
+import { TIngredient, TType, Ttoken, TUserResponse, TFeedOrder, TConnect, TFeedData, TOrderStatus, TIndex } from "../utils/types"
 import { TStore } from "./redux"
 
 const createSliceWhitThunks = buildCreateSlice({
@@ -9,40 +9,43 @@ const createSliceWhitThunks = buildCreateSlice({
 })
 
 
-type TUserResponse = {
-    success: boolean
-    accessToken: string
-    refreshToken:string
-    user: {
-        email:string
-        name: string
-    }
-}
 
-
-
-const appSlice = createSliceWhitThunks({
-  name: 'app',
-  initialState: {
-    ingredients: {
-        list:       [] as TIngredient[],
-        types:      [] as TType[],
-        error:      ""
-    },
-    order: {
-        buns:       [] as TIngredient[],
-        adds:       [] as TIngredient[],
-        total:      0,
-        number:     0,
-        error:      "",
-    },
-    user: {
-        checkAuth:  false,
-        email:      "",
-        name:       "",
-    },
-    apiError:   "",
+export const appSlice = createSliceWhitThunks({
+    name: 'app',
+    initialState: {
+        apiError:   "",
+        ingredients: {
+            list:       []  as TIngredient[],
+            types:      []  as TType[],
+            error:      "",
+            indexes:    {}  as TIndex
+        },
+        order: {
+            buns:       []  as TIngredient[],
+            adds:       []  as TIngredient[],
+            total:      0,
+            number:     0,
+            error:      "",
+            send:       false,
+        },
+        user: {
+            checkAuth:  false,
+            email:      "",
+            name:       "",
+        },
+        feed: {
+            ws:           ""        as string,
+            statuses:     {}        as TIndex,
+            orders:       []        as TFeedOrder[],
+            total:        null      as null | number,
+            totalToday:   null      as null | number,
+        },
+        history: {
+            ws:           ""        as string,
+            orders:       []        as TFeedOrder[],
+        }
   },
+
   reducers: create => ({
       
     // каталог
@@ -58,7 +61,7 @@ const appSlice = createSliceWhitThunks({
             fulfilled:  (state, {payload}) => {
                 
                 if ( payload.data ) {
-
+                    
                     const typeNname :{[n: string]: string} = {
                         bun: "Булки",
                         main: "Начинки",
@@ -77,7 +80,9 @@ const appSlice = createSliceWhitThunks({
                             entries: [],
                         }
                         acc[ el.type ].entries.push(index);
-                
+                        
+                        state.ingredients.indexes[ el._id ]   =   index
+
                         return acc
                     }, {})
                     
@@ -145,6 +150,7 @@ const appSlice = createSliceWhitThunks({
     
     resetOrder: create.reducer( state => {
         state.order.number  =   0
+        state.order.send    =   false
         state.order.buns    =   []
         state.order.adds    =   []
         const newState      =   stateCalculation(state)
@@ -153,10 +159,14 @@ const appSlice = createSliceWhitThunks({
     }),
 
     closeOrderError: create.reducer( state => {
-        state.order.error = ""
+        state.order.error   = ""
+        state.order.send    = false
     }),
     
 
+    sendOrderSend: create.reducer( state => {
+        state.order.send    =   true
+    } ),
 
     sendOrderThunk: create.asyncThunk(
         async (ingredients) => {
@@ -173,7 +183,8 @@ const appSlice = createSliceWhitThunks({
                     , {
                         method: "POST",
                         headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                            'authorization': localStorage.getItem('accessToken') as string,
+                            'Content-Type': 'application/json;charset=utf-8',
                         },
                         body: JSON.stringify({ingredients}),
                     }
@@ -185,15 +196,15 @@ const appSlice = createSliceWhitThunks({
                 
                 state.order.number  =   payload.order ? payload.order.number : 0
                 state.order.error   =   payload.error || ''
-
+                
                 if ( payload.error  ) {
                     alert(payload.error)
                     console.log(payload)
-                    return;
                 }
             },
             rejected: (state, action) => {
-                state.order.error = `${action.type}...<br />Server message: ${action.error.message}`
+                state.order.error   =   `${action.type}...<br />Server message: ${action.error.message}`
+                state.order.send    =   false
             },
         }
     ),
@@ -248,14 +259,15 @@ const appSlice = createSliceWhitThunks({
         {
             fulfilled: (state, {payload}) => {
                 state.user.checkAuth    =   true
-                state.user.name     =   payload.user.name
-                state.user.email    =   payload.user.email
-                state.apiError      =   ""
+                state.user.name         =   payload.user.name
+                state.user.email        =   payload.user.email
+                state.apiError          =   ""
                 setToken(payload)
             },
             rejected: (state, action) => {
                 console.log(action)
-                state.apiError  =   `${action.type}...\nServer message: ${action.error.message}` 
+                state.user.checkAuth    =   true
+                state.apiError          =   `${action.type}...\nServer message: ${action.error.message}` 
             }
         }
     ),
@@ -355,6 +367,38 @@ const appSlice = createSliceWhitThunks({
     ),
     
 
+    wsError: create.reducer( (state, {payload}: {payload: string}) => {
+        state.apiError = payload
+    } ),
+    
+    wsFeedConnect: create.reducer( (state, {payload}: {payload: string}) => {
+        state.feed.ws = payload
+    } ),
+    
+    updateFeedOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
+        
+        const statuses = payload.orders.reduce( (acc:TIndex, {status}: TFeedOrder) => {
+            acc[ status ] = acc[ status ] ?  acc[ status ]+1 :  1;
+            return acc;
+        }, {})
+
+        // console.log(statuses)
+
+        state.feed.orders       =   payload.orders
+        state.feed.total        =   payload.total
+        state.feed.totalToday   =   payload.totalToday
+        state.feed.statuses     =   statuses
+    } ),
+
+
+    wsHistoryConnect: create.reducer( (state, {payload}: {payload: string}) => {
+        state.history.ws = payload
+    } ),
+    
+    updateHistoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
+        // console.log(payload)
+        state.history.orders       =   payload.orders.reverse()
+    } ),
     
   })
 })
@@ -367,6 +411,7 @@ export const {
     resortOrder,
     resetOrder,
     closeOrderError,
+    sendOrderSend,
     sendOrderThunk,
 
     removeApiError,
@@ -375,6 +420,12 @@ export const {
     sendLogoutThunk,
     getProfileThunk,
     updateProfileThunk,
+
+    wsError,
+    wsFeedConnect,
+    updateFeedOrders,
+    wsHistoryConnect,
+    updateHistoryOrders,
 
 } = appSlice.actions
 
