@@ -1,6 +1,6 @@
-# Github pages
+# Посмотреть проект в бою можно по адресу
 
-[https://vodish.github.io/react-burger/](https://vodish.github.io/react-burger/)
+[https://react-burger.karasev.ru/](https://react-burger.karasev.ru/)
 
 
 # Getting Started with Create React App
