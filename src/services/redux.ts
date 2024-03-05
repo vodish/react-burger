@@ -27,7 +27,6 @@ const store = configureStore({
     },
 })
 
-console.log(store.getState())
 
 export type TDispatch   = typeof store.dispatch
 export type TStore      = ReturnType<typeof store.getState>
