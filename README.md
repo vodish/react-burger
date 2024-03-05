@@ -1,6 +1,6 @@
-# Посмотреть проект в бою можно по адресу
+# Посмотреть проект в бою можно по ссылке
 
-[https://react-burger.karasev.ru/](https://react-burger.karasev.ru/)
+[https://react-burger.karasev.ru](https://react-burger.karasev.ru)
 
 
 # Getting Started with Create React App
