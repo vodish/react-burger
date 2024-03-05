@@ -13,11 +13,15 @@ export async function fetchRequest<T>(endPoint: string, options: TFetchOptions =
     return Promise.reject(`Server error...`)
   }
   
-  const json    = await res.json()
-        options = await checkTokenRefresh(options, json)
+  const json  = await res.json()
+
+  // проверяем ответ сервера
+  options     = await checkTokenRefresh(options, json)
   
+  // повторить запрос, если токен обновлен
   if ( options.checkRefresh ) {
-    return fetchRequest(endPoint, options)
+    options.checkRefresh = false
+    return await fetchRequest(endPoint, options)
   }
   
   if ( ! json.success ) {
@@ -35,7 +39,6 @@ async function checkTokenRefresh(options: TFetchOptions, err: Error)
 {
   if (   err.message !== "jwt expired"          )   return options;
   if ( ! localStorage.getItem("refreshToken")   )   return options;
-  if (   options.checkRefresh                   )   return options;
   if ( ! options.headers                        )   return options;
   if ( ! options.headers.authorization          )   return options;
 
