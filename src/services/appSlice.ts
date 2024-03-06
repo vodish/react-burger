@@ -396,7 +396,7 @@ export const appSlice = createSliceWhitThunks({
         state.feed.statuses     =   statuses
     } ),
 
-
+    
     wsHistoryConnect: create.reducer( (state, {payload}: {payload: string}) => {
         state.history.ws    =   payload
     } ),
