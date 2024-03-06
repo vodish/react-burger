@@ -93,6 +93,8 @@ export const appSlice = createSliceWhitThunks({
                 state.ingredients.list  =   payload.data    ||  []
                 state.ingredients.types =   payload.types   ||  []
                 state.ingredients.error =   payload.error   ||  ""
+
+                // console.log(payload.data)
                 
             },
             rejected: (state, action) => {
@@ -148,6 +150,8 @@ export const appSlice = createSliceWhitThunks({
         state.order.adds[hoverIndex]    =   drag
     }),
     
+
+
     resetOrder: create.reducer( state => {
         state.order.number  =   0
         state.order.send    =   false
@@ -157,6 +161,8 @@ export const appSlice = createSliceWhitThunks({
         state.ingredients   =   newState.ingredients;
         state.order.total   =   newState.order.total;
     }),
+
+
 
     closeOrderError: create.reducer( state => {
         state.order.error   = ""
@@ -197,9 +203,9 @@ export const appSlice = createSliceWhitThunks({
                 state.order.number  =   payload.order ? payload.order.number : 0
                 state.order.error   =   payload.error || ''
                 
-                if ( payload.error  ) {
-                    alert(payload.error)
-                    console.log(payload)
+                if ( payload.error !== '' ) {
+                    // alert(payload.error)
+                    // console.log(payload)
                 }
             },
             rejected: (state, action) => {
@@ -228,7 +234,7 @@ export const appSlice = createSliceWhitThunks({
       },
       {
         fulfilled: (state, {payload})=>{
-          console.log(payload)
+        //   console.log(payload)
           state.user.name   =   payload.user.name
           state.user.email  =   payload.user.email
           setToken(payload)
@@ -392,12 +398,12 @@ export const appSlice = createSliceWhitThunks({
 
 
     wsHistoryConnect: create.reducer( (state, {payload}: {payload: string}) => {
-        state.history.ws = payload
+        state.history.ws    =   payload
     } ),
     
     updateHistoryOrders: create.reducer( (state, {payload}: {payload: TFeedData}) => {
-        // console.log(payload)
-        state.history.orders       =   payload.orders.reverse()
+        
+        state.history.orders    =   [...payload.orders].reverse()
     } ),
     
   })
