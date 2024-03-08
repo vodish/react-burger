@@ -12,7 +12,7 @@ function Modal({handleClose, children}: {handleClose:()=>void, children: JSX.Ele
       <ModalOverlay handleClose={handleClose} />
       
       <div className={cm.modal}>
-        <div className={cm.close} onClick={handleClose}><CloseIcon type="primary" /></div>
+        <div className={cm.close + ' cyModalClose'} onClick={handleClose}><CloseIcon type="primary" /></div>
         {children}
       </div>
     </>

@@ -26,7 +26,7 @@ function IngredientTile( {item}: {item: TIngredient} )
     <Link
       to={`/ingredients/${item._id}`}
       state={{ background: location }}
-      className={cm.tile}
+      className={cm.tile + ' cyIngredientTile'}
       ref={dragRef}
       style={{opacity}}
       >
