@@ -5,7 +5,7 @@ import { ActionCreatorWithPayload, ActionCreatorWithoutPayload } from '@reduxjs/
 
  
 
-export type TwsActionTypes = {
+export type TwsAction = {
     wsConnect:      typeof wsFeedConnect    | typeof wsHistoryConnect,
     onMessage:      typeof updateFeedOrders | typeof updateHistoryOrders,
     onError:        ActionCreatorWithPayload<string>,
@@ -17,7 +17,7 @@ export type TwsActionTypes = {
 }
 
 
-export const wsMiddleware = (wsActions: TwsActionTypes): Middleware => store => {
+export const wsMiddleware = (wsActions: TwsAction): Middleware => store => {
 
     let socket: WebSocket | null = null;
     const { wsConnect, onMessage, onError } = wsActions;

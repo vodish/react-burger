@@ -27,6 +27,7 @@ const store = configureStore({
     },
 })
 
+
 export type TDispatch   = typeof store.dispatch
 export type TStore      = ReturnType<typeof store.getState>
 
